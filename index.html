@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <!-- 加入 user-scalable=no，防止在 iPhone 上點擊按鈕時畫面意外放大，確保 App 般的流暢體驗 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>清酒單</title>
+    
+    <!-- 🍎 iOS 專屬 Web App 設定區 🍎 -->
+    <!-- 1. 讓網頁以全螢幕 App 模式運行 (隱藏 Safari 網址列與工具列) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 2. 設定 iPhone 頂部狀態列的顏色與背景融合 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- 3. 設定加到桌面時的 App 顯示名稱 -->
+    <meta name="apple-mobile-web-app-title" content="清酒單">
+    <!-- 4. 設定加到桌面時的 App Icon (這是一個預設的清酒圖示，若你有自己的圖，把 href 裡的網址換掉即可) -->
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1037/1037803.png">
+
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 現代日式極簡配色 (Editorial Style) */
+        :root {
+            --bg-body: #F7F6F2;
+            --bg-card: #FFFFFF;
+            --text-main: #2C2D30;
+            --text-muted: #85878A;
+            --accent: #A68A61;
+            --accent-light: #F2EFEA;
+            --border: #E8E6E1;
+            --danger-bg: #FAF0F0;
+            --danger-text: #B85C5C;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0; padding: 5vh 5vw 8vh 5vw; 
+            line-height: 1.6; letter-spacing: 0.02em;
+            /* 針對全螢幕 App 模式，避免內容被 iPhone 瀏海或動態島擋住 */
+            padding-top: env(safe-area-inset-top, 5vh);
+            padding-bottom: env(safe-area-inset-bottom, 8vh);
+        }
+
+        h2 { 
+            font-family: 'Noto Serif TC', serif; 
+            text-align: center; color: var(--text-main); 
+            font-size: 1.6rem; margin-bottom: 2.5rem; 
+            font-weight: 500; letter-spacing: 0.2em;
+        }
+
+        /* 質感頁籤切換 */
+        .mode-switch {
+            display: flex; max-width: 320px; margin: 0 auto 2.5rem auto;
+            background: var(--border); border-radius: 30px; padding: 4px;
+        }
+        .mode-btn {
+            flex: 1; border: none; background: transparent; padding: 10px 0;
+            color: var(--text-muted); font-size: 0.95rem; font-weight: 500;
+            border-radius: 26px; cursor: pointer; transition: 0.3s ease;
+            font-family: 'Noto Sans TC', sans-serif; letter-spacing: 0.05em;
+        }
+        .mode-btn.active { 
+            background: var(--bg-card); color: var(--text-main); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-weight: 700;
+        }
+
+        /* 互動問答區 */
+        #guideSection { display: block; max-width: 600px; margin: 0 auto; animation: fade-in 0.5s ease; }
+        .guide-box { margin-bottom: 24px; }
+        .guide-question {
+            font-family: 'Noto Serif TC', serif; font-size: 1.25rem; 
+            color: var(--text-main); margin-bottom: 20px; font-weight: 700;
+            text-align: center;
+        }
+        .guide-options { display: flex; flex-direction: column; gap: 12px; }
+        .guide-opt-btn {
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-main); padding: 18px 20px; border-radius: 12px;
+            font-size: 1rem; cursor: pointer; transition: 0.2s ease;
+            text-align: left; font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
+        }
+        .guide-opt-btn:hover, .guide-opt-btn:active {
+            border-color: var(--accent); background: var(--accent-light);
+        }
+        
+        .reset-btn {
+            margin-top: 24px; background: transparent; border: 1px solid var(--border);
+            color: var(--text-muted); cursor: pointer; font-size: 0.9rem;
+            padding: 10px 24px; border-radius: 30px; transition: 0.3s;
+        }
+        .reset-btn:hover { color: var(--text-main); border-color: var(--text-muted); }
+
+        /* 完整列表區 */
+        #listSection { display: none; max-width: 800px; margin: 0 auto; animation: fade-in 0.5s ease; }
+        
+        .search-container { margin-bottom: 24px; }
+        .search-box { 
+            width: 100%; padding: 16px 20px; font-size: 0.95rem; 
+            background: var(--bg-card); color: var(--text-main); 
+            border: 1px solid var(--border); border-radius: 12px; 
+            outline: none; transition: 0.3s;
+        }
+        .search-box:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
+        .search-box::placeholder { color: #C2C3C5; font-weight: 300; }
+
+        .categories { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; justify-content: center;}
+        .cat-btn { 
+            padding: 8px 16px; font-size: 0.85rem; border: 1px solid var(--border); 
+            border-radius: 20px; background: var(--bg-body); color: var(--text-muted); 
+            cursor: pointer; transition: 0.2s; font-weight: 500; letter-spacing: 0.05em;
+        }
+        .cat-btn.active { 
+            background: var(--text-main); color: #FFF; border-color: var(--text-main); 
+        }
+
+        /* 質感卡片設計 */
+        .sake-list { display: flex; flex-direction: column; gap: 20px; }
+        .sake-card { 
+            background: var(--bg-card); border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease;
+        }
+        
+        .sake-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 12px; flex-wrap: wrap;}
+        .sake-title { font-family: 'Noto Serif TC', serif; font-size: 1.25rem; font-weight: 700; color: var(--text-main); line-height: 1.3;}
+        .sake-volume {
+            font-size: 0.8rem; color: var(--accent); font-weight: 700;
+            background: var(--accent-light); padding: 4px 10px; border-radius: 6px;
+            white-space: nowrap; letter-spacing: 0.05em; border: 1px solid rgba(166, 138, 97, 0.2);
+        }
+
+        .sake-tags { 
+            font-size: 0.8rem; color: var(--text-muted); font-weight: 500;
+            margin-bottom: 16px; display: inline-block;
+        }
+        
+        .sake-desc { font-size: 0.95rem; color: var(--text-muted); font-weight: 300; line-height: 1.7;}
+        .sake-desc strong { color: var(--text-main); font-weight: 500; }
+        
+        .warning-tag { 
+            display: inline-flex; align-items: center; margin-top: 16px; font-size: 0.85rem; 
+            color: var(--danger-text); background: var(--danger-bg); 
+            padding: 6px 14px; border-radius: 6px; font-weight: 500;
+            border: 1px solid rgba(184, 92, 92, 0.15);
+        }
+
+        .guide-tip { 
+            font-size: 0.95rem; color: var(--accent); margin-bottom: 20px; 
+            font-weight: 500; text-align: center; font-family: 'Noto Serif TC', serif;
+        }
+
+        .footer { 
+            text-align: center; padding: 2rem 0; color: #C2C3C5; font-size: 0.75rem; 
+            margin-top: 3rem; font-family: 'Noto Sans TC', sans-serif; letter-spacing: 0.1em;
+        }
+
+        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .anim-item { animation: fade-in 0.5s ease forwards; opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <h2>清酒單</h2>
+    
+    <div class="mode-switch">
+        <button class="mode-btn active" id="btnGuide" onclick="app.switchMode('guide')">引導推薦</button>
+        <button class="mode-btn" id="btnList" onclick="app.switchMode('list')">完整酒單</button>
+    </div>
+
+    <!-- 模式 1：引導推薦 -->
+    <div id="guideSection">
+        <div class="guide-box" id="guideBox">
+            <div id="guideContent"></div>
+        </div>
+        <div id="guideResultList" class="sake-list"></div>
+        <div style="text-align: center;">
+            <button class="reset-btn" id="resetGuideBtn" style="display:none;" onclick="app.startGuide()">
+                重新選擇條件
+            </button>
+        </div>
+    </div>
+
+    <!-- 模式 2：完整酒單 -->
+    <div id="listSection">
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="搜尋酒名、風味關鍵字或容量..." onkeyup="app.filterSake()">
+        </div>
+        <div class="categories"></div>
+        <div class="sake-list" id="sakeList"></div>
+    </div>
+
+    <div class="footer">
+        © 2026 lxt04__20
+    </div>
+
+    <script>
+        const sakeData = [
+            { name: "獺祭 2割3分", volume: "300ml", category: "知名酒款, 甘口, 海鮮搭配", tags: "純淨・密瓜香・頂級", desc: "<strong>【香氣】</strong>明顯的哈密瓜、水蜜桃果香。<br><strong>【口感】</strong>極度滑順，純淨無雜味，配干貝或單喝都適合。" },
+            { name: "獺祭 45", volume: "180ml / 720ml", category: "知名酒款", tags: "入門・經典款・日常", desc: "<strong>【香氣】</strong>青蘋果與微甜的哈密瓜香氣。<br><strong>【口感】</strong>入口微甜，米香與果香平衡，清爽易飲。" },
+            { name: "飛露喜 純米吟釀", volume: "720ml", category: "知名酒款, 濃郁", tags: "夢幻名酒・均衡・扎實", desc: "<strong>【香氣】</strong>內斂的香蕉與瓜果香。<br><strong>【口感】</strong>酒體扎實，甘甜與旨味融合，尾韻乾淨。" },
+            { name: "安藝虎 純米大吟釀", volume: "300ml", category: "知名酒款, 辛口", tags: "高雅・乾淨・輕盈", desc: "<strong>【香氣】</strong>淡雅花香與輕盈果香。<br><strong>【口感】</strong>酒質乾淨，輕柔順口，帶有透明感。" },
+            { name: "三諸杉 純米大吟釀 酒未來2026", volume: "720ml", category: "知名酒款, 甘口", tags: "多汁 Juicy・現代感", desc: "<strong>【香氣】</strong>荔枝、白桃等熱帶水果香氣。<br><strong>【口感】</strong>非常多汁，果實甘甜感明顯，水潤透亮。" },
+            { name: "鳳凰美田 秋津山田錦 荒押合併", volume: "720ml", category: "知名酒款, 特殊風味", tags: "無濾過生酒・生猛華麗", desc: "<strong>【香氣】</strong>奔放的哈密瓜與水梨香氣。<br><strong>【口感】</strong>生酒口感生猛有層次，甘甜濃厚。<br><span class='warning-tag'>開瓶請慢轉，留意微氣泡湧出</span>" },
+            { name: "鳳凰美田 wine cell 純米吟釀 2025", volume: "720ml", category: "甘口, 海鮮搭配", tags: "葡萄酒酵母・酸甜交織", desc: "<strong>【香氣】</strong>白葡萄、麝香葡萄香氣。<br><strong>【口感】</strong>像白酒一樣有明亮酸度，酸甜交織，不膩口。" },
+            { name: "桂月CEL24 純米大吟釀 50 生酒", volume: "300ml / 720ml", category: "甘口, 海鮮搭配, 特殊風味", tags: "蘋果香・生酒・必須冰飲", desc: "<strong>【香氣】</strong>爆發性的鳳梨、青蘋果香。<br><strong>【口感】</strong>酸度與甜度明顯，像新鮮果汁般討喜。<br><span class='warning-tag'>生酒酵母活躍，開瓶請輕轉留意氣體</span>" },
+            { name: "花邑 純米酒 陸羽田", volume: "180ml", category: "甘口, 海鮮搭配", tags: "多汁・十四代技術指導", desc: "<strong>【香氣】</strong>豐沛的瓜果香與花香。<br><strong>【口感】</strong>多汁甘甜，旨味濃厚，口感飽滿柔和。" },
+            { name: "射美 無濾過生原酒RED", volume: "720ml", category: "甘口, 特殊風味", tags: "限量夢幻・濃郁・鮮甜", desc: "<strong>【香氣】</strong>濃郁的草莓、莓果類熟成香。<br><strong>【口感】</strong>極致濃郁甘甜，酒體厚重，旨味極高。<br><span class='warning-tag'>具生原酒微碳酸感，開瓶請輕柔</span>" },
+            { name: "天賦 純米酒", volume: "300ml", category: "甘口, 海鮮搭配", tags: "乾淨・微甜・現代感", desc: "<strong>【香氣】</strong>清新的青蘋果與微礦物氣息。<br><strong>【口感】</strong>微微甘甜，酒體乾淨透亮，甜而不膩。" },
+            { name: "菊之司 心星 shinboshi", volume: "300ml", category: "甘口, 海鮮搭配", tags: "輕盈・酸度明亮", desc: "<strong>【香氣】</strong>清爽的哈密瓜與草莓香。<br><strong>【口感】</strong>酒質輕盈，明亮白葡萄酸度與水潤微甜。" },
+            { name: "雅乃詩", volume: "180ml / 1.8L", category: "甘口, 知名酒款", tags: "清爽・柔和・無負擔", desc: "<strong>【香氣】</strong>淡雅不張揚的米香。<br><strong>【口感】</strong>淡麗清爽，口味芳醇柔和，入門首選。" },
+            { name: "桂月 超辛口 特別純米酒 60 生酒", volume: "300ml", category: "辛口, 特殊風味", tags: "超辛口・俐落・解膩", desc: "<strong>【香氣】</strong>清新、收斂的微果香與米香。<br><strong>【口感】</strong>完全不甜，酒體銳利，收尾乾淨俐落。<br><span class='warning-tag'>生酒，開瓶請輕轉留意氣體</span>" },
+            { name: "磯自慢 酒友 別撰本釀造", volume: "180ml", category: "辛口", tags: "國宴酒・搭生魚片絕配", desc: "<strong>【香氣】</strong>極度乾淨，微弱的哈密瓜清香。<br><strong>【口感】</strong>極度清爽俐落，輕盈無負擔。" },
+            { name: "初龜 特別純米", volume: "180ml", category: "辛口", tags: "溫潤・乾淨・不搶味", desc: "<strong>【香氣】</strong>溫和柔順，不刺鼻。<br><strong>【口感】</strong>溫潤乾淨，不干擾食物味道，適合襯托食材。" },
+            { name: "鈴鹿川 純米酒", volume: "300ml", category: "辛口", tags: "透明感・易飲・百搭", desc: "<strong>【香氣】</strong>微微青蘋果與清澈米香。<br><strong>【口感】</strong>乾淨易飲，口感透明滑順，非常百搭。" },
+            { name: "惣譽 辛口特別純米酒", volume: "180ml / 1.8L", category: "辛口, 濃郁", tags: "傳統辛口・扎實", desc: "<strong>【香氣】</strong>扎實傳統的蒸米香。<br><strong>【口感】</strong>傳統辛口骨架，米香濃厚，能洗去油脂也能配醬燒。" },
+            { name: "中尾 誠鏡 竹原 純米酒", volume: "180ml", category: "濃郁", tags: "軟水釀造・醇厚圓潤", desc: "<strong>【香氣】</strong>溫和沉穩的米麴香。<br><strong>【口感】</strong>軟水釀造的醇厚圓潤感，微甘口，旨味豐富。" },
+            { name: "醴泉 無風 純米酒", volume: "180ml", category: "濃郁", tags: "柔順・舒服的米甜", desc: "<strong>【香氣】</strong>淡淡的哈密瓜與香草甜香。<br><strong>【口感】</strong>非常柔順，舒服不膩口的米飯甘甜。" },
+            { name: "安藝虎 純米酒", volume: "180ml / 1.8L", category: "濃郁", tags: "有個性・扎實・重口味", desc: "<strong>【香氣】</strong>沉穩內斂的米香。<br><strong>【口感】</strong>帶適度酸度與扎實骨架，適合搭配濃郁燉煮。" },
+            { name: "今錦 特別純米酒", volume: "720ml", category: "濃郁", tags: "飽滿・醇厚・搭串燒", desc: "<strong>【香氣】</strong>醇厚飽滿的香氣。<br><strong>【口感】</strong>味道濃郁，酒體飽滿厚實，搭配醬燒極度對味。" },
+            { name: "山形正宗 稻造 新年版", volume: "720ml", category: "濃郁", tags: "強烈米香・扎實", desc: "<strong>【香氣】</strong>強烈且純粹的稻米原始香氣。<br><strong>【口感】</strong>酒體扎實強勁，旨味濃厚，尾韻銳利。" },
+            { name: "惣譽 生元 特別純米 藏出生原酒", volume: "720ml", category: "特殊風味", tags: "生酛・厚實・酒精感重", desc: "<strong>【香氣】</strong>帶有大地氣息與發酵香氣。<br><strong>【口感】</strong>未加水稀釋，酒感厚實濃烈。<br><span class='warning-tag'>生原酒，瓶內可能有氣體請留意</span>" },
+            { name: "越路乃紅梅 純米生原酒", volume: "720ml", category: "特殊風味", tags: "新鮮・微碳酸感", desc: "<strong>【香氣】</strong>新鮮活躍的微果香。<br><strong>【口感】</strong>基底乾淨，帶有生原酒特有的微碳酸刺激感與厚實感。<br><span class='warning-tag'>具微碳酸感，開瓶請留意</span>" },
+            { name: "末廣 傳承山廢純米", volume: "180ml", category: "適合溫飲, 特殊風味", tags: "強烈推薦溫酒・乳酸感", desc: "<strong>【香氣】</strong>微微的乳酸菌發酵香。<br><strong>【口感】</strong>酸度明顯。加熱(溫酒)後，酸澀會轉化為甘甜旨味。" },
+            { name: "山形正宗 燗純米", volume: "720ml", category: "適合溫飲", tags: "專為溫酒設計・醇厚", desc: "<strong>【香氣】</strong>冷飲內斂，加熱後爆發溫暖飽滿米香。<br><strong>【口感】</strong>專為溫酒設計，加熱後酒體圓潤醇厚。" },
+            { name: "墨廼江 特別純米 細濁新酒", volume: "720ml", category: "特殊風味", tags: "濁酒・微碳酸・可爾必思", desc: "<strong>【香氣】</strong>柑橘清香，帶微乳酸感。<br><strong>【口感】</strong>瓶底有米粕，像可爾必思微甜感。<br><span class='warning-tag'>瓶內持續發酵，嚴禁猛搖，請極度緩慢開瓶！</span>" },
+            { name: "稻與龍舌蘭 交酒 花風忽布 火入", volume: "720ml", category: "特殊風味", tags: "精釀清酒・啤酒花", desc: "<strong>【香氣】</strong>荔枝、青芒果與啤酒花香氣。<br><strong>【口感】</strong>微氣泡感，酸度明亮，尾韻帶有精釀啤酒的微苦。<br><span class='warning-tag'>精釀微氣泡，請留意開瓶</span>" }
+        ];
+
+        const app = {
+            currentCategory: '全部',
+            targetSize: 'all', 
+            
+            init() {
+                this.renderCategories();
+                this.switchMode('guide');
+            },
+
+            createCardHTML(sake, index) {
+                return `
+                    <div class="sake-card anim-item" style="animation-delay: ${index * 0.05}s">
+                        <div class="sake-header">
+                            <div class="sake-title">${sake.name}</div>
+                            <div class="sake-volume">${sake.volume}</div>
+                        </div>
+                        <div class="sake-tags"># ${sake.tags.replace(/・/g, ' # ')}</div>
+                        <div class="sake-desc">${sake.desc}</div>
+                    </div>
+                `;
+            },
+
+            catConfigs: [
+                { id: '全部', label: '全部酒款' },
+                { id: '知名酒款', label: '知名/安全牌' },
+                { id: '甘口', label: '果香豐富 (甘口)' },
+                { id: '辛口', label: '乾淨俐落 (辛口)' },
+                { id: '濃郁', label: '旨味濃郁 (配肉)' },
+                { id: '特殊風味', label: '生原酒/濁酒' },
+                { id: '適合溫飲', label: '適合溫熱' }
+            ],
+            
+            renderCategories() {
+                const container = document.querySelector('.categories');
+                container.innerHTML = this.catConfigs.map(cat => 
+                    `<button class="cat-btn ${cat.id === '全部' ? 'active' : ''}" 
+                             onclick="app.setCategory('${cat.id}', this)">${cat.label}</button>`
+                ).join('');
+            },
+
+            setCategory(categoryId, element) {
+                this.currentCategory = categoryId;
+                document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+                element.classList.add('active');
+                this.filterSake();
+            },
+
+            filterSake() {
+                const searchTxt = document.getElementById('searchInput').value.toLowerCase();
+                const filtered = sakeData.filter(sake => {
+                    const matchCat = this.currentCategory === '全部' || sake.category.includes(this.currentCategory);
+                    const matchTxt = sake.name.toLowerCase().includes(searchTxt) || 
+                                     sake.tags.toLowerCase().includes(searchTxt) || 
+                                     sake.desc.toLowerCase().includes(searchTxt) ||
+                                     sake.volume.toLowerCase().includes(searchTxt);
+                    return matchCat && matchTxt;
+                });
+                
+                const listEl = document.getElementById('sakeList');
+                listEl.innerHTML = filtered.length ? 
+                    filtered.map((s, idx) => this.createCardHTML(s, idx)).join('') : 
+                    '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">找不到符合的酒款</p>';
+            },
+
+            currentActions: [],
+            
+            startGuide() {
+                this.targetSize = 'all'; 
+                document.getElementById('guideResultList').innerHTML = '';
+                document.getElementById('resetGuideBtn').style.display = 'none';
+                document.getElementById('guideBox').style.display = 'block';
+                
+                this.renderQuestion("請問客人希望選擇什麼容量？", [
+                    { text: "180ml - 300ml (小瓶裝 / 適合 1-2 人)", action: () => this.setSizeAndNext('small') },
+                    { text: "720ml - 1.8L (大瓶裝 / 適合多人聚餐)", action: () => this.setSizeAndNext('large') },
+                    { text: "不限容量，先以風味挑選為主", action: () => this.setSizeAndNext('all') }
+                ]);
+            },
+
+            setSizeAndNext(size) {
+                this.targetSize = size;
+                this.stepTemperature();
+            },
+
+            stepTemperature() {
+                this.renderQuestion("請問偏好的飲用溫度？", [
+                    { text: "冷飲 (冰鎮或常溫)", action: () => this.stepTaste() },
+                    { text: "溫飲 (加熱飲用)", action: () => this.showGuideResults('適合溫飲', "推薦以下適合加熱飲用的酒款：") },
+                    { text: "皆可 / 想選經典知名酒款", action: () => this.showGuideResults('知名酒款', "為您推薦店內知名度高、零負評的經典酒款：") }
+                ]);
+            },
+
+            stepTaste() {
+                this.renderQuestion("請問偏好的口感風格？", [
+                    { text: "果香豐富 / 偏微甜 (甘口)", action: () => this.stepSweetFood() },
+                    { text: "乾淨俐落 / 不甜 (辛口)", action: () => this.stepDryFood() },
+                    { text: "特殊風味 (生原酒 / 微碳酸 / 濁酒)", action: () => this.showGuideResults('特殊風味', "推薦以下特色強烈、口感獨特的酒款：") }
+                ]);
+            },
+
+            stepSweetFood() {
+                this.renderQuestion("主要搭配的餐點類型？", [
+                    { text: "生魚片 / 干貝 / 甜蝦等海鮮料理", action: () => this.showGuideResults('海鮮搭配', "這幾款微甜帶有果香的清酒，能完美提升海鮮的鮮甜：") },
+                    { text: "單純品飲 / 搭配其他類型料理", action: () => this.showGuideResults('甘口', "為您推薦香氣華麗、單獨品飲也非常順口的酒款：") }
+                ]);
+            },
+
+            stepDryFood() {
+                this.renderQuestion("主要搭配的餐點類型？", [
+                    { text: "清淡海鮮 / 生魚片", action: () => this.showGuideResults('辛口', "乾淨俐落的辛口清酒，能完美去腥並襯托生魚片原味：") },
+                    { text: "串燒 / 炸物 / 醬燒等重口味肉類", action: () => this.showGuideResults('濃郁', "這幾款旨味豐富的清酒，能撐起重口味的肉類與醬汁：") }
+                ]);
+            },
+
+            renderQuestion(text, options) {
+                this.currentActions = options.map(opt => opt.action);
+                let html = `<div class="guide-question">${text}</div><div class="guide-options">`;
+                options.forEach((opt, idx) => {
+                    html += `<button class="guide-opt-btn" onclick="app.executeAction(${idx})">${opt.text}</button>`;
+                });
+                html += `</div>`;
+                document.getElementById('guideContent').innerHTML = html;
+            },
+
+            executeAction(idx) {
+                if (this.currentActions[idx]) this.currentActions[idx]();
+            },
+
+            showGuideResults(catFilter, tipText) {
+                document.getElementById('guideBox').style.display = 'none';
+                
+                let matched = sakeData.filter(s => s.category.includes(catFilter));
+                
+                if (this.targetSize === 'small') {
+                    let sizeMatched = matched.filter(s => s.volume.includes('180') || s.volume.includes('300'));
+                    if (sizeMatched.length > 0) {
+                        matched = sizeMatched;
+                    } else {
+                        tipText = "目前所選風味沒有小瓶裝，為您推薦以下大瓶裝選擇：";
+                    }
+                } else if (this.targetSize === 'large') {
+                    let sizeMatched = matched.filter(s => s.volume.includes('720') || s.volume.includes('1.8L'));
+                    if (sizeMatched.length > 0) {
+                        matched = sizeMatched;
+                    } else {
+                        tipText = "目前所選風味沒有大瓶裝，為您推薦以下小瓶裝選擇：";
+                    }
+                }
+
+                // 隨機打亂確保每次推薦不同
+                for (let i = matched.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [matched[i], matched[j]] = [matched[j], matched[i]];
+                }
+                
+                // 取前 3 筆
+                let topChoices = matched.slice(0, 3);
+                
+                let html = `<div class="guide-tip">${tipText}</div>`;
+                html += topChoices.map((s, idx) => this.createCardHTML(s, idx)).join('');
+                
+                document.getElementById('guideResultList').innerHTML = html;
+                document.getElementById('resetGuideBtn').style.display = 'inline-block';
+            },
+
+            switchMode(mode) {
+                const btnGuide = document.getElementById('btnGuide');
+                const btnList = document.getElementById('btnList');
+                
+                if (mode === 'guide') {
+                    btnGuide.classList.add('active'); btnList.classList.remove('active');
+                    document.getElementById('guideSection').style.display = 'block';
+                    document.getElementById('listSection').style.display = 'none';
+                    this.startGuide();
+                } else {
+                    btnGuide.classList.remove('active'); btnList.classList.add('active');
+                    document.getElementById('guideSection').style.display = 'none';
+                    document.getElementById('listSection').style.display = 'block';
+                    this.filterSake();
+                }
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
