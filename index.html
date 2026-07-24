@@ -25,7 +25,6 @@
             --danger-bg: #FAF0F0;
             --danger-text: #B85C5C;
             
-            /* 顏色對調：甘口改藍色系，辛口改紅色系，旨口維持金橘色 */
             --taste-sweet: #337AB7;   /* 藍色系：甘口 / 微甘口 */
             --taste-dry: #D9534F;     /* 紅色系：辛口 / 超辛口 */
             --taste-rich: #E67E22;    /* 橘金系：旨口 / 旨辛口 */
@@ -298,7 +297,36 @@
 
     <!-- 模式 4：筆記 -->
     <div id="knowledgeSection" style="display: none;">
+        
+        <!-- 新增：甘口 vs 辛口 vs 旨口 深度解析 -->
         <div class="knowledge-card anim-item" style="animation-delay: 0s">
+            <div class="knowledge-title">甘口、辛口、旨口的差異與比較</div>
+            <div class="knowledge-desc">
+                很多人以為清酒的「甘口」跟「辛口」就像葡萄酒的甜跟乾，但其實清酒還多了一個非常獨特的東方風味——<strong>「旨口」</strong>。<br>
+                
+                <div class="knowledge-point">
+                    <strong style="color: var(--taste-sweet);">🔵 甘口 (Sweet / 藍色標籤)</strong><br>
+                    殘糖量較高，或帶有豐富華麗的果香（如哈密瓜、白桃、荔枝）。入口時能感受到明顯的甘甜與水潤感。<br>
+                    👉 <strong>適合推薦：</strong>怕酒精感、喜歡水果風味或女生客群；完美搭配干貝、甜蝦等鮮甜海鮮。
+                </div>
+
+                <div class="knowledge-point">
+                    <strong style="color: var(--taste-dry);">🔴 辛口 (Dry / 紅色標籤)</strong><br>
+                    發酵徹底，殘糖極少。口感乾淨俐落、不拖泥帶水，吞下去後尾韻收得非常乾脆。<br>
+                    👉 <strong>適合推薦：</strong>追求清爽、想解膩的客群；完美搭配生魚片（去腥）或炸物、串燒（洗去油脂）。
+                </div>
+
+                <div class="knowledge-point">
+                    <strong style="color: var(--taste-rich);">🟠 旨口 / 旨辛口 (Rich / 橘金標籤)</strong><br>
+                    「旨 (Umami)」代表日文的**「鮮味、醇厚感」**。旨口酒不以純甜或純乾見長，而是主打**濃郁的米香、酒體飽滿、層次深奧**。<br>
+                    * <strong>旨口：</strong>濃厚圓潤，帶有舒服的米飯甘甜與醇厚感。<br>
+                    * <strong>旨辛口：</strong>前端有厚實的米香與旨味，但後端收尾帶有俐落酸度，不膩口。<br>
+                    👉 <strong>適合推薦：</strong>喜歡紅酒結構感、威士忌厚實感，或喜愛享用醬燒肉類、重口味料理的客群。
+                </div>
+            </div>
+        </div>
+
+        <div class="knowledge-card anim-item" style="animation-delay: 0.1s">
             <div class="knowledge-title">什麼是「精米步合」？</div>
             <div class="knowledge-desc">
                 精米步合是指釀酒時「米被磨掉後，剩下保留的比例」。數字越小，代表磨掉的雜質（蛋白質、脂肪）越多，成本越高，風味越純淨。<br>
@@ -306,7 +334,8 @@
                 <div class="knowledge-point"><strong>純米酒 / 本釀造 (通常 60% ~ 70%)：</strong>保留較多米香，散發扎實的蒸米香氣與豐富「旨味」（鮮甜感），最適合搭配居酒屋重口味料理。</div>
             </div>
         </div>
-        <div class="knowledge-card anim-item" style="animation-delay: 0.1s">
+
+        <div class="knowledge-card anim-item" style="animation-delay: 0.2s">
             <div class="knowledge-title">生酒、原酒、生原酒的差異？</div>
             <div class="knowledge-desc">
                 <div class="knowledge-point"><strong>生酒 (未殺菌)：</strong>保留活躍酵母與酵素，口感生猛、新鮮，常帶微酸果汁感，<strong>「必須全程冷藏」</strong>。</div>
@@ -314,13 +343,15 @@
                 <div class="knowledge-point"><strong>生原酒 (未殺菌 + 未稀釋)：</strong>清酒中最具生命力的狀態，濃烈鮮活，開瓶偶有微碳酸氣泡感。</div>
             </div>
         </div>
-        <div class="knowledge-card anim-item" style="animation-delay: 0.2s">
+
+        <div class="knowledge-card anim-item" style="animation-delay: 0.3s">
             <div class="knowledge-title">什麼是「濁酒」？</div>
             <div class="knowledge-desc">
                 過濾時刻意使用大孔隙濾網，讓部分「酒粕（米渣）」保留在酒液中。<br>
                 <div class="knowledge-point">外觀乳白，口感濃郁圓潤，帶可爾必思般的微甜與乳酸感。<br><strong>⚠️ 開瓶注意：</strong>酵母持續作用會產生氣體，<strong>絕不可劇烈搖晃</strong>，須緩慢旋鬆瓶蓋釋放氣體。</div>
             </div>
         </div>
+
     </div>
 
     <div class="footer">
