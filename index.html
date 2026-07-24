@@ -36,7 +36,7 @@
             font-family: 'Noto Sans TC', sans-serif; 
             background-color: var(--bg-body); 
             color: var(--text-main); 
-            margin: 0; padding: 5vh 5vw 8vh 5vw; 
+            margin: 0; padding: 5vh 4vw 8vh 4vw; 
             line-height: 1.6; letter-spacing: 0.02em;
             padding-top: env(safe-area-inset-top, 5vh);
             padding-bottom: env(safe-area-inset-bottom, 8vh);
@@ -45,26 +45,28 @@
         h2 { 
             font-family: 'Noto Serif TC', serif; 
             text-align: center; color: var(--text-main); 
-            font-size: 1.6rem; margin-bottom: 2.5rem; 
+            font-size: 1.6rem; margin-bottom: 2rem; 
             font-weight: 500; letter-spacing: 0.2em;
         }
 
+        /* 導覽列調整為 4 個按鈕，適應手機排版 */
         .mode-switch {
-            display: flex; max-width: 400px; margin: 0 auto 2.5rem auto;
-            background: var(--border); border-radius: 30px; padding: 4px;
+            display: flex; max-width: 480px; margin: 0 auto 2rem auto;
+            background: var(--border); border-radius: 30px; padding: 4px; gap: 2px;
         }
         .mode-btn {
-            flex: 1; border: none; background: transparent; padding: 10px 0;
-            color: var(--text-muted); font-size: 0.95rem; font-weight: 500;
+            flex: 1; border: none; background: transparent; padding: 8px 4px;
+            color: var(--text-muted); font-size: 0.85rem; font-weight: 500;
             border-radius: 26px; cursor: pointer; transition: 0.3s ease;
-            font-family: 'Noto Sans TC', sans-serif; letter-spacing: 0.05em;
+            font-family: 'Noto Sans TC', sans-serif; letter-spacing: 0.02em;
+            white-space: nowrap;
         }
         .mode-btn.active { 
             background: var(--bg-card); color: var(--text-main); 
             box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-weight: 700;
         }
 
-        #guideSection, #knowledgeSection { display: block; max-width: 600px; margin: 0 auto; animation: fade-in 0.5s ease; }
+        #guideSection, #knowledgeSection, #compareSection { display: block; max-width: 600px; margin: 0 auto; animation: fade-in 0.5s ease; }
         .guide-box { margin-bottom: 24px; }
         .guide-question {
             font-family: 'Noto Serif TC', serif; font-size: 1.25rem; 
@@ -158,6 +160,17 @@
             font-weight: 500; text-align: center; font-family: 'Noto Serif TC', serif;
         }
 
+        /* 比較頁面專屬樣式 */
+        .compare-container { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
+        .compare-select-row { display: flex; gap: 10px; margin-bottom: 16px; }
+        .compare-select { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-body); color: var(--text-main); font-family: inherit; font-size: 0.9rem; outline: none; }
+        .compare-table-wrapper { overflow-x: auto; }
+        .compare-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        .compare-table th, .compare-table td { border: 1px solid var(--border); padding: 12px; text-align: left; vertical-align: top; }
+        .compare-table th { background: var(--accent-light); color: var(--accent); font-family: 'Noto Serif TC', serif; font-weight: 700; width: 50%; }
+        .compare-table td { background: var(--bg-card); color: var(--text-main); width: 50%; }
+        .compare-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; font-weight: 700; letter-spacing: 0.05em; }
+
         .knowledge-card {
             background: var(--bg-card); border-radius: 16px;
             border: 1px solid var(--border); padding: 24px;
@@ -245,6 +258,7 @@
     <div class="mode-switch">
         <button class="mode-btn active" id="btnGuide" onclick="app.switchMode('guide')">引導推薦</button>
         <button class="mode-btn" id="btnList" onclick="app.switchMode('list')">完整酒單</button>
+        <button class="mode-btn" id="btnCompare" onclick="app.switchMode('compare')">比較清酒</button>
         <button class="mode-btn" id="btnKnowledge" onclick="app.switchMode('knowledge')">筆記</button>
     </div>
 
@@ -265,7 +279,23 @@
         <div class="sake-list" id="sakeList"></div>
     </div>
 
-    <!-- 模式 3：筆記 -->
+    <!-- 模式 3：比較清酒 -->
+    <div id="compareSection" style="display: none;">
+        <div class="compare-container">
+            <div style="font-family: 'Noto Serif TC', serif; font-size: 1.15rem; font-weight: 700; color: var(--accent); margin-bottom: 12px; text-align: center;">選擇要比較的兩款清酒</div>
+            <div class="compare-select-row">
+                <select id="compareA" class="compare-select" onchange="app.updateCompare()">
+                    <option value="">-- 請選擇第一支酒 --</option>
+                </select>
+                <select id="compareB" class="compare-select" onchange="app.updateCompare()">
+                    <option value="">-- 請選擇第二支酒 --</option>
+                </select>
+            </div>
+        </div>
+        <div id="compareResult"></div>
+    </div>
+
+    <!-- 模式 4：筆記 -->
     <div id="knowledgeSection" style="display: none;">
         <div class="knowledge-card anim-item" style="animation-delay: 0s">
             <div class="knowledge-title">什麼是「精米步合」？</div>
@@ -501,6 +531,7 @@
             
             init() {
                 this.renderCategories();
+                this.initCompareSelects();
                 this.switchMode('guide');
             },
 
@@ -576,6 +607,60 @@
                 listEl.innerHTML = filtered.length ? 
                     filtered.map((s, idx) => this.createCardHTML(s, idx)).join('') : 
                     '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">找不到符合的酒款</p>';
+            },
+
+            // --- 比較清酒邏輯 ---
+            initCompareSelects() {
+                const optionsHTML = '<option value="">-- 請選擇清酒 --</option>' + 
+                    sakeData.map(s => `<option value="${s.id}">${s.name} (${s.volume})</option>`).join('');
+                document.getElementById('compareA').innerHTML = optionsHTML;
+                document.getElementById('compareB').innerHTML = optionsHTML;
+            },
+
+            updateCompare() {
+                const idA = document.getElementById('compareA').value;
+                const idB = document.getElementById('compareB').value;
+                const resultDiv = document.getElementById('compareResult');
+
+                if (!idA && !idB) {
+                    resultDiv.innerHTML = '';
+                    return;
+                }
+
+                const sakeA = sakeData.find(s => s.id == idA);
+                const sakeB = sakeData.find(s => s.id == idB);
+
+                let html = `<div class="compare-container"><div class="compare-table-wrapper"><table class="compare-table">`;
+                
+                // 名稱列
+                html += `<tr><th>${sakeA ? sakeA.name : '未選擇'}</th><th>${sakeB ? sakeB.name : '未選擇'}</th></tr>`;
+                
+                // 容量與口感
+                html += `<tr>`;
+                html += `<td><div class="compare-label">容量 / 風格</div>${sakeA ? `<span class="sake-volume">${sakeA.volume}</span> <span class="sake-taste ${this.getTasteClass(sakeA.taste)}">${sakeA.taste}</span>` : '-'}</td>`;
+                html += `<td><div class="compare-label">容量 / 風格</div>${sakeB ? `<span class="sake-volume">${sakeB.volume}</span> <span class="sake-taste ${this.getTasteClass(sakeB.taste)}">${sakeB.taste}</span>` : '-'}</td>`;
+                html += `</tr>`;
+
+                // 香氣與口感標籤
+                html += `<tr>`;
+                html += `<td><div class="compare-label">風味特徵</div>${sakeA ? sakeA.aroma.concat(sakeA.flavor).map(t => `<span class="tag-pill tag-aroma" style="margin:2px; display:inline-block;">${t}</span>`).join('') : '-'}</td>`;
+                html += `<td><div class="compare-label">風味特徵</div>${sakeB ? sakeB.aroma.concat(sakeB.flavor).map(t => `<span class="tag-pill tag-aroma" style="margin:2px; display:inline-block;">${t}</span>`).join('') : '-'}</td>`;
+                html += `</tr>`;
+
+                // 詳細介紹
+                html += `<tr>`;
+                html += `<td><div class="compare-label">品飲介紹</div>${sakeA ? sakeA.desc : '-'}</td>`;
+                html += `<td><div class="compare-label">品飲介紹</div>${sakeB ? sakeB.desc : '-'}</td>`;
+                html += `</tr>`;
+
+                // 餐酒搭配
+                html += `<tr>`;
+                html += `<td><div class="compare-label">建議搭配</div>${sakeA ? sakeA.pairing : '-'}</td>`;
+                html += `<td><div class="compare-label">建議搭配</div>${sakeB ? sakeB.pairing : '-'}</td>`;
+                html += `</tr>`;
+
+                html += `</table></div></div>`;
+                resultDiv.innerHTML = html;
             },
 
             currentActions: [],
@@ -708,6 +793,7 @@
                 document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
                 document.getElementById('guideSection').style.display = 'none';
                 document.getElementById('listSection').style.display = 'none';
+                document.getElementById('compareSection').style.display = 'none';
                 document.getElementById('knowledgeSection').style.display = 'none';
 
                 if (mode === 'guide') {
@@ -718,6 +804,9 @@
                     document.getElementById('btnList').classList.add('active');
                     document.getElementById('listSection').style.display = 'block';
                     this.filterSake();
+                } else if (mode === 'compare') {
+                    document.getElementById('btnCompare').classList.add('active');
+                    document.getElementById('compareSection').style.display = 'block';
                 } else if (mode === 'knowledge') {
                     document.getElementById('btnKnowledge').classList.add('active');
                     document.getElementById('knowledgeSection').style.display = 'block';
