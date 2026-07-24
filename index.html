@@ -2,26 +2,18 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <!-- 加入 user-scalable=no，防止在 iPhone 上點擊按鈕時畫面意外放大，確保 App 般的流暢體驗 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>清酒單</title>
     
-    <!-- 🍎 iOS 專屬 Web App 設定區 🍎 -->
-    <!-- 1. 讓網頁以全螢幕 App 模式運行 (隱藏 Safari 網址列與工具列) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- 2. 設定 iPhone 頂部狀態列的顏色與背景融合 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- 3. 設定加到桌面時的 App 顯示名稱 -->
     <meta name="apple-mobile-web-app-title" content="清酒單">
-    <!-- 4. 設定加到桌面時的 App Icon (這是一個預設的清酒圖示，若你有自己的圖，把 href 裡的網址換掉即可) -->
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1037/1037803.png">
 
-    <!-- 引入 Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 現代日式極簡配色 (Editorial Style) */
         :root {
             --bg-body: #F7F6F2;
             --bg-card: #FFFFFF;
@@ -42,7 +34,6 @@
             color: var(--text-main); 
             margin: 0; padding: 5vh 5vw 8vh 5vw; 
             line-height: 1.6; letter-spacing: 0.02em;
-            /* 針對全螢幕 App 模式，避免內容被 iPhone 瀏海或動態島擋住 */
             padding-top: env(safe-area-inset-top, 5vh);
             padding-bottom: env(safe-area-inset-bottom, 8vh);
         }
@@ -54,7 +45,6 @@
             font-weight: 500; letter-spacing: 0.2em;
         }
 
-        /* 質感頁籤切換 */
         .mode-switch {
             display: flex; max-width: 320px; margin: 0 auto 2.5rem auto;
             background: var(--border); border-radius: 30px; padding: 4px;
@@ -70,7 +60,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-weight: 700;
         }
 
-        /* 互動問答區 */
         #guideSection { display: block; max-width: 600px; margin: 0 auto; animation: fade-in 0.5s ease; }
         .guide-box { margin-bottom: 24px; }
         .guide-question {
@@ -97,7 +86,6 @@
         }
         .reset-btn:hover { color: var(--text-main); border-color: var(--text-muted); }
 
-        /* 完整列表區 */
         #listSection { display: none; max-width: 800px; margin: 0 auto; animation: fade-in 0.5s ease; }
         
         .search-container { margin-bottom: 24px; }
@@ -120,7 +108,6 @@
             background: var(--text-main); color: #FFF; border-color: var(--text-main); 
         }
 
-        /* 質感卡片設計 */
         .sake-list { display: flex; flex-direction: column; gap: 20px; }
         .sake-card { 
             background: var(--bg-card); border-radius: 16px;
@@ -175,7 +162,6 @@
         <button class="mode-btn" id="btnList" onclick="app.switchMode('list')">完整酒單</button>
     </div>
 
-    <!-- 模式 1：引導推薦 -->
     <div id="guideSection">
         <div class="guide-box" id="guideBox">
             <div id="guideContent"></div>
@@ -188,7 +174,6 @@
         </div>
     </div>
 
-    <!-- 模式 2：完整酒單 -->
     <div id="listSection">
         <div class="search-container">
             <input type="text" id="searchInput" class="search-box" placeholder="搜尋酒名、風味關鍵字或容量..." onkeyup="app.filterSake()">
@@ -208,7 +193,7 @@
             { name: "飛露喜 純米吟釀", volume: "720ml", category: "知名酒款, 濃郁", tags: "夢幻名酒・均衡・扎實", desc: "<strong>【香氣】</strong>內斂的香蕉與瓜果香。<br><strong>【口感】</strong>酒體扎實，甘甜與旨味融合，尾韻乾淨。" },
             { name: "安藝虎 純米大吟釀", volume: "300ml", category: "知名酒款, 辛口", tags: "高雅・乾淨・輕盈", desc: "<strong>【香氣】</strong>淡雅花香與輕盈果香。<br><strong>【口感】</strong>酒質乾淨，輕柔順口，帶有透明感。" },
             { name: "三諸杉 純米大吟釀 酒未來2026", volume: "720ml", category: "知名酒款, 甘口", tags: "多汁 Juicy・現代感", desc: "<strong>【香氣】</strong>荔枝、白桃等熱帶水果香氣。<br><strong>【口感】</strong>非常多汁，果實甘甜感明顯，水潤透亮。" },
-            { name: "鳳凰美田 秋津山田錦 荒押合併", volume: "720ml", category: "知名酒款, 特殊風味", tags: "無濾過生酒・生猛華麗", desc: "<strong>【香氣】</strong>奔放的哈密瓜與水梨香氣。<br><strong>【口感】</strong>生酒口感生猛有層次，甘甜濃厚。<br><span class='warning-tag'>開瓶請慢轉，留意微氣泡湧出</span>" },
+            { name: "鳳凰美田 秋津山田錦 荒押合併 純米大吟釀 無濾過本生 2026", volume: "720ml", category: "知名酒款, 特殊風味", tags: "無濾過生酒・生猛華麗", desc: "<strong>【香氣】</strong>奔放的哈密瓜與水梨香氣。<br><strong>【口感】</strong>生酒口感生猛有層次，甘甜濃厚。<br><span class='warning-tag'>開瓶請慢轉，留意微氣泡湧出</span>" },
             { name: "鳳凰美田 wine cell 純米吟釀 2025", volume: "720ml", category: "甘口, 海鮮搭配", tags: "葡萄酒酵母・酸甜交織", desc: "<strong>【香氣】</strong>白葡萄、麝香葡萄香氣。<br><strong>【口感】</strong>像白酒一樣有明亮酸度，酸甜交織，不膩口。" },
             { name: "桂月CEL24 純米大吟釀 50 生酒", volume: "300ml / 720ml", category: "甘口, 海鮮搭配, 特殊風味", tags: "蘋果香・生酒・必須冰飲", desc: "<strong>【香氣】</strong>爆發性的鳳梨、青蘋果香。<br><strong>【口感】</strong>酸度與甜度明顯，像新鮮果汁般討喜。<br><span class='warning-tag'>生酒酵母活躍，開瓶請輕轉留意氣體</span>" },
             { name: "花邑 純米酒 陸羽田", volume: "180ml", category: "甘口, 海鮮搭配", tags: "多汁・十四代技術指導", desc: "<strong>【香氣】</strong>豐沛的瓜果香與花香。<br><strong>【口感】</strong>多汁甘甜，旨味濃厚，口感飽滿柔和。" },
@@ -226,12 +211,12 @@
             { name: "安藝虎 純米酒", volume: "180ml / 1.8L", category: "濃郁", tags: "有個性・扎實・重口味", desc: "<strong>【香氣】</strong>沉穩內斂的米香。<br><strong>【口感】</strong>帶適度酸度與扎實骨架，適合搭配濃郁燉煮。" },
             { name: "今錦 特別純米酒", volume: "720ml", category: "濃郁", tags: "飽滿・醇厚・搭串燒", desc: "<strong>【香氣】</strong>醇厚飽滿的香氣。<br><strong>【口感】</strong>味道濃郁，酒體飽滿厚實，搭配醬燒極度對味。" },
             { name: "山形正宗 稻造 新年版", volume: "720ml", category: "濃郁", tags: "強烈米香・扎實", desc: "<strong>【香氣】</strong>強烈且純粹的稻米原始香氣。<br><strong>【口感】</strong>酒體扎實強勁，旨味濃厚，尾韻銳利。" },
-            { name: "惣譽 生元 特別純米 藏出生原酒", volume: "720ml", category: "特殊風味", tags: "生酛・厚實・酒精感重", desc: "<strong>【香氣】</strong>帶有大地氣息與發酵香氣。<br><strong>【口感】</strong>未加水稀釋，酒感厚實濃烈。<br><span class='warning-tag'>生原酒，瓶內可能有氣體請留意</span>" },
+            { name: "惣譽 生酛 特別純米 藏出生原酒", volume: "720ml", category: "特殊風味", tags: "生酛・厚實・酒精感重", desc: "<strong>【香氣】</strong>帶有大地氣息與發酵香氣。<br><strong>【口感】</strong>未加水稀釋，酒感厚實濃烈。<br><span class='warning-tag'>生原酒，瓶內可能有氣體請留意</span>" },
             { name: "越路乃紅梅 純米生原酒", volume: "720ml", category: "特殊風味", tags: "新鮮・微碳酸感", desc: "<strong>【香氣】</strong>新鮮活躍的微果香。<br><strong>【口感】</strong>基底乾淨，帶有生原酒特有的微碳酸刺激感與厚實感。<br><span class='warning-tag'>具微碳酸感，開瓶請留意</span>" },
             { name: "末廣 傳承山廢純米", volume: "180ml", category: "適合溫飲, 特殊風味", tags: "強烈推薦溫酒・乳酸感", desc: "<strong>【香氣】</strong>微微的乳酸菌發酵香。<br><strong>【口感】</strong>酸度明顯。加熱(溫酒)後，酸澀會轉化為甘甜旨味。" },
             { name: "山形正宗 燗純米", volume: "720ml", category: "適合溫飲", tags: "專為溫酒設計・醇厚", desc: "<strong>【香氣】</strong>冷飲內斂，加熱後爆發溫暖飽滿米香。<br><strong>【口感】</strong>專為溫酒設計，加熱後酒體圓潤醇厚。" },
             { name: "墨廼江 特別純米 細濁新酒", volume: "720ml", category: "特殊風味", tags: "濁酒・微碳酸・可爾必思", desc: "<strong>【香氣】</strong>柑橘清香，帶微乳酸感。<br><strong>【口感】</strong>瓶底有米粕，像可爾必思微甜感。<br><span class='warning-tag'>瓶內持續發酵，嚴禁猛搖，請極度緩慢開瓶！</span>" },
-            { name: "稻與龍舌蘭 交酒 花風忽布 火入", volume: "720ml", category: "特殊風味", tags: "精釀清酒・啤酒花", desc: "<strong>【香氣】</strong>荔枝、青芒果與啤酒花香氣。<br><strong>【口感】</strong>微氣泡感，酸度明亮，尾韻帶有精釀啤酒的微苦。<br><span class='warning-tag'>精釀微氣泡，請留意開瓶</span>" }
+            { name: "稻與龍舌蘭 交酒 花風忽布 火入 精釀清酒", volume: "720ml", category: "特殊風味", tags: "精釀清酒・啤酒花", desc: "<strong>【香氣】</strong>荔枝、青芒果與啤酒花香氣。<br><strong>【口感】</strong>微氣泡感，酸度明亮，尾韻帶有精釀啤酒的微苦。<br><span class='warning-tag'>精釀微氣泡，請留意開瓶</span>" }
         ];
 
         const app = {
