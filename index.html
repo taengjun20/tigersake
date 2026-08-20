@@ -24,16 +24,13 @@
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 5vh 4vw 8vh 4vw; line-height: 1.6; letter-spacing: 0.02em; padding-top: env(safe-area-inset-top, 5vh); padding-bottom: env(safe-area-inset-bottom, 8vh); }
         h2 { font-family: 'Noto Serif TC', serif; text-align: center; color: var(--text-main); font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 500; letter-spacing: 0.2em; }
 
-        /* 導覽列 */
         .mode-switch { display: flex; flex-wrap: wrap; max-width: 500px; margin: 0 auto 2rem auto; background: var(--border); border-radius: 12px; padding: 4px; gap: 2px; }
         .mode-btn { flex: 1; min-width: 18%; border: none; background: transparent; padding: 8px 2px; color: var(--text-muted); font-size: 0.8rem; font-weight: 500; border-radius: 8px; cursor: pointer; transition: 0.3s ease; text-align: center; white-space: nowrap; }
         .mode-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-weight: 700; }
 
-        /* 各區塊 */
         #guideSection, #knowledgeSection, #compareSection, #adminSection { display: block; max-width: 600px; margin: 0 auto; animation: fade-in 0.5s ease; }
         #listSection { display: none; max-width: 800px; margin: 0 auto; animation: fade-in 0.5s ease; }
         
-        /* 引導模式 */
         .guide-question { font-family: 'Noto Serif TC', serif; font-size: 1.25rem; color: var(--text-main); margin-bottom: 20px; font-weight: 700; text-align: center; }
         .guide-options { display: flex; flex-direction: column; gap: 12px; }
         .guide-opt-btn { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); padding: 18px 20px; border-radius: 12px; font-size: 1rem; cursor: pointer; text-align: left; font-weight: 500; box-shadow: 0 2px 5px rgba(0,0,0,0.01); }
@@ -42,7 +39,6 @@
         .back-btn, .reset-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; font-size: 0.9rem; padding: 10px 20px; border-radius: 30px; transition: 0.3s; }
         .back-btn:hover, .reset-btn:hover { color: var(--text-main); border-color: var(--text-muted); }
 
-        /* 搜尋與卡片 */
         .search-container { margin-bottom: 24px; }
         .search-box { width: 100%; padding: 16px 20px; font-size: 0.95rem; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); border-radius: 12px; outline: none; transition: 0.3s; }
         .search-box:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
@@ -57,32 +53,35 @@
         .sake-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
         .sake-title { font-family: 'Noto Serif TC', serif; font-size: 1.2rem; font-weight: 700; color: var(--text-main); line-height: 1.3;}
         .sake-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; }
-        .sake-volume { font-size: 0.75rem; color: var(--accent); font-weight: 700; background: var(--accent-light); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(166, 138, 97, 0.2); }
-        .sake-taste { font-size: 0.75rem; color: #FFF; font-weight: 700; padding: 3px 10px; border-radius: 6px; }
+        
+        .sake-taste { font-size: 0.75rem; color: #FFF; font-weight: 700; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.05em; }
         .taste-sweet { background-color: var(--taste-sweet); }
         .taste-dry { background-color: var(--taste-dry); }
         .taste-rich { background-color: var(--taste-rich); }
+        
+        /* 容量與售完狀態 CSS */
+        .sake-volume { font-size: 0.75rem; color: var(--accent); font-weight: 700; background: var(--accent-light); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.05em; border: 1px solid rgba(166, 138, 97, 0.2); }
+        .sake-volume.sold-out { background: #E8E6E1; color: #85878A; border-color: #D1CFCA; text-decoration: line-through; }
+
         .tag-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .tag-pill { font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
         .tag-aroma { background: #F0EAD6; color: #705D36; border: 1px solid #E3D9C1; }
         .tag-flavor { background: #E6EEF4; color: #315C7B; border: 1px solid #D1E2EE; }
         .tag-temp-cold { background: #E1F0FA; color: #1D5C8B; border: 1px solid #BCE0F7; }
         .tag-temp-hot { background: #FAE1E1; color: #8B1D1D; border: 1px solid #F7BCBC; }
+
         .card-hint { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 0.8rem; color: var(--accent); text-align: right; font-weight: 500; }
         .guide-tip { font-size: 0.95rem; color: var(--accent); margin-bottom: 20px; font-weight: 500; text-align: center; font-family: 'Noto Serif TC', serif; }
 
-        /* 比較功能 CSS */
         .compare-container { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
         .compare-select-row { display: flex; gap: 10px; margin-bottom: 16px; }
         .compare-select { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-body); font-family: inherit; font-size: 0.9rem; outline: none; }
-        .compare-table-wrapper { overflow-x: auto; }
         .compare-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
         .compare-table th, .compare-table td { border: 1px solid var(--border); padding: 12px; text-align: left; vertical-align: top; width: 50%; }
         .compare-table th { background: var(--accent-light); color: var(--accent); font-family: 'Noto Serif TC', serif; font-weight: 700; }
         .compare-table td { background: var(--bg-card); }
         .compare-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; font-weight: 700; }
 
-        /* 知識筆記 CSS */
         .knowledge-card { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 24px; margin-bottom: 16px; }
         .knowledge-title { font-family: 'Noto Serif TC', serif; font-size: 1.25rem; font-weight: 700; color: var(--accent); margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
         .knowledge-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; }
@@ -94,13 +93,18 @@
         .btn-add { background: var(--accent); color: #fff; width: 100%; }
         .btn-backup { background: #337AB7; color: #fff; }
         .btn-restore { background: #D9534F; color: #fff; position: relative; }
-        .admin-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 10px; }
-        .admin-item-title { font-weight: 700; font-size: 1rem; color: var(--text-main); margin-bottom: 4px; }
-        .admin-item-actions { display: flex; gap: 8px; }
-        .btn-edit { background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 6px; cursor: pointer; }
-        .btn-delete { background: var(--danger-bg); color: var(--danger-text); border: 1px solid var(--danger-text); padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+        .admin-item { display: flex; justify-content: space-between; align-items: flex-start; background: var(--bg-card); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 12px; }
+        .admin-item-title { font-weight: 700; font-size: 1.05rem; color: var(--text-main); margin-bottom: 4px; }
+        .admin-item-actions { display: flex; flex-direction: column; gap: 8px; }
+        .btn-edit { background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        .btn-delete { background: var(--danger-bg); color: var(--danger-text); border: 1px solid rgba(184,92,92,0.3); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        
+        /* 庫存切換按鈕 */
+        .stock-toggle-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .btn-stock { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 700; transition: 0.2s; border: 1px solid transparent; }
+        .btn-stock.in-stock { background: #E6F4EA; color: #1E6032; border-color: #C3E6CB; }
+        .btn-stock.sold-out { background: var(--danger-bg); color: var(--danger-text); border-color: rgba(184,92,92,0.3); }
 
-        /* 後台表單 Modal */
         .admin-form-group { margin-bottom: 12px; }
         .admin-form-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
         .admin-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; outline: none; }
@@ -109,20 +113,18 @@
 
         .footer { text-align: center; padding: 2rem 0; color: #C2C3C5; font-size: 0.75rem; margin-top: 3rem; }
 
-        /* Modal 一般設定 */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s; }
         .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content { background: var(--bg-body); width: 100%; max-width: 520px; border-radius: 20px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transform: translateY(30px); transition: transform 0.3s; }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         .modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: var(--border); border: none; font-size: 1.2rem; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; }
-        
         .modal-header-visual { background: var(--bg-card); padding: 36px 20px; text-align: center; border-bottom: 1px solid var(--border); border-radius: 20px 20px 0 0; }
         .modal-stamp { width: 56px; height: 56px; border: 2px solid var(--accent); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--accent); font-family: 'Noto Serif TC', serif; font-size: 28px; margin-bottom: 12px; }
         .modal-title { font-family: 'Noto Serif TC', serif; font-size: 1.35rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px; }
         .modal-body { padding: 24px; }
         .modal-section { margin-bottom: 16px; background: var(--bg-card); padding: 16px; border-radius: 12px; border: 1px solid var(--border); }
         .modal-section-title { font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; }
-        .modal-desc { font-size: 0.95rem; color: var(--text-main); font-weight: 300; line-height: 1.7; }
+        .modal-desc { font-size: 0.95rem; color: var(--text-main); line-height: 1.7; }
         .warning-tag { display: flex; align-items: center; margin-top: 16px; font-size: 0.85rem; color: var(--danger-text); background: var(--danger-bg); padding: 12px 16px; border-radius: 8px; font-weight: 500; border: 1px solid rgba(184, 92, 92, 0.15); }
 
         @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -194,9 +196,9 @@
             <button class="admin-btn btn-add" onclick="app.openAdminForm(null)">＋ 新增全新酒款</button>
         </div>
         <div class="admin-controls" style="margin-bottom: 24px;">
-            <button class="admin-btn btn-backup" style="flex:1;" onclick="app.exportData()">💾 備份下載資料</button>
+            <button class="admin-btn btn-backup" style="flex:1;" onclick="app.exportData()">💾 備份資料</button>
             <button class="admin-btn btn-restore" style="flex:1;">
-                📂 匯入還原資料
+                📂 匯入還原
                 <input type="file" accept=".json" onchange="app.importData(event)">
             </button>
         </div>
@@ -221,7 +223,7 @@
             
             <input type="hidden" id="formId">
             <div class="admin-form-group"><label>酒款名稱</label><input type="text" id="formName" class="admin-input" placeholder="例如：獺祭 45"></div>
-            <div class="admin-form-group"><label>容量</label><input type="text" id="formVolume" class="admin-input" placeholder="例如：720ml / 1.8L"></div>
+            <div class="admin-form-group"><label>容量 (多個請用 / 分開)</label><input type="text" id="formVolume" class="admin-input" placeholder="例如：180ml / 1.8L"></div>
             <div class="admin-form-group"><label>甘辛口分類</label>
                 <select id="formTaste" class="admin-input">
                     <option value="甘口">甘口</option><option value="微甘口">微甘口</option><option value="濃醇甘口">濃醇甘口</option>
@@ -229,8 +231,8 @@
                     <option value="旨口">旨口</option>
                 </select>
             </div>
-            <div class="admin-form-group"><label>搜尋標籤 (Tags) - 請用空格分開</label><input type="text" id="formTags" class="admin-input" placeholder="例如：獺祭 知名 白酒 冰飲"></div>
-            <div class="admin-form-group"><label>分類 (Category) - 逗號分開</label><input type="text" id="formCategory" class="admin-input" placeholder="例如：知名酒款, 甘口, 適合溫飲"></div>
+            <div class="admin-form-group"><label>搜尋標籤 (Tags) - 供搜尋用，空格分開</label><input type="text" id="formTags" class="admin-input" placeholder="例如：獺祭 知名 白酒 冰飲"></div>
+            <div class="admin-form-group"><label>分類 (Category) - 供引導系統判斷，逗號分開</label><input type="text" id="formCategory" class="admin-input" placeholder="例如：知名酒款, 甘口, 適合溫飲"></div>
             <div class="admin-form-group"><label>溫度建議 (短句)</label><input type="text" id="formTemp" class="admin-input" placeholder="例如：❄️ 僅限冰飲"></div>
             <div class="admin-form-group"><label>香氣標籤 (Aroma) - 逗號分開</label><input type="text" id="formAroma" class="admin-input" placeholder="例如：青蘋果, 白花"></div>
             <div class="admin-form-group"><label>口感標籤 (Flavor) - 逗號分開</label><input type="text" id="formFlavor" class="admin-input" placeholder="例如：清爽, 俐落"></div>
@@ -243,46 +245,53 @@
     </div>
 
     <script>
-        // 預設的完整 35 支清酒資料庫
+        // 預設 35 支完整資料 (包含 outOfStock 欄位設計)
         const defaultSakeData = [
-            { id: 1, name: "雅乃詩", volume: "180ml / 1.8L", taste: "微甘口", category: "甘口, 知名酒款, 啤酒, 適合溫飲", tags: "雅乃詩 180ml 1.8L 微甘口 清爽 柔和 無負擔 啤酒 白酒", temp: "冷熱皆宜", aroma: ["淡雅米香", "清新微甜"], flavor: ["淡麗清爽", "口味芳醇", "柔和易飲"], desc: "口感極為柔和順口，香氣清淡優雅而不搶戲。屬於標準的淡麗甘口風格，是喜愛清爽口感者的最佳日常選擇。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>標準的淡麗風格純米酒，冰飲清爽滑順，微溫飲用能讓淡雅的米香更溫潤好入口。", pairing: "適合搭配各類居酒屋炸物、烤魚或家常料理。" },
-            { id: 2, name: "中尾 誠鏡 竹原 純米酒", volume: "180ml", taste: "旨口", category: "濃郁, 紅酒, 適合溫飲", tags: "中尾 誠鏡 竹原 純米酒 180ml 旨口 濃郁 紅酒 軟水 溫飲", temp: "冷熱皆宜 (推薦溫飲)", aroma: ["溫和沉穩米麴香"], flavor: ["軟水圓潤", "醇厚微甘", "旨味豐富"], desc: "廣島軟水釀造的代表作。水質溫和賦予了此酒極度醇厚圓潤的口感，微帶甘口，米飯的旨味（鮮味）在口中溫暖化開，帶有近似柔順紅酒的圓潤酒體。", tempReason: "<strong>【溫度說明：冷熱皆宜（推薦溫飲，評分 ⭐⭐⭐⭐☆）】</strong><br>軟水釀造的純米酒結構扎實，微溫飲用（約40°C）能讓米麴的旨味更加立體、口感更為圓潤。", pairing: "適合搭配關東煮、燉煮肉類或溫沙拉。" },
-            { id: 3, name: "惣譽 辛口特別純米酒", volume: "180ml / 1.8L", taste: "辛口", category: "辛口, 濃郁, 紅酒, 適合溫飲", tags: "惣譽 辛口 特別純米酒 180ml 1.8L 辛口 濃郁 紅酒 生酛 溫飲 熱酒", temp: "冷熱皆宜 (熱燗首選)", aroma: ["扎實傳統蒸米香"], flavor: ["傳統辛口", "米香濃厚", "骨架扎實"], desc: "採用傳統生酛系釀造法。擁有扎實的傳統辛口骨架，米香濃厚且酒體結實，帶有厚實單寧般的結構感，能完美撐起醬汁厚重的料理。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦，評分 ⭐⭐⭐⭐☆）】</strong><br>採用生酛法釀造，本身酸度與米香扎實，加熱後能把濃厚的旨味完全釋放，完美對應重口味熱食。", pairing: "適合搭配蒲燒鰻魚、醬燒肉串等重口味料理。" },
-            { id: 4, name: "醴泉 無風 純米酒", volume: "180ml", taste: "微甘口", category: "濃郁, 白酒, 適合溫飲", tags: "醴泉 無風 純米酒 180ml 微甘口 濃郁 白酒 柔和", temp: "冷熱皆宜", aroma: ["淡淡哈密瓜", "香草甜香"], flavor: ["極致柔順", "米飯甘甜", "舒服不膩"], desc: "岐阜縣名水釀造。香氣內斂高雅，入口極度柔順，散發出舒服且不甜膩的純米甘甜味，展現出極佳的純淨度與平衡感。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒質地乾淨，冰飲品嚐其細緻純淨，微溫飲用能引出更溫暖的米飯甘甜。", pairing: "適合搭配鹽烤雞肉串、烤香菇等原味串燒。" },
-            { id: 5, name: "安藝虎 純米酒", volume: "180ml / 1.8L", taste: "旨辛口", category: "濃郁, 紅酒, 適合溫飲", tags: "安藝虎 純米酒 180ml 1.8L 旨辛口 濃郁 紅酒 溫飲 熱酒", temp: "冷熱皆宜 (熱燗推薦)", aroma: ["沉穩內斂米香"], flavor: ["有個性", "扎實酸度", "重口味對應"], desc: "帶有適度的酸度與扎實的米香骨架。酒體本身非常有個性，酸度能有效化解脂肪，是專為搭配肉類與重口味料理設計的實戰派清酒。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦，評分 ⭐⭐⭐⭐☆）】</strong><br>帶有優秀的酸度骨架，微溫或加熱飲用能使酸澀轉化為溫潤的米甜味，去油解膩效果極佳。", pairing: "完美對應日式炸豬排、漢堡排或烤牛排。" },
-            { id: 6, name: "初龜 特別純米", volume: "180ml", taste: "辛口", category: "辛口, 白酒, 適合溫飲", tags: "初龜 特別純米 180ml 辛口 白酒 溫潤 溫飲", temp: "冷熱皆宜", aroma: ["溫和柔順米香"], flavor: ["溫潤乾淨", "不搶主味", "平衡順口"], desc: "主打「酒不該搶走食物風采」的理念。口感溫潤而乾淨，完全沒有刺激的酒精感，完美隱身於料理背後，默默提升食物的鮮美。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>特別純米規格，冷飲清爽不搶味，加熱後質地更為圓潤柔順。", pairing: "適合搭配清淡的白身魚刺身與日式蒸蛋。" },
-            { id: 7, name: "末廣 傳承山廢純米", volume: "180ml", taste: "旨口", category: "適合溫飲, 特殊風味, 威士忌", tags: "末廣 傳承山廢純米 180ml 旨口 山廢 溫飲 熱酒 威士忌", temp: "強烈推薦溫飲 (熱酒首選)", aroma: ["乳酸菌", "起司發酵香"], flavor: ["酸度明顯", "溫熱後甘甜", "層次深奧"], desc: "採用傳統「山廢」法釀造，帶有獨特的乳酸感與明顯酸度，層次深奧，極受喜愛濃厚烈酒風味者的推崇。", tempReason: "<strong>【溫度說明：強烈推薦熱燗飲用，評分 ⭐⭐⭐⭐⭐】</strong><br>山廢法產生的豐富乳酸與酸度，專為加熱設計。加熱後酸澀感會完美轉化為溫潤飽滿的甘甜旨味。", pairing: "溫飲時非常適合搭配佃煮料理、烤魚或火鍋。" },
-            { id: 8, name: "磯自慢 酒友 別撰本釀造", volume: "180ml", taste: "辛口", category: "辛口, 白酒, 適合溫飲", tags: "磯自慢 酒友 別撰 本釀造 180ml 辛口 白酒 國宴酒 溫飲", temp: "冷熱皆宜 (熱燗推薦)", aroma: ["極度乾淨", "微弱瓜果香"], flavor: ["清爽俐落", "名刀般乾脆", "輕盈無負擔"], desc: "國宴用酒等級的本釀造作品。釀造工藝極其嚴謹，口感極度乾淨俐落，入喉如名刀劃過般乾脆清爽。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦，評分 ⭐⭐⭐⭐☆）】</strong><br>本釀造等級非常適合做熱燗，加熱後辛口酒質更顯俐落，能完美洗去口腔油脂。", pairing: "生魚片、握壽司或炸物料理的絕配搭檔。" },
-            { id: 9, name: "獺祭 45", volume: "180ml", taste: "微甘口", category: "知名酒款, 白酒", tags: "獺祭 45 180ml 微甘口 知名酒款 白酒 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["青蘋果", "香瓜", "微微米香"], flavor: ["平衡協調", "清爽易飲", "微甜柔和"], desc: "獺祭經典入門款，精米步合45%。完美平衡了華麗的果香與純米帶來的甘甜感，口感清爽且毫無負擔。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（嚴禁加熱）】</strong><br>純米大吟釀級別，高溫會瞬間破壞華麗的青蘋果果香，使酒精感過於刺鼻。", pairing: "適合搭配各類日式前菜、沙拉或清蒸海鮮料理。" },
-            { id: 10, name: "花邑 純米酒 陸羽田", volume: "180ml", taste: "甘口", category: "甘口, 海鮮搭配, 白酒, 適合溫飲", tags: "花邑 純米酒 陸羽田 180ml 甘口 白酒 十四代 溫飲", temp: "冷熱皆宜", aroma: ["豐沛瓜果", "淡雅白花"], flavor: ["極度多汁", "旨味飽滿", "柔和圓潤"], desc: "由日本傳奇名酒「十四代」親自技術指導並授權釀造。稀有的陸羽田米賦予其獨特的飽滿口感與多汁（Juicy）的甘甜風味。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒規格，雖然冰飲多汁，但加熱後其扎實的旨味與米香會完全釋放，呈現另一種溫潤風味。", pairing: "適合搭配海膽丼、烤明蝦或高級生魚片。" },
-            { id: 11, name: "獺祭 45", volume: "720ml", taste: "微甘口", category: "知名酒款, 白酒", tags: "獺祭 45 720ml 微甘口 知名酒款 白酒 冰飲 大瓶裝", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["青蘋果", "香瓜", "微微米香"], flavor: ["平衡協調", "清爽易飲", "微甜柔和"], desc: "獺祭經典入門款（大瓶裝 720ml）。完美平衡了華麗的果香與純米帶來的甘甜感，適合聚餐分享。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（嚴禁加熱）】</strong><br>果香型清酒加熱會產生類似蒸煮水果的異味，必須冰飲。", pairing: "適合搭配各類日式前菜、沙拉或清蒸海鮮料理。" },
-            { id: 12, name: "獺祭 2割3分", volume: "300ml", taste: "甘口", category: "知名酒款, 甘口, 海鮮搭配, 白酒", tags: "獺祭 2割3分 300ml 甘口 頂級 白酒 冰飲 獺祭二割三分", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["哈密瓜", "水蜜桃", "白花香"], flavor: ["極致絲滑", "純淨無瑕", "優雅回甘"], desc: "將山田錦米精磨至極致的23%，頂級清酒代名詞。入口如絲綢般綿密滑順，餘韻高雅。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（絕對禁止加熱）】</strong><br>23% 精米步合的頂級大吟釀，加熱是對名酒的最大浪費。", pairing: "極致適合搭配干貝刺身、海膽或頂級白身魚。" },
-            { id: 13, name: "桂月CEL24 純米大吟釀 50 生酒", volume: "300ml", taste: "甘口", category: "甘口, 海鮮搭配, 特殊風味, 白酒", tags: "桂月 CEL24 純米大吟釀 50 生酒 300ml 甘口 白酒 冰飲 蘋果香", temp: "❄️ 僅限冰飲 (生酒)", aroma: ["鳳梨", "青蘋果", "熱帶水果"], flavor: ["高酸甜感", "生酒鮮活", "果汁般討喜"], desc: "高知縣「CEL24」高香氣生酒。擁有爆發性的鳳梨與蘋果香氣，酸甜感極討喜。<br><span class='warning-tag'>⚠️ 生酒酵母活躍，請全程冷藏並輕轉開瓶</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生酒嚴禁加熱）】</strong><br>未經殺菌的生酒，加熱會殺死活酵母並讓酒質變酸走味。", pairing: "非常適合搭配甜蝦, 干貝, 海膽等帶有濃厚甜味的生鮮料理。" },
-            { id: 14, name: "天賦 純米酒", volume: "300ml", taste: "微甘口", category: "甘口, 海鮮搭配, 白酒, 適合溫飲", tags: "天賦 純米酒 300ml 微甘口 白酒 溫飲 現代風", temp: "冷熱皆宜", aroma: ["青蘋果", "微礦物氣息"], flavor: ["純淨透亮", "微甜清爽", "現代風格"], desc: "知名燒酎名酒造跨界打造的純米酒新作。走現代清爽路線，酒體乾淨透亮，帶有舒服的微甜感。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒基底乾淨，冰飲清爽、微溫飲用能帶出溫暖柔順的米甜香。", pairing: "適合搭配各類日式白身魚刺身與清爽的冷豆腐。" },
-            { id: 15, name: "桂月 超辛口 特別純米酒 60 生酒", volume: "300ml", taste: "超辛口", category: "辛口, 特殊風味, 啤酒", tags: "桂月 超辛口 特別純米酒 60 生酒 300ml 超辛口 啤酒 冰飲 氣泡", temp: "❄️ 僅限冰飲 (生酒)", aroma: ["清新收斂米香"], flavor: ["完全不甜", "銳利清爽", "極淨俐落"], desc: "日本酒度極高（超辛口），完全不帶甜味。酒體銳利，收尾乾淨俐落。<br><span class='warning-tag'>⚠️ 生酒，開瓶請輕轉留意氣體</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生酒嚴禁加熱）】</strong><br>生酒加熱會破壞獨特的新鮮爽脆感與微氣泡刺激。", pairing: "完美對應炸天婦羅、串燒、唐揚雞等油脂較重的炸物。" },
-            { id: 16, name: "菊之司 心星 shinboshi", volume: "300ml", taste: "甘口", category: "甘口, 海鮮搭配, 白酒", tags: "菊之司 心星 shinboshi 300ml 甘口 白酒 文青 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["哈密瓜", "草莓微香"], flavor: ["輕盈酒體", "明亮酸度", "水潤順口"], desc: "文青清酒代表。酒體輕盈，帶有明亮的白葡萄酸度與水潤微甜感，層次清晰。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲】</strong><br>主打輕盈的水果酸甜感，加熱會讓酸度過於尖銳。", pairing: "適合搭配甜蝦、干貝或清蒸海鮮。" },
-            { id: 17, name: "安藝虎 純米大吟釀", volume: "300ml", taste: "辛口", category: "知名酒款, 辛口, 白酒", tags: "安藝虎 純米大吟釀 300ml 辛口 白酒 高知 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["淡雅花香", "柑橘清香"], flavor: ["乾淨細緻", "輕柔通透", "爽口俐落"], desc: "高知縣精緻純米大吟釀。酒質呈現高雅透明感，口感輕柔，帶微微酸度支撐。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（純米大吟釀禁熱）】</strong><br>大吟釀等級的花香與透明感經不起高溫破壞。", pairing: "適合搭配清淡的生魚片、白身魚壽司或醋拌海鮮。" },
-            { id: 18, name: "鈴鹿川 純米酒", volume: "300ml", taste: "辛口", category: "辛口, 白酒, 適合溫飲", tags: "鈴鹿川 純米酒 300ml 辛口 白酒 作 同門 溫飲", temp: "冷熱皆宜", aroma: ["微微青蘋果", "清澈米香"], flavor: ["透明感強", "滑順易飲", "百搭酒體"], desc: "實力派純米酒。擁有極高的透明感與滑順度，口感乾淨易飲，水準極高。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒質地乾淨平衡，冰飲清透、加熱後圓潤順口。", pairing: "適合搭配各式日式料理、烤魚與冷盤。" },
-            { id: 19, name: "桂月CEL24 純米大吟釀 50 生酒", volume: "720ml", taste: "甘口", category: "甘口, 海鮮搭配, 特殊風味, 白酒", tags: "桂月 CEL24 純米大吟釀 50 生酒 720ml 甘口 白酒 冰飲 大瓶裝", temp: "❄️ 僅限冰飲 (生酒)", aroma: ["鳳梨", "青蘋果", "熱帶水果"], flavor: ["高酸甜感", "生酒鮮活", "果汁般討喜"], desc: "高知縣「CEL24」大瓶裝（720ml）。爆發性的鳳梨蘋果香氣，酸甜感極討喜。<br><span class='warning-tag'>⚠️ 生酒酵母活躍，請全程冷藏並輕轉開瓶</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生酒嚴禁加熱）】</strong><br>生酒必須低溫冷藏，加熱會使酵母發酵過度而變質。", pairing: "非常適合搭配甜蝦、干貝、海膽等帶有濃厚甜味的生鮮料理。" },
-            { id: 20, name: "今錦 特別純米酒", volume: "720ml", taste: "旨口", category: "濃郁, 紅酒, 適合溫飲", tags: "今錦 特別純米酒 720ml 旨口 濃郁 紅酒 信州 溫飲 熱酒", temp: "冷熱皆宜 (熱燗推薦)", aroma: ["醇厚飽滿香氣"], flavor: ["酒體飽滿", "醇厚扎實", "醬燒絕配"], desc: "信州特別純米酒。酒體飽滿厚實，味道濃郁，米的旨味表現淋漓盡致。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦）】</strong><br>濃郁風格的特別純米酒，加熱後米香大肆擴張，與醬燒料理絕配。", pairing: "適合搭配日式醬燒肉串、味噌料理或壽喜燒。" },
-            { id: 21, name: "墨廼江 特別純米 細濁新酒", volume: "720ml", taste: "微甘口", category: "特殊風味, 啤酒", tags: "墨廼江 特別純米 細濁新酒 720ml 微甘口 濁酒 冰飲 氣泡", temp: "❄️ 僅限冰飲 (濁酒/生酒)", aroma: ["柑橘清香", "乳酸氣息"], flavor: ["可爾必思感", "微碳酸氣泡", "濃郁滑順"], desc: "沉澱白米粕的本格濁酒。口感滑順，帶可爾必思微甜感與微碳酸。<br><span class='warning-tag'>⚠️ 瓶內持續發酵具氣體，嚴禁猛搖，須極度緩慢開瓶！</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生濁酒嚴禁加熱）】</strong><br>瓶內含活酵母與氣體，加熱會導致壓力爆開發生危險。", pairing: "適合搭配口味稍重的燒鳥、炸雞或微辣料理。" },
-            { id: 22, name: "山形正宗 燗純米", volume: "720ml", taste: "旨口", category: "適合溫飲, 威士忌", tags: "山形正宗 燗純米 720ml 旨口 溫飲 熱酒 燗酒 威士忌", temp: "♨️ 特別推薦熱燗 (燗酒專用)", aroma: ["冷飲內斂", "熱飲米香爆發"], flavor: ["溫熱圓潤", "旨味釋放", "尾韻微酸"], desc: "專為「溫酒（熱清酒）」而生的特殊酒款。冷飲時內斂低調，加熱後米飯香氣大爆發，酒體極度圓潤醇厚。", tempReason: "<strong>【溫度說明：♨️ 特別推薦熱燗，評分 ⭐⭐⭐⭐⭐】</strong><br>名字即為「燗純米」，酒廠專門為加熱調配，熱飲能將米甘甜發揮到極致。", pairing: "冬天或夜晚聚餐時，搭配任何居酒屋熱食皆是一絕。" },
-            { id: 23, name: "山形正宗 稻造 新年版", volume: "720ml", taste: "辛口", category: "濃郁, 威士忌, 適合溫飲", tags: "山形正宗 稻造 新年版 720ml 辛口 濃郁 威士忌 溫飲", temp: "冷熱皆宜", aroma: ["純粹稻米香氣"], flavor: ["強勁扎實", "旨味濃厚", "銳利收尾"], desc: "強烈展現「米」之原始風味的硬派純米酒。酒體扎實強勁，旨味濃厚，尾韻銳利。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米規格且扎實的稻米旨味，在微溫或常溫下能感受到更深層的米香層次。", pairing: "適合搭配烤內臟、味噌土手燒等重口味下酒菜。" },
-            { id: 24, name: "惣譽 生酛 特別純米 藏出生原酒", volume: "720ml", taste: "辛口", category: "特殊風味, 威士忌", tags: "惣譽 生酛 特別純米 藏出生原酒 720ml 辛口 生原酒 威士忌 冰飲", temp: "❄️ 僅限冷飲 / 常溫 (生原酒)", aroma: ["大地氣息", "複雜發酵香"], flavor: ["厚實濃烈", "生酛酸度", "充滿生命力"], desc: "傳統生酛工法加上未加水稀釋的原酒。口感厚實濃烈，酸度明亮，如同威士忌般充滿份量感。<br><span class='warning-tag'>⚠️ 生原酒，瓶內可能有氣體請留意</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫（生原酒）】</strong><br>未殺菌的原酒酒精濃度高且帶活性，加熱容易使酒精味過於刺激嗆鼻。", pairing: "適合搭配野味、炭烤肉類或濃郁起司。" },
-            { id: 25, name: "鳳凰美田 wine cell純米吟釀 2025", volume: "720ml", taste: "甘口", category: "甘口, 海鮮搭配, 白酒", tags: "鳳凰美田 wine cell 純米吟釀 2025 720ml 甘口 白酒 冰飲 葡萄酒酵母", temp: "❄️ 僅限冰飲", aroma: ["白葡萄", "麝香葡萄", "青草香"], flavor: ["明亮酸度", "優雅細緻", "白酒風格"], desc: "法國葡萄酒酵母發酵的純米吟釀。散發白蘇維翁白酒般的氣息，口感帶優雅清爽酸度。", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（純米吟釀禁熱）】</strong><br>如同白酒需維持冰涼狀態，加熱會破壞葡萄酒酵母帶來的清爽果酸。", pairing: "極度推薦搭配生蠔、干貝、白酒醬汁海鮮或沙拉。" },
-            { id: 26, name: "越路乃紅梅 純米生原酒", volume: "720ml", taste: "辛口", category: "特殊風味, 威士忌", tags: "越路乃紅梅 純米生原酒 720ml 辛口 生原酒 威士忌 冰飲 氣泡", temp: "❄️ 僅限冰飲 (生原酒)", aroma: ["新鮮活躍微果香"], flavor: ["微碳酸刺激", "厚實份量", "鮮活爽快"], desc: "新潟純米生原酒。帶生原酒特有的新鮮微碳酸刺激感與厚實份量感，層次多變。<br><span class='warning-tag'>⚠️ 具微碳酸感，開瓶請留意</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生原酒）】</strong><br>生原酒的微碳酸感與新鮮口感遇熱會消失，生酒加熱會變質。", pairing: "適合搭配油脂豐富的烤魚或炸物。" },
-            { id: 27, name: "稻與龍舌蘭 交酒 花風忽布 火入 精釀清酒", volume: "720ml", taste: "微甘口", category: "特殊風味, 啤酒", tags: "稻與龍舌蘭 交酒 花風忽布 火入 精釀清酒 720ml 微甘口 啤酒 冰飲 氣泡", temp: "❄️ 僅限冰飲 / 可常溫", aroma: ["荔枝", "青芒果", "啤酒花香"], flavor: ["微氣泡感", "明亮酸度", "啤酒花微苦"], desc: "加入啤酒花的前衛精釀清酒。結合米甜與啤酒花迷人的草本香氣與微苦尾韻。<br><span class='warning-tag'>⚠️ 精釀微氣泡，開瓶請留意</span>", tempReason: "<strong>【溫度說明：❄️ 建議冷飲，可常溫】</strong><br>帶啤酒花與微氣泡，如同啤酒或氣泡酒，冰鎮後口感清涼爽口。", pairing: "適合搭配異國料理、炸物、起司或作為開胃酒。" },
-            { id: 28, name: "鳳凰美田 秋津山田錦 荒押合併 純米大吟釀 無濾過本生 2026", volume: "720ml", taste: "甘口", category: "知名酒款, 特殊風味, 白酒", tags: "鳳凰美田 秋津山田錦 荒押合併 純米大吟釀 無濾過本生 2026 720ml 甘口 冰飲 生酒", temp: "❄️ 僅限冰飲 (本生酒)", aroma: ["成熟哈密瓜", "新鮮水梨"], flavor: ["生猛帶勁", "層次豐富", "濃厚甘甜"], desc: "秋津山田錦無濾過本生大吟釀。生酒狀態下展現生猛口感，香氣極度奔放。<br><span class='warning-tag'>⚠️ 鳳凰美田帶有微氣泡，開瓶請慢轉，留意微氣泡湧出</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（本生酒 / 純米大吟釀禁熱）】</strong><br>高溫會瞬間殺死生酒鮮活度並破壞哈密瓜香氣。", pairing: "適合搭配油脂豐富的烤魚或中式海鮮料理。" },
-            { id: 29, name: "射美 無濾過生原酒RED", volume: "720ml", taste: "濃醇甘口", category: "甘口, 特殊風味, 威士忌", tags: "射美 無濾過生原酒 RED 720ml 濃醇甘口 幻之酒 生原酒 威士忌 冰飲", temp: "❄️ 僅限冰飲 (生原酒)", aroma: ["熟成草莓", "莓果香"], flavor: ["極致濃郁", "旨味爆表", "厚重扎實"], desc: "產量極少、被譽為幻之酒的「射美」。無濾過生原酒版本將酒的風味推向極致，口感極度濃郁、甘甜，旨味在口中強烈炸裂，擁有強烈的酒精扎實感。<br><span class='warning-tag'>⚠️ 具生原酒微碳酸感，開瓶請務必輕柔</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生原酒）】</strong><br>極度珍貴的生原酒，必須全程維持低溫冷藏與冰飲，加熱會完全破壞其甜美濃郁的口感。", pairing: "適合搭配味道濃郁的醬燒肉類或味噌烤物。" },
-            { id: 30, name: "飛露喜 純米吟釀", volume: "720ml", taste: "旨口", category: "知名酒款, 濃郁, 紅酒", tags: "飛露喜 純米吟釀 720ml 旨口 濃郁 紅酒 知名酒款 冰飲", temp: "❄️ 僅限冷飲 / 常溫", aroma: ["熟成香蕉", "清新瓜果"], flavor: ["酒體扎實", "旨味飽滿", "俐落收尾"], desc: "夢幻級福島純米吟釀。強調米原本的濃郁旨味與平衡感，酒體結構極佳。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫（純米吟釀禁熱）】</strong><br>純米吟釀的均衡瓜果香與扎實旨味，冰飲或常溫能展現最佳平衡。", pairing: "適合搭配油脂適中的烤魚、照燒雞肉或日式串燒。" },
-            { id: 31, name: "三諸杉 純米大吟釀 酒未來2026", volume: "720ml", taste: "甘口", category: "知名酒款, 甘口, 白酒", tags: "三諸杉 純米大吟釀 酒未來 2026 720ml 甘口 白酒 冰飲 多汁", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["新鮮荔枝", "多汁白桃"], flavor: ["Juicy 多汁", "酸甜平衡", "水潤透亮"], desc: "酒未來夢幻純米大吟釀。帶有多汁的熱帶水果風味，果酸與甘甜交織，如高級白酒般迷人。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（純米大吟釀禁熱）】</strong><br>主打清爽多汁果酸與荔枝香氣，加熱會破壞水潤透亮的口感。", pairing: "適合搭配干貝，甜蝦，或作為餐後微醺的甜點酒。" },
-            { id: 32, name: "宮泉 純米吟釀 渡船貳號 時尚標2026", volume: "720ml", taste: "旨口", category: "知名酒款, 濃郁, 紅酒", tags: "宮泉 渡船貳號 時尚標 2026 720ml 旨口 濃郁 紅酒 福島 冰飲", temp: "❄️ 僅限冷飲 / 常溫", aroma: ["高雅花香", "沉穩哈密瓜"], flavor: ["濃郁旨味", "扎實豐富", "酸度漂亮"], desc: "福島名酒宮泉，使用復刻稀有酒米「渡船貳號」。帶有濃郁的旨味與奔放的香氣，酸度漂亮，層次感極為豐富。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫】</strong><br>純米吟釀等級，高溫會破壞其細緻花香與果香層次。", pairing: "適合搭配烤物、濃郁醬汁料理或紅肉。" },
-            { id: 33, name: "真澄 純米吟釀 漆黑 kuro", volume: "300ml", taste: "辛口", category: "知名酒款, 辛口, 白酒", tags: "真澄 漆黑 kuro 300ml 辛口 白酒 長野 冰飲 俐落", temp: "❄️ 僅限冷飲 / 常溫", aroma: ["清新微果香", "淡淡白花"], flavor: ["乾淨透亮", "銳利俐落", "隱約旨味"], desc: "長野縣名門酒造「真澄」的代表作。漆黑酒標象徵其深藏不露的功力，口感極致乾淨，收尾非常俐落。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫】</strong><br>強調酒質的透明感與俐落度，冰飲最能體驗其「漆黑」般深邃乾淨的風味。", pairing: "適合搭配握壽司、鹽烤魚或清淡和食。" },
-            { id: 34, name: "Himenoi yami90", volume: "720ml", taste: "旨口", category: "特殊風味, 濃郁, 威士忌, 適合溫飲", tags: "Himenoi yami90 姬之井 720ml 旨口 特殊風味 濃郁 威士忌 溫飲 燗酒", temp: "冷熱皆宜 (推薦熱飲)", aroma: ["濃厚米穀", "堅果發酵香"], flavor: ["厚實強烈", "原始旨味", "極度濃醇"], desc: "來自新潟的極端設計酒款，精米步合僅有 90%（幾乎沒磨），保留了酒米最狂野、原始的強烈旨味與穀物風味。", tempReason: "<strong>【溫度說明：冷熱皆宜（強烈推薦熱飲）】</strong><br>精米90%的厚重酒體，加熱後能將米穀的粗獷旨味與圓潤感徹底激發。", pairing: "完美對應烤內臟、味噌料理、燉煮牛豬肉。" },
-            { id: 35, name: "寫樂 純米吟釀", volume: "720ml", taste: "旨口", category: "知名酒款, 濃郁, 紅酒", tags: "寫樂 純米吟釀 720ml 旨口 知名酒款 濃郁 紅酒 福島 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["完熟香蕉", "蜜瓜香", "米麴微香"], flavor: ["果香甘甜", "旨味平衡", "多汁圓潤"], desc: "福島縣超人氣銘柄。入口能感受到奔放的水果香甜，中段卻又爆發出扎實的米飯旨味，香氣與旨味達到完美平衡。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲】</strong><br>帶有豐富華麗的果香，加熱會產生蒸煮異味，請務必冷飲。", pairing: "極度百搭，從生魚片到醬燒肉串皆能完美駕馭。" }
+            { id: 1, name: "雅乃詩", volume: "180ml / 1.8L", taste: "微甘口", category: "甘口, 知名酒款, 啤酒, 適合溫飲", tags: "雅乃詩 180ml 1.8L 微甘口 清爽 柔和 無負擔 啤酒 白酒", temp: "冷熱皆宜", aroma: ["淡雅米香", "清新微甜"], flavor: ["淡麗清爽", "口味芳醇", "柔和易飲"], desc: "口感極為柔和順口，香氣清淡優雅而不搶戲。屬於標準的淡麗甘口風格，是喜愛清爽口感者的最佳日常選擇。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>標準的淡麗風格純米酒，冰飲清爽滑順，微溫飲用能讓淡雅的米香更溫潤好入口。", pairing: "適合搭配各類居酒屋炸物、烤魚或家常料理。", outOfStock: [] },
+            { id: 2, name: "中尾 誠鏡 竹原 純米酒", volume: "180ml", taste: "旨口", category: "濃郁, 紅酒, 適合溫飲", tags: "中尾 誠鏡 竹原 純米酒 180ml 旨口 濃郁 紅酒 軟水 溫飲", temp: "冷熱皆宜 (推薦溫飲)", aroma: ["溫和沉穩米麴香"], flavor: ["軟水圓潤", "醇厚微甘", "旨味豐富"], desc: "廣島軟水釀造的代表作。水質溫和賦予了此酒極度醇厚圓潤的口感，微帶甘口，米飯的旨味（鮮味）在口中溫暖化開，帶有近似柔順紅酒的圓潤酒體。", tempReason: "<strong>【溫度說明：冷熱皆宜（推薦溫飲，評分 ⭐⭐⭐⭐☆）】</strong><br>軟水釀造的純米酒結構扎實，微溫飲用（約40°C）能讓米麴的旨味更加立體、口感更為圓潤。", pairing: "適合搭配關東煮、燉煮肉類或溫沙拉。", outOfStock: [] },
+            { id: 3, name: "惣譽 辛口特別純米酒", volume: "180ml / 1.8L", taste: "辛口", category: "辛口, 濃郁, 紅酒, 適合溫飲", tags: "惣譽 辛口 特別純米酒 180ml 1.8L 辛口 濃郁 紅酒 生酛 溫飲 熱酒", temp: "冷熱皆宜 (熱燗首選)", aroma: ["扎實傳統蒸米香"], flavor: ["傳統辛口", "米香濃厚", "骨架扎實"], desc: "採用傳統生酛系釀造法。擁有扎實的傳統辛口骨架，米香濃厚且酒體結實，帶有厚實單寧般的結構感，能完美撐起醬汁厚重的料理。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦，評分 ⭐⭐⭐⭐☆）】</strong><br>採用生酛法釀造，本身酸度與米香扎實，加熱後能把濃厚的旨味完全釋放，完美對應重口味熱食。", pairing: "適合搭配蒲燒鰻魚、醬燒肉串等重口味料理。", outOfStock: [] },
+            { id: 4, name: "醴泉 無風 純米酒", volume: "180ml", taste: "微甘口", category: "濃郁, 白酒, 適合溫飲", tags: "醴泉 無風 純米酒 180ml 微甘口 濃郁 白酒 柔和", temp: "冷熱皆宜", aroma: ["淡淡哈密瓜", "香草甜香"], flavor: ["極致柔順", "米飯甘甜", "舒服不膩"], desc: "岐阜縣名水釀造。香氣內斂高雅，入口極度柔順，散發出舒服且不甜膩的純米甘甜味，展現出極佳的純淨度與平衡感。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒質地乾淨，冰飲品嚐其細緻純淨，微溫飲用能引出更溫暖的米飯甘甜。", pairing: "適合搭配鹽烤雞肉串、烤香菇等原味串燒。", outOfStock: [] },
+            { id: 5, name: "安藝虎 純米酒", volume: "180ml / 1.8L", taste: "旨辛口", category: "濃郁, 紅酒, 適合溫飲", tags: "安藝虎 純米酒 180ml 1.8L 旨辛口 濃郁 紅酒 溫飲 熱酒", temp: "冷熱皆宜 (熱燗推薦)", aroma: ["沉穩內斂米香"], flavor: ["有個性", "扎實酸度", "重口味對應"], desc: "帶有適度的酸度與扎實的米香骨架。酒體本身非常有個性，酸度能有效化解脂肪，是專為搭配肉類與重口味料理設計的實戰派清酒。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦，評分 ⭐⭐⭐⭐☆）】</strong><br>帶有優秀的酸度骨架，微溫或加熱飲用能使酸澀轉化為溫潤的米甜味，去油解膩效果極佳。", pairing: "完美對應日式炸豬排、漢堡排或烤牛排。", outOfStock: [] },
+            { id: 6, name: "初龜 特別純米", volume: "180ml", taste: "辛口", category: "辛口, 白酒, 適合溫飲", tags: "初龜 特別純米 180ml 辛口 白酒 溫潤 溫飲", temp: "冷熱皆宜", aroma: ["溫和柔順米香"], flavor: ["溫潤乾淨", "不搶主味", "平衡順口"], desc: "主打「酒不該搶走食物風采」的理念。口感溫潤而乾淨，完全沒有刺激的酒精感，完美隱身於料理背後，默默提升食物的鮮美。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>特別純米規格，冷飲清爽不搶味，加熱後質地更為圓潤柔順。", pairing: "適合搭配清淡的白身魚刺身與日式蒸蛋。", outOfStock: [] },
+            { id: 7, name: "末廣 傳承山廢純米", volume: "180ml", taste: "旨口", category: "適合溫飲, 特殊風味, 威士忌", tags: "末廣 傳承山廢純米 180ml 旨口 山廢 溫飲 熱酒 威士忌", temp: "強烈推薦溫飲 (熱酒首選)", aroma: ["乳酸菌", "起司發酵香"], flavor: ["酸度明顯", "溫熱後甘甜", "層次深奧"], desc: "採用傳統「山廢」法釀造，帶有獨特的乳酸感與明顯酸度，層次深奧，極受喜愛濃厚烈酒風味者的推崇。", tempReason: "<strong>【溫度說明：強烈推薦熱燗飲用，評分 ⭐⭐⭐⭐⭐】</strong><br>山廢法產生的豐富乳酸與酸度，專為加熱設計。加熱後酸澀感會完美轉化為溫潤飽滿的甘甜旨味。", pairing: "溫飲時非常適合搭配佃煮料理、烤魚或火鍋。", outOfStock: [] },
+            { id: 8, name: "磯自慢 酒友 別撰本釀造", volume: "180ml", taste: "辛口", category: "辛口, 白酒, 適合溫飲", tags: "磯自慢 酒友 別撰 本釀造 180ml 辛口 白酒 國宴酒 溫飲", temp: "冷熱皆宜 (熱燗推薦)", aroma: ["極度乾淨", "微弱瓜果香"], flavor: ["清爽俐落", "名刀般乾脆", "輕盈無負擔"], desc: "國宴用酒等級的本釀造作品。釀造工藝極其嚴謹，口感極度乾淨俐落，入喉如名刀劃過般乾脆清爽。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦，評分 ⭐⭐⭐⭐☆）】</strong><br>本釀造等級非常適合做熱燗，加熱後辛口酒質更顯俐落，能完美洗去口腔油脂。", pairing: "生魚片、握壽司或炸物料理的絕配搭檔。", outOfStock: [] },
+            { id: 9, name: "獺祭 45", volume: "180ml", taste: "微甘口", category: "知名酒款, 白酒", tags: "獺祭 45 180ml 微甘口 知名酒款 白酒 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["青蘋果", "香瓜", "微微米香"], flavor: ["平衡協調", "清爽易飲", "微甜柔和"], desc: "獺祭經典入門款，精米步合45%。完美平衡了華麗的果香與純米帶來的甘甜感，口感清爽且毫無負擔。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（嚴禁加熱）】</strong><br>純米大吟釀級別，高溫會瞬間破壞華麗的青蘋果果香，使酒精感過於刺鼻。", pairing: "適合搭配各類日式前菜、沙拉或清蒸海鮮料理。", outOfStock: [] },
+            { id: 10, name: "花邑 純米酒 陸羽田", volume: "180ml", taste: "甘口", category: "甘口, 海鮮搭配, 白酒, 適合溫飲", tags: "花邑 純米酒 陸羽田 180ml 甘口 白酒 十四代 溫飲", temp: "冷熱皆宜", aroma: ["豐沛瓜果", "淡雅白花"], flavor: ["極度多汁", "旨味飽滿", "柔和圓潤"], desc: "由日本傳奇名酒「十四代」親自技術指導並授權釀造。稀有的陸羽田米賦予其獨特的飽滿口感與多汁（Juicy）的甘甜風味。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒規格，雖然冰飲多汁，但加熱後其扎實的旨味與米香會完全釋放，呈現另一種溫潤風味。", pairing: "適合搭配海膽丼、烤明蝦或高級生魚片。", outOfStock: [] },
+            { id: 11, name: "獺祭 45", volume: "720ml", taste: "微甘口", category: "知名酒款, 白酒", tags: "獺祭 45 720ml 微甘口 知名酒款 白酒 冰飲 大瓶裝", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["青蘋果", "香瓜", "微微米香"], flavor: ["平衡協調", "清爽易飲", "微甜柔和"], desc: "獺祭經典入門款（大瓶裝 720ml）。完美平衡了華麗的果香與純米帶來的甘甜感，適合聚餐分享。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（嚴禁加熱）】</strong><br>果香型清酒加熱會產生類似蒸煮水果的異味，必須冰飲。", pairing: "適合搭配各類日式前菜、沙拉或清蒸海鮮料理。", outOfStock: [] },
+            { id: 12, name: "獺祭 2割3分", volume: "300ml", taste: "甘口", category: "知名酒款, 甘口, 海鮮搭配, 白酒", tags: "獺祭 2割3分 300ml 甘口 頂級 白酒 冰飲 獺祭二割三分", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["哈密瓜", "水蜜桃", "白花香"], flavor: ["極致絲滑", "純淨無瑕", "優雅回甘"], desc: "將山田錦米精磨至極致的23%，頂級清酒代名詞。入口如絲綢般綿密滑順，餘韻高雅。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（絕對禁止加熱）】</strong><br>23% 精米步合的頂級大吟釀，加熱是對名酒的最大浪費。", pairing: "極致適合搭配干貝刺身、海膽或頂級白身魚。", outOfStock: [] },
+            { id: 13, name: "桂月CEL24 純米大吟釀 50 生酒", volume: "300ml", taste: "甘口", category: "甘口, 海鮮搭配, 特殊風味, 白酒", tags: "桂月 CEL24 純米大吟釀 50 生酒 300ml 甘口 白酒 冰飲 蘋果香", temp: "❄️ 僅限冰飲 (生酒)", aroma: ["鳳梨", "青蘋果", "熱帶水果"], flavor: ["高酸甜感", "生酒鮮活", "果汁般討喜"], desc: "高知縣「CEL24」高香氣生酒。擁有爆發性的鳳梨與蘋果香氣，酸甜感極討喜。<br><span class='warning-tag'>⚠️ 生酒酵母活躍，請全程冷藏並輕轉開瓶</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生酒嚴禁加熱）】</strong><br>未經殺菌的生酒，加熱會殺死活酵母並讓酒質變酸走味。", pairing: "非常適合搭配甜蝦, 干貝, 海膽等帶有濃厚甜味的生鮮料理。", outOfStock: [] },
+            { id: 14, name: "天賦 純米酒", volume: "300ml", taste: "微甘口", category: "甘口, 海鮮搭配, 白酒, 適合溫飲", tags: "天賦 純米酒 300ml 微甘口 白酒 溫飲 現代風", temp: "冷熱皆宜", aroma: ["青蘋果", "微礦物氣息"], flavor: ["純淨透亮", "微甜清爽", "現代風格"], desc: "知名燒酎名酒造跨界打造的純米酒新作。走現代清爽路線，酒體乾淨透亮，帶有舒服的微甜感。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒基底乾淨，冰飲清爽、微溫飲用能帶出溫暖柔順的米甜香。", pairing: "適合搭配各類日式白身魚刺身與清爽的冷豆腐。", outOfStock: [] },
+            { id: 15, name: "桂月 超辛口 特別純米酒 60 生酒", volume: "300ml", taste: "超辛口", category: "辛口, 特殊風味, 啤酒", tags: "桂月 超辛口 特別純米酒 60 生酒 300ml 超辛口 啤酒 冰飲 氣泡", temp: "❄️ 僅限冰飲 (生酒)", aroma: ["清新收斂米香"], flavor: ["完全不甜", "銳利清爽", "極淨俐落"], desc: "日本酒度極高（超辛口），完全不帶甜味。酒體銳利，收尾乾淨俐落。<br><span class='warning-tag'>⚠️ 生酒，開瓶請輕轉留意氣體</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生酒嚴禁加熱）】</strong><br>生酒加熱會破壞獨特的新鮮爽脆感與微氣泡刺激。", pairing: "完美對應炸天婦羅、串燒、唐揚雞等油脂較重的炸物。", outOfStock: [] },
+            { id: 16, name: "菊之司 心星 shinboshi", volume: "300ml", taste: "甘口", category: "甘口, 海鮮搭配, 白酒", tags: "菊之司 心星 shinboshi 300ml 甘口 白酒 文青 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["哈密瓜", "草莓微香"], flavor: ["輕盈酒體", "明亮酸度", "水潤順口"], desc: "文青清酒代表。酒體輕盈，帶有明亮的白葡萄酸度與水潤微甜感，層次清晰。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲】</strong><br>主打輕盈的水果酸甜感，加熱會讓酸度過於尖銳。", pairing: "適合搭配甜蝦、干貝或清蒸海鮮。", outOfStock: [] },
+            { id: 17, name: "安藝虎 純米大吟釀", volume: "300ml", taste: "辛口", category: "知名酒款, 辛口, 白酒", tags: "安藝虎 純米大吟釀 300ml 辛口 白酒 高知 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["淡雅花香", "柑橘清香"], flavor: ["乾淨細緻", "輕柔通透", "爽口俐落"], desc: "高知縣精緻純米大吟釀。酒質呈現高雅透明感，口感輕柔，帶微微酸度支撐。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（純米大吟釀禁熱）】</strong><br>大吟釀等級的花香與透明感經不起高溫破壞。", pairing: "適合搭配清淡的生魚片、白身魚壽司或醋拌海鮮。", outOfStock: [] },
+            { id: 18, name: "鈴鹿川 純米酒", volume: "300ml", taste: "辛口", category: "辛口, 白酒, 適合溫飲", tags: "鈴鹿川 純米酒 300ml 辛口 白酒 作 同門 溫飲", temp: "冷熱皆宜", aroma: ["微微青蘋果", "清澈米香"], flavor: ["透明感強", "滑順易飲", "百搭酒體"], desc: "實力派純米酒。擁有極高的透明感與滑順度，口感乾淨易飲，水準極高。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米酒質地乾淨平衡，冰飲清透、加熱後圓潤順口。", pairing: "適合搭配各式日式料理、烤魚與冷盤。", outOfStock: [] },
+            { id: 19, name: "桂月CEL24 純米大吟釀 50 生酒", volume: "720ml", taste: "甘口", category: "甘口, 海鮮搭配, 特殊風味, 白酒", tags: "桂月 CEL24 純米大吟釀 50 生酒 720ml 甘口 白酒 冰飲 大瓶裝", temp: "❄️ 僅限冰飲 (生酒)", aroma: ["鳳梨", "青蘋果", "熱帶水果"], flavor: ["高酸甜感", "生酒鮮活", "果汁般討喜"], desc: "高知縣「CEL24」大瓶裝（720ml）。爆發性的鳳梨蘋果香氣，酸甜感極討喜。<br><span class='warning-tag'>⚠️ 生酒酵母活躍，請全程冷藏並輕轉開瓶</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生酒嚴禁加熱）】</strong><br>生酒必須低溫冷藏，加熱會使酵母發酵過度而變質。", pairing: "非常適合搭配甜蝦、干貝、海膽等帶有濃厚甜味的生鮮料理。", outOfStock: [] },
+            { id: 20, name: "今錦 特別純米酒", volume: "720ml", taste: "旨口", category: "濃郁, 紅酒, 適合溫飲", tags: "今錦 特別純米酒 720ml 旨口 濃郁 紅酒 信州 溫飲 熱酒", temp: "冷熱皆宜 (熱燗推薦)", aroma: ["醇厚飽滿香氣"], flavor: ["酒體飽滿", "醇厚扎實", "醬燒絕配"], desc: "信州特別純米酒。酒體飽滿厚實，味道濃郁，米的旨味表現淋漓盡致。", tempReason: "<strong>【溫度說明：冷熱皆宜（熱燗推薦）】</strong><br>濃郁風格的特別純米酒，加熱後米香大肆擴張，與醬燒料理絕配。", pairing: "適合搭配日式醬燒肉串、味噌料理或壽喜燒。", outOfStock: [] },
+            { id: 21, name: "墨廼江 特別純米 細濁新酒", volume: "720ml", taste: "微甘口", category: "特殊風味, 啤酒", tags: "墨廼江 特別純米 細濁新酒 720ml 微甘口 濁酒 冰飲 氣泡", temp: "❄️ 僅限冰飲 (濁酒/生酒)", aroma: ["柑橘清香", "乳酸氣息"], flavor: ["可爾必思感", "微碳酸氣泡", "濃郁滑順"], desc: "沉澱白米粕的本格濁酒。口感滑順，帶可爾必思微甜感與微碳酸。<br><span class='warning-tag'>⚠️ 瓶內持續發酵具氣體，嚴禁猛搖，須極度緩慢開瓶！</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生濁酒嚴禁加熱）】</strong><br>瓶內含活酵母與氣體，加熱會導致壓力爆開發生危險。", pairing: "適合搭配口味稍重的燒鳥、炸雞或微辣料理。", outOfStock: [] },
+            { id: 22, name: "山形正宗 燗純米", volume: "720ml", taste: "旨口", category: "適合溫飲, 威士忌", tags: "山形正宗 燗純米 720ml 旨口 溫飲 熱酒 燗酒 威士忌", temp: "♨️ 特別推薦熱燗 (燗酒專用)", aroma: ["冷飲內斂", "熱飲米香爆發"], flavor: ["溫熱圓潤", "旨味釋放", "尾韻微酸"], desc: "專為「溫酒（熱清酒）」而生的特殊酒款。冷飲時內斂低調，加熱後米飯香氣大爆發，酒體極度圓潤醇厚。", tempReason: "<strong>【溫度說明：♨️ 特別推薦熱燗，評分 ⭐⭐⭐⭐⭐】</strong><br>名字即為「燗純米」，酒廠專門為加熱調配，熱飲能將米甘甜發揮到極致。", pairing: "冬天或夜晚聚餐時，搭配任何居酒屋熱食皆是一絕。", outOfStock: [] },
+            { id: 23, name: "山形正宗 稻造 新年版", volume: "720ml", taste: "辛口", category: "濃郁, 威士忌, 適合溫飲", tags: "山形正宗 稻造 新年版 720ml 辛口 濃郁 威士忌 溫飲", temp: "冷熱皆宜", aroma: ["純粹稻米香氣"], flavor: ["強勁扎實", "旨味濃厚", "銳利收尾"], desc: "強烈展現「米」之原始風味的硬派純米酒。酒體扎實強勁，旨味濃厚，尾韻銳利。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>純米規格且扎實的稻米旨味，在微溫或常溫下能感受到更深層的米香層次。", pairing: "適合搭配烤內臟、味噌土手燒等重口味下酒菜。", outOfStock: [] },
+            { id: 24, name: "惣譽 生酛 特別純米 藏出生原酒", volume: "720ml", taste: "辛口", category: "特殊風味, 威士忌", tags: "惣譽 生酛 特別純米 藏出生原酒 720ml 辛口 生原酒 威士忌 冰飲", temp: "❄️ 僅限冷飲 / 常溫 (生原酒)", aroma: ["大地氣息", "複雜發酵香"], flavor: ["厚實濃烈", "生酛酸度", "充滿生命力"], desc: "傳統生酛工法加上未加水稀釋的原酒。口感厚實濃烈，酸度明亮，如同威士忌般充滿份量感。<br><span class='warning-tag'>⚠️ 生原酒，瓶內可能有氣體請留意</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫（生原酒）】</strong><br>未殺菌的原酒酒精濃度高且帶活性，加熱容易使酒精味過於刺激嗆鼻。", pairing: "適合搭配野味、炭烤肉類或濃郁起司。", outOfStock: [] },
+            { id: 25, name: "鳳凰美田 wine cell純米吟釀 2025", volume: "720ml", taste: "甘口", category: "甘口, 海鮮搭配, 白酒", tags: "鳳凰美田 wine cell 純米吟釀 2025 720ml 甘口 白酒 冰飲 葡萄酒酵母", temp: "❄️ 僅限冰飲", aroma: ["白葡萄", "麝香葡萄", "青草香"], flavor: ["明亮酸度", "優雅細緻", "白酒風格"], desc: "法國葡萄酒酵母發酵的純米吟釀。散發白蘇維翁白酒般的氣息，口感帶優雅清爽酸度。", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（純米吟釀禁熱）】</strong><br>如同白酒需維持冰涼狀態，加熱會破壞葡萄酒酵母帶來的清爽果酸。", pairing: "極度推薦搭配生蠔、干貝、白酒醬汁海鮮或沙拉。", outOfStock: [] },
+            { id: 26, name: "越路乃紅梅 純米生原酒", volume: "720ml", taste: "辛口", category: "特殊風味, 威士忌", tags: "越路乃紅梅 純米生原酒 720ml 辛口 生原酒 威士忌 冰飲 氣泡", temp: "❄️ 僅限冰飲 (生原酒)", aroma: ["新鮮活躍微果香"], flavor: ["微碳酸刺激", "厚實份量", "鮮活爽快"], desc: "新潟純米生原酒。帶生原酒特有的新鮮微碳酸刺激感與厚實份量感，層次多變。<br><span class='warning-tag'>⚠️ 具微碳酸感，開瓶請留意</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生原酒）】</strong><br>生原酒的微碳酸感與新鮮口感遇熱會消失，生酒加熱會變質。", pairing: "適合搭配油脂豐富的烤魚或炸物。", outOfStock: [] },
+            { id: 27, name: "稻與龍舌蘭 交酒 花風忽布 火入 精釀清酒", volume: "720ml", taste: "微甘口", category: "特殊風味, 啤酒", tags: "稻與龍舌蘭 交酒 花風忽布 火入 精釀清酒 720ml 微甘口 啤酒 冰飲 氣泡", temp: "❄️ 僅限冷飲 / 可常溫", aroma: ["荔枝", "青芒果", "啤酒花香"], flavor: ["微氣泡感", "明亮酸度", "啤酒花微苦"], desc: "加入啤酒花的前衛精釀清酒。結合米甜與啤酒花迷人的草本香氣與微苦尾韻。<br><span class='warning-tag'>⚠️ 精釀微氣泡，開瓶請留意</span>", tempReason: "<strong>【溫度說明：❄️ 建議冷飲，可常溫】</strong><br>帶啤酒花與微氣泡，如同啤酒或氣泡酒，冰鎮後口感清涼爽口。", pairing: "適合搭配異國料理、炸物、起司或作為開胃酒。", outOfStock: [] },
+            { id: 28, name: "鳳凰美田 秋津山田錦 荒押合併 純米大吟釀 無濾過本生 2026", volume: "720ml", taste: "甘口", category: "知名酒款, 特殊風味, 白酒", tags: "鳳凰美田 秋津山田錦 荒押合併 純米大吟釀 無濾過本生 2026 720ml 甘口 冰飲 生酒", temp: "❄️ 僅限冰飲 (本生酒)", aroma: ["成熟哈密瓜", "新鮮水梨"], flavor: ["生猛帶勁", "層次豐富", "濃厚甘甜"], desc: "秋津山田錦無濾過本生大吟釀。生酒狀態下展現生猛口感，香氣極度奔放。<br><span class='warning-tag'>⚠️ 鳳凰美田帶有微氣泡，開瓶請慢轉，留意微氣泡湧出</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（本生酒 / 純米大吟釀禁熱）】</strong><br>高溫會瞬間殺死生酒鮮活度並破壞哈密瓜香氣。", pairing: "適合搭配油脂豐富的烤魚或中式海鮮料理。", outOfStock: [] },
+            { id: 29, name: "射美 無濾過生原酒RED", volume: "720ml", taste: "濃醇甘口", category: "甘口, 特殊風味, 威士忌", tags: "射美 無濾過生原酒 RED 720ml 濃醇甘口 幻之酒 生原酒 威士忌 冰飲", temp: "❄️ 僅限冰飲 (生原酒)", aroma: ["熟成草莓", "莓果香"], flavor: ["極致濃郁", "旨味爆表", "厚重扎實"], desc: "產量極少、被譽為幻之酒的「射美」。無濾過生原酒版本將酒的風味推向極致，口感極度濃郁、甘甜，旨味在口中強烈炸裂，擁有強烈的酒精扎實感。<br><span class='warning-tag'>⚠️ 具生原酒微碳酸感，開瓶請務必輕柔</span>", tempReason: "<strong>【溫度說明：❄️ 僅限冰飲（生原酒）】</strong><br>極度珍貴的生原酒，必須全程維持低溫冷藏與冰飲，加熱會完全破壞其甜美濃郁的口感。", pairing: "適合搭配味道濃郁的醬燒肉類或味噌烤物。", outOfStock: [] },
+            { id: 30, name: "飛露喜 純米吟釀", volume: "720ml", taste: "旨口", category: "知名酒款, 濃郁, 紅酒", tags: "飛露喜 純米吟釀 720ml 旨口 濃郁 紅酒 知名酒款 冰飲", temp: "❄️ 僅限冷飲 / 常溫", aroma: ["熟成香蕉", "清新瓜果"], flavor: ["酒體扎實", "旨味飽滿", "俐落收尾"], desc: "夢幻級福島純米吟釀。強調米原本的濃郁旨味與平衡感，酒體結構極佳。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫（純米吟釀禁熱）】</strong><br>純米吟釀的均衡瓜果香與扎實旨味，冰飲或常溫能展現最佳平衡。", pairing: "適合搭配油脂適中的烤魚、照燒雞肉或日式串燒。", outOfStock: [] },
+            { id: 31, name: "三諸杉 純米大吟釀 酒未來2026", volume: "720ml", taste: "甘口", category: "知名酒款, 甘口, 白酒", tags: "三諸杉 純米大吟釀 酒未來 2026 720ml 甘口 白酒 冰飲 多汁", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["新鮮荔枝", "多汁白桃"], flavor: ["Juicy 多汁", "酸甜平衡", "水潤透亮"], desc: "酒未來夢幻純米大吟釀。帶有多汁的熱帶水果風味，果酸與甘甜交織，如高級白酒般迷人。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲（純米大吟釀禁熱）】</strong><br>主打清爽多汁果酸與荔枝香氣，加熱會破壞水潤透亮的口感。", pairing: "適合搭配干貝，甜蝦，或作為餐後微醺的甜點酒。", outOfStock: [] },
+            { id: 32, name: "宮泉 純米吟釀 渡船貳號 時尚標2026", volume: "720ml", taste: "旨口", category: "知名酒款, 濃郁, 紅酒", tags: "宮泉 渡船貳號 時尚標 2026 720ml 旨口 濃郁 紅酒 福島 冰飲", temp: "❄️ 僅限冷飲 / 常溫", aroma: ["高雅花香", "沉穩哈密瓜"], flavor: ["濃郁旨味", "扎實豐富", "酸度漂亮"], desc: "福島名酒宮泉，使用復刻稀有酒米「渡船貳號」。帶有濃郁的旨味與奔放的香氣，酸度漂亮，層次感極為豐富。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫】</strong><br>純米吟釀等級，高溫會破壞其細緻花香與果香層次。", pairing: "適合搭配烤物、濃郁醬汁料理或紅肉。", outOfStock: [] },
+            { id: 33, name: "真澄 純米吟釀 漆黑 kuro", volume: "300ml", taste: "辛口", category: "知名酒款, 辛口, 白酒", tags: "真澄 漆黑 kuro 300ml 辛口 白酒 長野 冰飲 俐落", temp: "❄️ 僅限冷飲 / 常溫", aroma: ["清新微果香", "淡淡白花"], flavor: ["乾淨透亮", "銳利俐落", "隱約旨味"], desc: "長野縣名門酒造「真澄」的代表作。漆黑酒標象徵其深藏不露的功力，口感極致乾淨，收尾非常俐落。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或常溫】</strong><br>強調酒質的透明感與俐落度，冰飲最能體驗其「漆黑」般深邃乾淨的風味。", pairing: "適合搭配握壽司、鹽烤魚或清淡和食。", outOfStock: [] },
+            { id: 34, name: "Himenoi yami90", volume: "720ml", taste: "旨口", category: "特殊風味, 濃郁, 威士忌, 適合溫飲", tags: "Himenoi yami90 姬之井 720ml 旨口 特殊風味 濃郁 威士忌 溫飲 燗酒", temp: "冷熱皆宜 (推薦熱飲)", aroma: ["濃厚米穀", "堅果發酵香"], flavor: ["厚實強烈", "原始旨味", "極度濃醇"], desc: "來自新潟的極端設計酒款，精米步合僅有 90%（幾乎沒磨），保留了酒米最狂野、原始的強烈旨味與穀物風味。", tempReason: "<strong>【溫度說明：冷熱皆宜（強烈推薦熱飲）】</strong><br>精米90%的厚重酒體，加熱後能將米穀的粗獷旨味與圓潤感徹底激發。", pairing: "完美對應烤內臟、味噌料理、燉煮牛豬肉。", outOfStock: [] },
+            { id: 35, name: "寫樂 純米吟釀", volume: "720ml", taste: "旨口", category: "知名酒款, 濃郁, 紅酒", tags: "寫樂 純米吟釀 720ml 旨口 知名酒款 濃郁 紅酒 福島 冰飲", temp: "❄️ 僅限冷飲 / 冰飲", aroma: ["完熟香蕉", "蜜瓜香", "米麴微香"], flavor: ["果香甘甜", "旨味平衡", "多汁圓潤"], desc: "福島縣超人氣銘柄。入口能感受到奔放的水果香甜，中段卻又爆發出扎實的米飯旨味，香氣與旨味達到完美平衡。", tempReason: "<strong>【溫度說明：❄️ 僅限冷飲或冰飲】</strong><br>帶有豐富華麗的果香，加熱會產生蒸煮異味，請務必冷飲。", pairing: "極度百搭，從生魚片到醬燒肉串皆能完美駕馭。", outOfStock: [] }
         ];
 
+        // 讀取 LocalStorage 或使用預設資料
         let currentSakeData = JSON.parse(localStorage.getItem('mySakeMenuData')) || defaultSakeData;
+        
+        // 確保舊資料升級時擁有 outOfStock 陣列
+        currentSakeData = currentSakeData.map(s => {
+            if (!s.outOfStock) s.outOfStock = [];
+            return s;
+        });
 
         const app = {
             currentCategory: '全部',
@@ -311,6 +320,14 @@
                 const tempClass = sake.temp.includes('溫') || sake.temp.includes('皆可') ? 'tag-temp-hot' : 'tag-temp-cold';
                 const tempHtml = `<span class="tag-pill ${tempClass}">🌡️ ${sake.temp}</span>`;
 
+                // 處理容量顯示與停售標記
+                const volumes = sake.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                const outOfStock = sake.outOfStock || [];
+                const volumeHtml = volumes.map(v => {
+                    const isOut = outOfStock.includes(v);
+                    return `<span class="sake-volume ${isOut ? 'sold-out' : ''}">${v}${isOut ? ' (售完)' : ''}</span>`;
+                }).join(' ');
+
                 return `
                     <div class="sake-card anim-item" style="animation-delay: ${index * 0.05}s" onclick="app.openModal(${sake.id})">
                         <div class="sake-header">
@@ -318,7 +335,7 @@
                                 <div class="sake-title">${sake.name}</div>
                             </div>
                             <div class="sake-badges">
-                                <span class="sake-volume">${sake.volume}</span>
+                                ${volumeHtml}
                                 <span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span>
                             </div>
                         </div>
@@ -377,7 +394,12 @@
 
                 let html = `<div class="compare-container"><div class="compare-table-wrapper"><table class="compare-table">`;
                 html += `<tr><th>${sakeA ? sakeA.name : '未選擇'}</th><th>${sakeB ? sakeB.name : '未選擇'}</th></tr>`;
-                html += `<tr><td><div class="compare-label">容量 / 風格</div>${sakeA ? `<span class="sake-volume">${sakeA.volume}</span> <span class="sake-taste ${this.getTasteClass(sakeA.taste)}">${sakeA.taste}</span>` : '-'}</td><td><div class="compare-label">容量 / 風格</div>${sakeB ? `<span class="sake-volume">${sakeB.volume}</span> <span class="sake-taste ${this.getTasteClass(sakeB.taste)}">${sakeB.taste}</span>` : '-'}</td></tr>`;
+                
+                // Volume for Compare
+                const volAHtml = sakeA ? sakeA.volume.split(/[/,]/).map(v => v.trim()).map(v => { const isOut = sakeA.outOfStock && sakeA.outOfStock.includes(v); return `<span class="sake-volume ${isOut ? 'sold-out' : ''}">${v}${isOut?' (售完)':''}</span>`;}).join(' ') : '-';
+                const volBHtml = sakeB ? sakeB.volume.split(/[/,]/).map(v => v.trim()).map(v => { const isOut = sakeB.outOfStock && sakeB.outOfStock.includes(v); return `<span class="sake-volume ${isOut ? 'sold-out' : ''}">${v}${isOut?' (售完)':''}</span>`;}).join(' ') : '-';
+
+                html += `<tr><td><div class="compare-label">容量 / 風格</div>${volAHtml} <span class="sake-taste ${sakeA ? this.getTasteClass(sakeA.taste) : ''}">${sakeA ? sakeA.taste : ''}</span></td><td><div class="compare-label">容量 / 風格</div>${volBHtml} <span class="sake-taste ${sakeB ? this.getTasteClass(sakeB.taste) : ''}">${sakeB ? sakeB.taste : ''}</span></td></tr>`;
                 html += `<tr><td><div class="compare-label">建議飲用溫度</div>${sakeA ? `<b>${sakeA.temp}</b>` : '-'}</td><td><div class="compare-label">建議飲用溫度</div>${sakeB ? `<b>${sakeB.temp}</b>` : '-'}</td></tr>`;
                 html += `<tr><td><div class="compare-label">風味特徵</div>${sakeA ? `<span class="tag-pill tag-temp-cold" style="margin-bottom:6px; display:inline-block;">🌡️ ${sakeA.temp}</span><br>` + sakeA.aroma.concat(sakeA.flavor).map(t => `<span class="tag-pill tag-aroma" style="margin:2px; display:inline-block;">${t}</span>`).join('') : '-'}</td><td><div class="compare-label">風味特徵</div>${sakeB ? `<span class="tag-pill tag-temp-cold" style="margin-bottom:6px; display:inline-block;">🌡️ ${sakeB.temp}</span><br>` + sakeB.aroma.concat(sakeB.flavor).map(t => `<span class="tag-pill tag-aroma" style="margin:2px; display:inline-block;">${t}</span>`).join('') : '-'}</td></tr>`;
                 html += `<tr><td><div class="compare-label">品飲介紹</div>${sakeA ? sakeA.desc + '<br><br>' + sakeA.tempReason : '-'}</td><td><div class="compare-label">品飲介紹</div>${sakeB ? sakeB.desc + '<br><br>' + sakeB.tempReason : '-'}</td></tr>`;
@@ -462,7 +484,7 @@
                 document.getElementById('guideResultList').innerHTML = html;
             },
 
-            // 切換模式 (加入管理模式)
+            // --- 介面切換 ---
             switchMode(mode) {
                 document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
                 ['guideSection', 'listSection', 'compareSection', 'knowledgeSection', 'adminSection'].forEach(id => document.getElementById(id).style.display = 'none');
@@ -474,16 +496,24 @@
                 else if (mode === 'admin') { document.getElementById('btnAdmin').classList.add('active'); document.getElementById('adminSection').style.display = 'block'; this.renderAdminList(); }
             },
 
-            // --- Modal 顯示 ---
+            // --- 一般 Modal ---
             openModal(id) {
                 const sake = currentSakeData.find(s => s.id === id);
                 if (!sake) return;
                 const aromaHtml = sake.aroma.map(a => `<span class="tag-pill tag-aroma">${a}</span>`).join('');
                 const flavorHtml = sake.flavor.map(f => `<span class="tag-pill tag-flavor">${f}</span>`).join('');
                 const tempClass = sake.temp.includes('溫') || sake.temp.includes('皆可') ? 'tag-temp-hot' : 'tag-temp-cold';
+                
+                const volumes = sake.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                const outOfStock = sake.outOfStock || [];
+                const volumeHtml = volumes.map(v => {
+                    const isOut = outOfStock.includes(v);
+                    return `<span class="sake-volume ${isOut ? 'sold-out' : ''}">${v}${isOut ? ' (售完)' : ''}</span>`;
+                }).join(' ');
+
                 let html = `
                     <div class="modal-header-visual"><div class="modal-stamp">酒</div><div class="modal-title">${sake.name}</div>
-                        <div class="sake-badges" style="justify-content: center;"><span class="sake-volume">${sake.volume}</span><span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span></div>
+                        <div class="sake-badges" style="justify-content: center;">${volumeHtml}<span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span></div>
                     </div>
                     <div class="modal-body">
                         <div class="modal-section"><div class="modal-section-title">建議飲用溫度</div><div style="margin-top: 4px;"><span class="tag-pill ${tempClass}" style="font-size: 0.9rem; padding: 4px 10px;">🌡️ ${sake.temp}</span></div><div class="modal-desc" style="margin-top: 10px; font-size: 0.9rem;">${sake.tempReason}</div></div>
@@ -492,8 +522,7 @@
                         <div class="modal-section"><div class="modal-section-title">建議餐酒搭配</div><div class="modal-desc">${sake.pairing}</div></div>
                     </div>`;
                 document.getElementById('modalContentInner').innerHTML = html;
-                const modal = document.getElementById('sakeModal');
-                modal.classList.add('active');
+                document.getElementById('sakeModal').classList.add('active');
                 document.body.style.overflow = 'hidden'; 
             },
             closeModal(event, modalId, force = false) {
@@ -505,19 +534,44 @@
 
             // --- 後台管理邏輯 ---
             renderAdminList() {
-                const listHtml = currentSakeData.map(s => `
-                    <div class="admin-item">
-                        <div>
-                            <div class="admin-item-title">${s.name}</div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted);">${s.volume} | ${s.taste}</div>
+                const listHtml = currentSakeData.map(s => {
+                    // 分割容量，為每個容量產生一個停售切換按鈕
+                    let vols = s.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                    let outOfStock = s.outOfStock || [];
+                    let stockButtons = vols.map(v => {
+                        let isOut = outOfStock.includes(v);
+                        return `<button class="btn-stock ${isOut ? 'sold-out' : 'in-stock'}" onclick="app.toggleStock(${s.id}, '${v}')">${v} ${isOut ? '停售' : '供應中'}</button>`;
+                    }).join('');
+
+                    return `
+                        <div class="admin-item">
+                            <div style="flex:1; margin-right:10px;">
+                                <div class="admin-item-title">${s.name}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">${s.taste} | ${s.category}</div>
+                                <div class="stock-toggle-group">${stockButtons}</div>
+                            </div>
+                            <div class="admin-item-actions">
+                                <button class="btn-edit" onclick="app.openAdminForm(${s.id})">編輯</button>
+                                <button class="btn-delete" onclick="app.deleteSake(${s.id})">刪除</button>
+                            </div>
                         </div>
-                        <div class="admin-item-actions">
-                            <button class="btn-edit" onclick="app.openAdminForm(${s.id})">編輯</button>
-                            <button class="btn-delete" onclick="app.deleteSake(${s.id})">刪除</button>
-                        </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
                 document.getElementById('adminList').innerHTML = listHtml;
+            },
+
+            toggleStock(id, vol) {
+                const sake = currentSakeData.find(s => s.id === id);
+                if (!sake) return;
+                if (!sake.outOfStock) sake.outOfStock = [];
+                const idx = sake.outOfStock.indexOf(vol);
+                if (idx > -1) {
+                    sake.outOfStock.splice(idx, 1); // 恢復供應
+                } else {
+                    sake.outOfStock.push(vol); // 設為停售
+                }
+                this.saveData();
+                this.renderAdminList();
             },
 
             openAdminForm(id) {
@@ -569,7 +623,8 @@
                     flavor: document.getElementById('formFlavor').value.split(',').map(s=>s.trim()).filter(Boolean),
                     desc: document.getElementById('formDesc').value,
                     tempReason: document.getElementById('formTempReason').value,
-                    pairing: document.getElementById('formPairing').value
+                    pairing: document.getElementById('formPairing').value,
+                    outOfStock: idVal ? (currentSakeData.find(s => s.id == idVal).outOfStock || []) : []
                 };
 
                 if (idVal) {
@@ -613,7 +668,11 @@
                     try {
                         const importedData = JSON.parse(e.target.result);
                         if (Array.isArray(importedData)) {
-                            currentSakeData = importedData;
+                            // 確保匯入的資料都有 outOfStock 欄位
+                            currentSakeData = importedData.map(s => {
+                                if (!s.outOfStock) s.outOfStock = [];
+                                return s;
+                            });
                             this.saveData();
                             this.renderAdminList();
                             this.initCompareSelects();
@@ -622,7 +681,7 @@
                     } catch (err) { alert("讀取檔案失敗：" + err); }
                 };
                 reader.readAsText(file);
-                event.target.value = ''; // reset input
+                event.target.value = ''; 
             }
         };
 
