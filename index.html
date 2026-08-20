@@ -280,9 +280,6 @@
         const database = getDatabase(firebaseApp);
         const dbRef = ref(database, 'sakeMenuData');
 
-        // 預防萬一用的初版預設結構（真正資料會從 Firebase 抓）
-        const defaultSakeData = [];
-
         let currentSakeData = [];
         let isFirstLoad = true;
 
@@ -493,16 +490,15 @@
             showGuideResults(catFilter, tipText) {
                 document.getElementById('guideBox').style.display = 'none';
                 
+                // 這裡！直接使用 matched，不再用 Math.random() 洗牌，也不再用 slice(0, 3) 限制筆數！
                 let matched = currentSakeData.filter(s => s.category.includes(catFilter) && !this.isCompletelySoldOut(s));
                 
                 if (this.targetSize && this.targetSize !== 'all') {
                     if (this.targetSize === 'small') { let sizeMatched = matched.filter(s => s.volume.includes('180') || s.volume.includes('300')); if (sizeMatched.length > 0) matched = sizeMatched; } 
                     else if (this.targetSize === 'large') { let sizeMatched = matched.filter(s => s.volume.includes('720') || s.volume.includes('1.8L')); if (sizeMatched.length > 0) matched = sizeMatched; }
                 }
-                for (let i = matched.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [matched[i], matched[j]] = [matched[j], matched[i]]; }
-                let topChoices = matched.slice(0, 3);
                 
-                let html = `<div class="guide-tip">${tipText}</div>` + (topChoices.length ? topChoices.map((s, idx) => this.createCardHTML(s, idx)).join('') : '<div style="text-align:center; color:var(--text-muted);">目前符合條件的酒款已全數售完，請試試其他風味。</div>');
+                let html = `<div class="guide-tip">${tipText}</div>` + (matched.length ? matched.map((s, idx) => this.createCardHTML(s, idx)).join('') : '<div style="text-align:center; color:var(--text-muted);">目前符合條件的酒款已全數售完，請試試其他風味。</div>');
                 
                 html += `<div class="nav-buttons" style="margin-top: 24px;"><button class="back-btn" onclick="window.app.goBack()">← 上一頁</button><button class="reset-btn" onclick="window.app.startGuide()">重新選擇</button></div>`;
                 document.getElementById('guideResultList').innerHTML = html;
@@ -610,7 +606,6 @@
                     document.getElementById('formTags').value = s.tags;
                     document.getElementById('formCategory').value = s.category;
                     
-                    // 智慧辨識原本儲存的溫度文字
                     let tempVal = s.temp;
                     if (!["❄️ 適合冰飲", "♨️ 適合溫熱", "🌡️ 冷熱皆宜"].includes(tempVal)) {
                         if (tempVal.includes("皆可") || (tempVal.includes("冷") && tempVal.includes("熱"))) {
@@ -637,7 +632,7 @@
                     document.getElementById('formTaste').value = "甘口";
                     document.getElementById('formTags').value = "";
                     document.getElementById('formCategory').value = "";
-                    document.getElementById('formTemp').value = "❄️ 適合冰飲"; // 預設選項
+                    document.getElementById('formTemp').value = "❄️ 適合冰飲"; 
                     document.getElementById('formAroma').value = "";
                     document.getElementById('formFlavor').value = "";
                     document.getElementById('formDesc').value = "";
@@ -729,9 +724,7 @@
                     outOfStock: s.outOfStock || []
                 }));
             } else {
-                // 初次使用時可設定預設資料 (為了保持程式碼簡潔，未展開 defaultSakeData)
                 currentSakeData = [];
-                // set(dbRef, currentSakeData); 
             }
 
             app.initCompareSelects();
