@@ -49,6 +49,10 @@
         .sake-list { display: flex; flex-direction: column; gap: 16px; }
         .sake-card { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); transition: transform 0.2s ease; cursor: pointer; position: relative; overflow: hidden; }
         .sake-card:active { transform: scale(0.98); background-color: #FAFAFA; }
+        
+        /* 🍺 全數售完灰階樣式 🍺 */
+        .sold-out-card { background: #F7F6F2; border-color: #E8E6E1; filter: grayscale(100%); opacity: 0.65; }
+
         .sake-header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
         .sake-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
         .sake-title { font-family: 'Noto Serif TC', serif; font-size: 1.2rem; font-weight: 700; color: var(--text-main); line-height: 1.3;}
@@ -59,7 +63,6 @@
         .taste-dry { background-color: var(--taste-dry); }
         .taste-rich { background-color: var(--taste-rich); }
         
-        /* 容量與售完狀態 CSS */
         .sake-volume { font-size: 0.75rem; color: var(--accent); font-weight: 700; background: var(--accent-light); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.05em; border: 1px solid rgba(166, 138, 97, 0.2); }
         .sake-volume.sold-out { background: #E8E6E1; color: #85878A; border-color: #D1CFCA; text-decoration: line-through; }
 
@@ -87,7 +90,6 @@
         .knowledge-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; }
         .knowledge-point { background: var(--bg-body); padding: 12px 16px; border-radius: 8px; margin-top: 12px; border-left: 3px solid var(--accent); }
 
-        /* 後台管理與登入介面 CSS */
         .login-container { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 32px 24px; text-align: center; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .login-title { font-family: 'Noto Serif TC', serif; font-size: 1.4rem; color: var(--accent); margin-bottom: 24px; font-weight: 700; }
         .login-input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 1rem; margin-bottom: 16px; outline: none; background: var(--bg-body); transition: 0.3s; }
@@ -113,8 +115,8 @@
 
         .admin-form-group { margin-bottom: 12px; }
         .admin-form-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
-        .admin-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; outline: none; }
-        .admin-textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; min-height: 80px; resize: vertical; outline: none; }
+        .admin-input, .admin-textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; outline: none; }
+        .admin-textarea { min-height: 80px; resize: vertical; }
         .admin-save-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 1.1rem; font-weight: 700; margin-top: 10px; cursor: pointer; }
 
         .footer { text-align: center; padding: 2rem 0; color: #C2C3C5; font-size: 0.75rem; margin-top: 3rem; }
@@ -137,7 +139,6 @@
         .anim-item { animation: fade-in 0.4s ease forwards; opacity: 0; }
         input[type="file"] { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         
-        /* 載入中畫面 */
         #loadingOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-body); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--accent); font-family: 'Noto Serif TC', serif; font-size: 1.2rem; font-weight: 700; transition: opacity 0.5s; }
     </style>
 </head>
@@ -198,17 +199,14 @@
         </div>
     </div>
 
-    <!-- 後台管理區塊 (包含登入畫面與管理儀表板) -->
     <div id="adminSection" style="display: none;">
-        <!-- 登入畫面 -->
         <div id="adminLoginWrapper" class="login-container anim-item">
-            <div class="login-title">後台管理系統</div>
+            <div class="login-title">店長專屬後台登入</div>
             <input type="text" id="loginUser" class="login-input" placeholder="請輸入帳號" autocomplete="off">
             <input type="password" id="loginPass" class="login-input" placeholder="請輸入密碼" autocomplete="off">
             <button class="login-btn" onclick="app.adminLogin()">登入管理系統</button>
         </div>
 
-        <!-- 庫存管理儀表板 (預設隱藏) -->
         <div id="adminContentWrapper" style="display: none;">
             <div class="admin-controls"><button class="admin-btn btn-add" onclick="app.openAdminForm(null)">＋ 新增全新酒款</button></div>
             <div class="admin-controls" style="margin-bottom: 24px;">
@@ -221,7 +219,6 @@
 
     <div class="footer">© 2026 lxt04__20 | 專業侍酒管理系統 (雲端同步版)</div>
 
-    <!-- Modal 區塊 -->
     <div class="modal-overlay" id="sakeModal" onclick="app.closeModal(event, 'sakeModal')">
         <div class="modal-content">
             <button class="modal-close" onclick="app.closeModal(event, 'sakeModal', true)">✕</button>
@@ -243,7 +240,7 @@
                 </select>
             </div>
             <div class="admin-form-group"><label>搜尋標籤 (Tags) - 供搜尋用，空格分開</label><input type="text" id="formTags" class="admin-input" placeholder="例如：獺祭 知名 白酒 冰飲"></div>
-            <div class="admin-form-group"><label>分類 (Category) - 供引導系統判斷，逗號分開</label><input type="text" id="formCategory" class="admin-input" placeholder="例如：知名酒款, 甘口, 適合溫飲"></div>
+            <div class="admin-form-group"><label>分類 (Category) - 供引導判斷，逗號分開</label><input type="text" id="formCategory" class="admin-input" placeholder="例如：知名酒款, 甘口, 適合溫飲"></div>
             <div class="admin-form-group"><label>溫度建議 (短句)</label><input type="text" id="formTemp" class="admin-input" placeholder="例如：❄️ 僅限冰飲"></div>
             <div class="admin-form-group"><label>香氣標籤 (Aroma) - 逗號分開</label><input type="text" id="formAroma" class="admin-input" placeholder="例如：青蘋果, 白花"></div>
             <div class="admin-form-group"><label>口感標籤 (Flavor) - 逗號分開</label><input type="text" id="formFlavor" class="admin-input" placeholder="例如：清爽, 俐落"></div>
@@ -259,7 +256,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // 用戶提供的 Firebase 金鑰
         const firebaseConfig = {
             apiKey: "AIzaSyAk3AvomF58DBvstAjagW3ZvhxCk2laCaw",
             authDomain: "tigersake-ae2e5.firebaseapp.com",
@@ -274,7 +270,6 @@
         const database = getDatabase(firebaseApp);
         const dbRef = ref(database, 'sakeMenuData');
 
-        // 預設的 35 支完整資料庫
         const defaultSakeData = [
             { id: 1, name: "雅乃詩", volume: "180ml / 1.8L", taste: "微甘口", category: "甘口, 知名酒款, 啤酒, 適合溫飲", tags: "雅乃詩 180ml 1.8L 微甘口 清爽 柔和 無負擔 啤酒 白酒", temp: "冷熱皆宜", aroma: ["淡雅米香", "清新微甜"], flavor: ["淡麗清爽", "口味芳醇", "柔和易飲"], desc: "口感極為柔和順口，香氣清淡優雅而不搶戲。屬於標準的淡麗甘口風格，是喜愛清爽口感者的最佳日常選擇。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>標準的淡麗風格純米酒，冰飲清爽滑順，微溫飲用能讓淡雅的米香更溫潤好入口。", pairing: "適合搭配各類居酒屋炸物、烤魚或家常料理。", outOfStock: [] },
             { id: 2, name: "中尾 誠鏡 竹原 純米酒", volume: "180ml", taste: "旨口", category: "濃郁, 紅酒, 適合溫飲", tags: "中尾 誠鏡 竹原 純米酒 180ml 旨口 濃郁 紅酒 軟水 溫飲", temp: "冷熱皆宜 (推薦溫飲)", aroma: ["溫和沉穩米麴香"], flavor: ["軟水圓潤", "醇厚微甘", "旨味豐富"], desc: "廣島軟水釀造的代表作。水質溫和賦予了此酒極度醇厚圓潤的口感，微帶甘口，米飯的旨味（鮮味）在口中溫暖化開，帶有近似柔順紅酒的圓潤酒體。", tempReason: "<strong>【溫度說明：冷熱皆宜（推薦溫飲，評分 ⭐⭐⭐⭐☆）】</strong><br>軟水釀造的純米酒結構扎實，微溫飲用（約40°C）能讓米麴的旨味更加立體、口感更為圓潤。", pairing: "適合搭配關東煮、燉煮肉類或溫沙拉。", outOfStock: [] },
@@ -321,13 +316,24 @@
             targetSize: 'all', 
             historyStack: [], 
             
-            init() {},
+            init() {
+                this.renderCategories();
+                this.initCompareSelects();
+                this.switchMode('guide');
+            },
+
+            // 判斷一支酒是否「所有容量」都已售完
+            isCompletelySoldOut(sake) {
+                if (!sake.volume) return false;
+                const vols = sake.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                const outs = sake.outOfStock || [];
+                return vols.length > 0 && vols.every(v => outs.includes(v));
+            },
 
             saveData() {
                 set(dbRef, currentSakeData).catch(error => { alert("雲端同步失敗：" + error); });
             },
 
-            // --- 專屬登入鎖邏輯 ---
             adminLogin() {
                 const user = document.getElementById('loginUser').value.trim();
                 const pass = document.getElementById('loginPass').value.trim();
@@ -336,7 +342,6 @@
                     document.getElementById('adminLoginWrapper').style.display = 'none';
                     document.getElementById('adminContentWrapper').style.display = 'block';
                     this.renderAdminList();
-                    // 清空輸入框避免外洩
                     document.getElementById('loginUser').value = '';
                     document.getElementById('loginPass').value = '';
                 } else {
@@ -359,14 +364,19 @@
                     return `<span class="sake-volume ${isOut ? 'sold-out' : ''}">${v}${isOut ? ' (售完)' : ''}</span>`;
                 }).join(' ');
 
+                // 🍺 若全數售完，整張卡片反灰，並改變右下角提示
+                const isAllOut = this.isCompletelySoldOut(sake);
+                const cardClass = isAllOut ? 'sake-card anim-item sold-out-card' : 'sake-card anim-item';
+                const hintText = isAllOut ? '已全數售完' : '查看詳細介紹 ➔';
+
                 return `
-                    <div class="sake-card anim-item" style="animation-delay: ${index * 0.05}s" onclick="window.app.openModal(${sake.id})">
+                    <div class="${cardClass}" style="animation-delay: ${index * 0.05}s" onclick="window.app.openModal(${sake.id})">
                         <div class="sake-header">
                             <div class="sake-title-row"><div class="sake-title">${sake.name}</div></div>
                             <div class="sake-badges">${volumeHtml}<span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span></div>
                         </div>
                         <div class="tag-group">${tempHtml}${aromaHtml}${flavorHtml}</div>
-                        <div class="card-hint">查看詳細介紹 ➔</div>
+                        <div class="card-hint">${hintText}</div>
                     </div>`;
             },
 
@@ -391,11 +401,21 @@
 
             filterSake() {
                 const searchTxt = document.getElementById('searchInput').value.toLowerCase();
-                const filtered = currentSakeData.filter(sake => {
+                let filtered = currentSakeData.filter(sake => {
                     const matchCat = this.currentCategory === '全部' || sake.category.includes(this.currentCategory);
                     const matchTxt = sake.name.toLowerCase().includes(searchTxt) || sake.tags.toLowerCase().includes(searchTxt) || sake.taste.toLowerCase().includes(searchTxt) || sake.volume.toLowerCase().includes(searchTxt) || sake.temp.toLowerCase().includes(searchTxt) || (sake.aroma || []).some(a => a.toLowerCase().includes(searchTxt)) || (sake.flavor || []).some(f => f.toLowerCase().includes(searchTxt));
                     return matchCat && matchTxt;
                 });
+
+                // 🍺 將全數售完的酒款排到列表最底下
+                filtered.sort((a, b) => {
+                    const aOut = this.isCompletelySoldOut(a);
+                    const bOut = this.isCompletelySoldOut(b);
+                    if (aOut && !bOut) return 1;
+                    if (!aOut && bOut) return -1;
+                    return 0;
+                });
+
                 document.getElementById('sakeList').innerHTML = filtered.length ? filtered.map((s, idx) => this.createCardHTML(s, idx)).join('') : '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">找不到符合的酒款</p>';
             },
 
@@ -490,16 +510,22 @@
                 document.getElementById('guideContent').innerHTML = html;
             },
             executeAction(idx) { if (this.currentActions[idx]) this.currentActions[idx](); },
+            
             showGuideResults(catFilter, tipText) {
                 document.getElementById('guideBox').style.display = 'none';
-                let matched = currentSakeData.filter(s => s.category.includes(catFilter));
+                
+                // 🍺 引導推薦中「直接剔除」全數售完的酒款，不推薦給客人
+                let matched = currentSakeData.filter(s => s.category.includes(catFilter) && !this.isCompletelySoldOut(s));
+                
                 if (this.targetSize && this.targetSize !== 'all') {
                     if (this.targetSize === 'small') { let sizeMatched = matched.filter(s => s.volume.includes('180') || s.volume.includes('300')); if (sizeMatched.length > 0) matched = sizeMatched; } 
                     else if (this.targetSize === 'large') { let sizeMatched = matched.filter(s => s.volume.includes('720') || s.volume.includes('1.8L')); if (sizeMatched.length > 0) matched = sizeMatched; }
                 }
                 for (let i = matched.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [matched[i], matched[j]] = [matched[j], matched[i]]; }
                 let topChoices = matched.slice(0, 3);
-                let html = `<div class="guide-tip">${tipText}</div>` + topChoices.map((s, idx) => this.createCardHTML(s, idx)).join('');
+                
+                let html = `<div class="guide-tip">${tipText}</div>` + (topChoices.length ? topChoices.map((s, idx) => this.createCardHTML(s, idx)).join('') : '<div style="text-align:center; color:var(--text-muted);">目前符合條件的酒款已全數售完，請試試其他風味。</div>');
+                
                 html += `<div class="nav-buttons" style="margin-top: 24px;"><button class="back-btn" onclick="window.app.goBack()">← 上一頁</button><button class="reset-btn" onclick="window.app.startGuide()">重新選擇</button></div>`;
                 document.getElementById('guideResultList').innerHTML = html;
             },
@@ -515,7 +541,6 @@
                 else if (mode === 'admin') { 
                     document.getElementById('btnAdmin').classList.add('active'); 
                     document.getElementById('adminSection').style.display = 'block'; 
-                    // 如果已經登入過，可以直接看到內容，否則維持顯示登入畫面
                 }
             },
 
@@ -705,7 +730,10 @@
                 set(dbRef, currentSakeData);
             }
 
+            // 更新畫面 (比較選單也在此更新)
+            app.initCompareSelects();
             app.renderCategories();
+            
             if (document.getElementById('listSection').style.display === 'block') { app.filterSake(); }
             if (document.getElementById('adminSection').style.display === 'block' && document.getElementById('adminContentWrapper').style.display === 'block') { app.renderAdminList(); }
             if (document.getElementById('compareSection').style.display === 'block') { app.updateCompare(); }
@@ -719,10 +747,8 @@
             }
         });
 
-        // 綁定到全域以便 HTML onClick 可以呼叫
         window.app = app;
 
-        // 監聽 Enter 鍵登入
         document.getElementById('loginPass').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') { app.adminLogin(); }
         });
