@@ -87,7 +87,14 @@
         .knowledge-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; }
         .knowledge-point { background: var(--bg-body); padding: 12px 16px; border-radius: 8px; margin-top: 12px; border-left: 3px solid var(--accent); }
 
-        /* 後台管理 CSS */
+        /* 後台管理與登入介面 CSS */
+        .login-container { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 32px 24px; text-align: center; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .login-title { font-family: 'Noto Serif TC', serif; font-size: 1.4rem; color: var(--accent); margin-bottom: 24px; font-weight: 700; }
+        .login-input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 1rem; margin-bottom: 16px; outline: none; background: var(--bg-body); transition: 0.3s; }
+        .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .login-btn:active { transform: scale(0.98); }
+
         .admin-controls { display: flex; gap: 10px; justify-content: space-between; margin-bottom: 20px; }
         .admin-btn { padding: 10px 15px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
         .btn-add { background: var(--accent); color: #fff; width: 100%; }
@@ -191,13 +198,25 @@
         </div>
     </div>
 
+    <!-- 後台管理區塊 (包含登入畫面與管理儀表板) -->
     <div id="adminSection" style="display: none;">
-        <div class="admin-controls"><button class="admin-btn btn-add" onclick="app.openAdminForm(null)">＋ 新增全新酒款</button></div>
-        <div class="admin-controls" style="margin-bottom: 24px;">
-            <button class="admin-btn btn-backup" style="flex:1;" onclick="app.exportData()">💾 備份資料</button>
-            <button class="admin-btn btn-restore" style="flex:1;">📂 匯入還原<input type="file" accept=".json" onchange="app.importData(event)"></button>
+        <!-- 登入畫面 -->
+        <div id="adminLoginWrapper" class="login-container anim-item">
+            <div class="login-title">店長專屬後台登入</div>
+            <input type="text" id="loginUser" class="login-input" placeholder="請輸入帳號" autocomplete="off">
+            <input type="password" id="loginPass" class="login-input" placeholder="請輸入密碼" autocomplete="off">
+            <button class="login-btn" onclick="app.adminLogin()">登入管理系統</button>
         </div>
-        <div id="adminList"></div>
+
+        <!-- 庫存管理儀表板 (預設隱藏) -->
+        <div id="adminContentWrapper" style="display: none;">
+            <div class="admin-controls"><button class="admin-btn btn-add" onclick="app.openAdminForm(null)">＋ 新增全新酒款</button></div>
+            <div class="admin-controls" style="margin-bottom: 24px;">
+                <button class="admin-btn btn-backup" style="flex:1;" onclick="app.exportData()">💾 備份資料</button>
+                <button class="admin-btn btn-restore" style="flex:1;">📂 匯入還原<input type="file" accept=".json" onchange="app.importData(event)"></button>
+            </div>
+            <div id="adminList"></div>
+        </div>
     </div>
 
     <div class="footer">© 2026 lxt04__20 | 專業侍酒管理系統 (雲端同步版)</div>
@@ -255,7 +274,7 @@
         const database = getDatabase(firebaseApp);
         const dbRef = ref(database, 'sakeMenuData');
 
-        // 預設的 35 支完整資料庫 (初次上傳至 Firebase 用)
+        // 預設的 35 支完整資料庫
         const defaultSakeData = [
             { id: 1, name: "雅乃詩", volume: "180ml / 1.8L", taste: "微甘口", category: "甘口, 知名酒款, 啤酒, 適合溫飲", tags: "雅乃詩 180ml 1.8L 微甘口 清爽 柔和 無負擔 啤酒 白酒", temp: "冷熱皆宜", aroma: ["淡雅米香", "清新微甜"], flavor: ["淡麗清爽", "口味芳醇", "柔和易飲"], desc: "口感極為柔和順口，香氣清淡優雅而不搶戲。屬於標準的淡麗甘口風格，是喜愛清爽口感者的最佳日常選擇。", tempReason: "<strong>【溫度說明：冷熱皆宜】</strong><br>標準的淡麗風格純米酒，冰飲清爽滑順，微溫飲用能讓淡雅的米香更溫潤好入口。", pairing: "適合搭配各類居酒屋炸物、烤魚或家常料理。", outOfStock: [] },
             { id: 2, name: "中尾 誠鏡 竹原 純米酒", volume: "180ml", taste: "旨口", category: "濃郁, 紅酒, 適合溫飲", tags: "中尾 誠鏡 竹原 純米酒 180ml 旨口 濃郁 紅酒 軟水 溫飲", temp: "冷熱皆宜 (推薦溫飲)", aroma: ["溫和沉穩米麴香"], flavor: ["軟水圓潤", "醇厚微甘", "旨味豐富"], desc: "廣島軟水釀造的代表作。水質溫和賦予了此酒極度醇厚圓潤的口感，微帶甘口，米飯的旨味（鮮味）在口中溫暖化開，帶有近似柔順紅酒的圓潤酒體。", tempReason: "<strong>【溫度說明：冷熱皆宜（推薦溫飲，評分 ⭐⭐⭐⭐☆）】</strong><br>軟水釀造的純米酒結構扎實，微溫飲用（約40°C）能讓米麴的旨味更加立體、口感更為圓潤。", pairing: "適合搭配關東煮、燉煮肉類或溫沙拉。", outOfStock: [] },
@@ -302,22 +321,30 @@
             targetSize: 'all', 
             historyStack: [], 
             
-            init() {
-                // 等待 Firebase 讀取完畢後，UI 的初始化會在 onValue 裡面執行
-            },
+            init() {},
 
-            // 將資料寫入 Firebase (取代原本的 LocalStorage)
             saveData() {
-                set(dbRef, currentSakeData).catch(error => {
-                    alert("雲端同步失敗，請檢查網路連線：" + error);
-                });
+                set(dbRef, currentSakeData).catch(error => { alert("雲端同步失敗：" + error); });
             },
 
-            getTasteClass(taste) {
-                if(taste.includes('甘')) return 'taste-sweet';
-                if(taste.includes('辛')) return 'taste-dry';
-                return 'taste-rich'; 
+            // --- 專屬登入鎖邏輯 ---
+            adminLogin() {
+                const user = document.getElementById('loginUser').value.trim();
+                const pass = document.getElementById('loginPass').value.trim();
+                
+                if (user === 'taengjun20' && pass === 'Possum1120') {
+                    document.getElementById('adminLoginWrapper').style.display = 'none';
+                    document.getElementById('adminContentWrapper').style.display = 'block';
+                    this.renderAdminList();
+                    // 清空輸入框避免外洩
+                    document.getElementById('loginUser').value = '';
+                    document.getElementById('loginPass').value = '';
+                } else {
+                    alert('❌ 帳號或密碼錯誤！請重新輸入。');
+                }
             },
+
+            getTasteClass(taste) { if(taste.includes('甘')) return 'taste-sweet'; if(taste.includes('辛')) return 'taste-dry'; return 'taste-rich'; },
 
             createCardHTML(sake, index) {
                 const aromaHtml = (sake.aroma || []).map(a => `<span class="tag-pill tag-aroma">${a}</span>`).join('');
@@ -335,22 +362,12 @@
                 return `
                     <div class="sake-card anim-item" style="animation-delay: ${index * 0.05}s" onclick="window.app.openModal(${sake.id})">
                         <div class="sake-header">
-                            <div class="sake-title-row">
-                                <div class="sake-title">${sake.name}</div>
-                            </div>
-                            <div class="sake-badges">
-                                ${volumeHtml}
-                                <span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span>
-                            </div>
+                            <div class="sake-title-row"><div class="sake-title">${sake.name}</div></div>
+                            <div class="sake-badges">${volumeHtml}<span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span></div>
                         </div>
-                        <div class="tag-group">
-                            ${tempHtml}
-                            ${aromaHtml}
-                            ${flavorHtml}
-                        </div>
+                        <div class="tag-group">${tempHtml}${aromaHtml}${flavorHtml}</div>
                         <div class="card-hint">查看詳細介紹 ➔</div>
-                    </div>
-                `;
+                    </div>`;
             },
 
             catConfigs: [
@@ -495,7 +512,11 @@
                 else if (mode === 'list') { document.getElementById('btnList').classList.add('active'); document.getElementById('listSection').style.display = 'block'; this.filterSake(); } 
                 else if (mode === 'compare') { document.getElementById('btnCompare').classList.add('active'); document.getElementById('compareSection').style.display = 'block'; } 
                 else if (mode === 'knowledge') { document.getElementById('btnKnowledge').classList.add('active'); document.getElementById('knowledgeSection').style.display = 'block'; }
-                else if (mode === 'admin') { document.getElementById('btnAdmin').classList.add('active'); document.getElementById('adminSection').style.display = 'block'; this.renderAdminList(); }
+                else if (mode === 'admin') { 
+                    document.getElementById('btnAdmin').classList.add('active'); 
+                    document.getElementById('adminSection').style.display = 'block'; 
+                    // 如果已經登入過，可以直接看到內容，否則維持顯示登入畫面
+                }
             },
 
             openModal(id) {
@@ -566,7 +587,7 @@
                 const idx = sake.outOfStock.indexOf(vol);
                 if (idx > -1) { sake.outOfStock.splice(idx, 1); } 
                 else { sake.outOfStock.push(vol); }
-                this.saveData(); // Firebase 會接手同步，畫面會自動更新
+                this.saveData(); 
             },
 
             openAdminForm(id) {
@@ -672,27 +693,23 @@
             }
         };
 
-        // Firebase 即時資料同步監聽 (真正的 Magic 在這裡)
+        // Firebase 即時資料同步
         onValue(dbRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // 如果雲端有資料，覆蓋本地資料
                 currentSakeData = data.map(s => ({
                     ...s, aroma: s.aroma || [], flavor: s.flavor || [], outOfStock: s.outOfStock || []
                 }));
             } else {
-                // 初次使用：將預設資料上傳到雲端
                 currentSakeData = defaultSakeData;
                 set(dbRef, currentSakeData);
             }
 
-            // 無聲更新畫面 (不打斷客人的操作)
             app.renderCategories();
             if (document.getElementById('listSection').style.display === 'block') { app.filterSake(); }
-            if (document.getElementById('adminSection').style.display === 'block') { app.renderAdminList(); }
+            if (document.getElementById('adminSection').style.display === 'block' && document.getElementById('adminContentWrapper').style.display === 'block') { app.renderAdminList(); }
             if (document.getElementById('compareSection').style.display === 'block') { app.updateCompare(); }
             
-            // 初次載入時解除載入畫面並進入引導模式
             if (isFirstLoad) {
                 const loading = document.getElementById('loadingOverlay');
                 loading.style.opacity = '0';
@@ -704,6 +721,11 @@
 
         // 綁定到全域以便 HTML onClick 可以呼叫
         window.app = app;
+
+        // 監聽 Enter 鍵登入
+        document.getElementById('loginPass').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') { app.adminLogin(); }
+        });
 
     </script>
 </body>
