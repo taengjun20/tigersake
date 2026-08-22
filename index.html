@@ -24,12 +24,13 @@
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 5vh 4vw 8vh 4vw; line-height: 1.6; letter-spacing: 0.02em; padding-top: env(safe-area-inset-top, 5vh); padding-bottom: env(safe-area-inset-bottom, 8vh); }
         h2 { font-family: 'Noto Serif TC', serif; text-align: center; color: var(--text-main); font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 500; letter-spacing: 0.2em; }
 
-        .mode-switch { display: flex; flex-wrap: wrap; max-width: 500px; margin: 0 auto 2rem auto; background: var(--border); border-radius: 12px; padding: 4px; gap: 2px; }
-        .mode-btn { flex: 1; min-width: 18%; border: none; background: transparent; padding: 8px 2px; color: var(--text-muted); font-size: 0.8rem; font-weight: 500; border-radius: 8px; cursor: pointer; transition: 0.3s ease; text-align: center; white-space: nowrap; }
+        /* 導覽列調整，支援 6 個按鈕 */
+        .mode-switch { display: flex; flex-wrap: wrap; max-width: 540px; margin: 0 auto 2rem auto; background: var(--border); border-radius: 12px; padding: 4px; gap: 2px; }
+        .mode-btn { flex: 1; min-width: 15%; border: none; background: transparent; padding: 8px 0; color: var(--text-muted); font-size: 0.75rem; font-weight: 500; border-radius: 8px; cursor: pointer; transition: 0.3s ease; text-align: center; white-space: nowrap; }
         .mode-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-weight: 700; }
 
-        #guideSection, #knowledgeSection, #compareSection, #adminSection { display: block; max-width: 600px; margin: 0 auto; animation: fade-in 0.5s ease; }
-        #listSection { display: none; max-width: 800px; margin: 0 auto; animation: fade-in 0.5s ease; }
+        #guideSection, #knowledgeSection, #compareSection, #adminSection, #liqueurSection { display: block; max-width: 600px; margin: 0 auto; animation: fade-in 0.5s ease; }
+        #listSection, #liqueurSection { display: none; max-width: 800px; margin: 0 auto; animation: fade-in 0.5s ease; }
         
         .guide-question { font-family: 'Noto Serif TC', serif; font-size: 1.25rem; color: var(--text-main); margin-bottom: 20px; font-weight: 700; text-align: center; }
         .guide-options { display: flex; flex-direction: column; gap: 12px; }
@@ -104,6 +105,11 @@
         .btn-restore { background: #D9534F; color: #fff; position: relative; }
         .btn-logout { background: var(--danger-bg); color: var(--danger-text); border: 1px solid rgba(184,92,92,0.3); }
 
+        /* 後台清酒/利口酒切換 Tab */
+        .admin-tab-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        .admin-tab { flex: 1; padding: 12px; background: var(--bg-body); border: 1px solid var(--border); border-radius: 10px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.3s; }
+        .admin-tab.active { background: var(--accent); color: #FFF; border-color: var(--accent); }
+
         .admin-item { display: flex; justify-content: space-between; align-items: flex-start; background: var(--bg-card); border: 1px solid var(--border); padding: 16px; border-radius: 12px; margin-bottom: 12px; }
         .admin-item-title { font-weight: 700; font-size: 1.05rem; color: var(--text-main); margin-bottom: 4px; }
         .admin-item-actions { display: flex; flex-direction: column; gap: 8px; }
@@ -148,11 +154,12 @@
         <div>載入最新酒單中...</div>
     </div>
 
-    <h2>清酒單</h2>
+    <h2>TIGER SAKE</h2>
     
     <div class="mode-switch">
         <button class="mode-btn active" id="btnGuide" onclick="app.switchMode('guide')">引導</button>
-        <button class="mode-btn" id="btnList" onclick="app.switchMode('list')">酒單</button>
+        <button class="mode-btn" id="btnList" onclick="app.switchMode('list')">清酒</button>
+        <button class="mode-btn" id="btnLiqueur" onclick="app.switchMode('liqueur')">利口酒</button>
         <button class="mode-btn" id="btnCompare" onclick="app.switchMode('compare')">比較</button>
         <button class="mode-btn" id="btnKnowledge" onclick="app.switchMode('knowledge')">筆記</button>
         <button class="mode-btn" id="btnAdmin" onclick="app.switchMode('admin')">管理</button>
@@ -164,9 +171,16 @@
     </div>
 
     <div id="listSection">
-        <div class="search-container"><input type="text" id="searchInput" class="search-box" placeholder="搜尋酒名、香氣、口感或關鍵字..." onkeyup="app.filterSake()"></div>
-        <div class="categories"></div>
+        <div class="search-container"><input type="text" id="searchInput" class="search-box" placeholder="搜尋清酒名、香氣、口感或關鍵字..." onkeyup="app.filterSake()"></div>
+        <div class="categories" id="sakeCategories"></div>
         <div class="sake-list" id="sakeList"></div>
+    </div>
+
+    <!-- 🍷 新增：利口酒專屬區塊 -->
+    <div id="liqueurSection" style="display: none;">
+        <div class="search-container"><input type="text" id="liqueurSearchInput" class="search-box" placeholder="搜尋果實酒、梅酒、茶酒..." onkeyup="app.filterLiqueur()"></div>
+        <div class="categories" id="liqueurCategories"></div>
+        <div class="sake-list" id="liqueurList"></div>
     </div>
 
     <div id="compareSection" style="display: none;">
@@ -207,8 +221,13 @@
         </div>
 
         <div id="adminContentWrapper" style="display: none;">
+            <div class="admin-tab-group">
+                <button class="admin-tab active" id="tabSakeAdmin" onclick="app.switchAdminTab('sake')">🍶 清酒管理</button>
+                <button class="admin-tab" id="tabLiqueurAdmin" onclick="app.switchAdminTab('liqueur')">🍷 利口酒管理</button>
+            </div>
+            
             <div class="admin-controls">
-                <button class="admin-btn btn-add" onclick="app.openAdminForm(null)">＋ 新增全新酒款</button>
+                <button class="admin-btn btn-add" onclick="app.openAdminForm(null)">＋ 新增酒款</button>
                 <button class="admin-btn btn-logout" onclick="app.adminLogout()">🚪 登出</button>
             </div>
             <div class="admin-controls" style="margin-bottom: 24px;">
@@ -219,7 +238,7 @@
         </div>
     </div>
 
-    <div class="footer">© 2026 lxt04__20 | 專業侍酒管理系統 (雲端同步版)</div>
+    <div class="footer">© 2026 lxt04__20 | 專業侍酒管理系統 (雙軌同步版)</div>
 
     <div class="modal-overlay" id="sakeModal" onclick="app.closeModal(event, 'sakeModal')">
         <div class="modal-content">
@@ -232,23 +251,25 @@
         <div class="modal-content" style="padding: 24px 20px;">
             <button class="modal-close" onclick="app.closeModal(event, 'adminModal', true)">✕</button>
             <h3 style="margin-top: 0; color: var(--accent); font-family: 'Noto Serif TC', serif;" id="adminFormTitle">編輯酒款</h3>
+            
+            <!-- 隱藏欄位紀錄這是修改清酒還是利口酒 -->
             <input type="hidden" id="formId">
+            <input type="hidden" id="formType">
+            
             <div class="admin-form-group"><label>酒款名稱</label><input type="text" id="formName" class="admin-input" placeholder="例如：獺祭 45"></div>
             
             <div style="display:flex; gap:10px;">
-                <div class="admin-form-group" style="flex:1;"><label>容量 (多個請用 / 分開)</label><input type="text" id="formVolume" class="admin-input" placeholder="例如：180ml / 1.8L"></div>
-                <div class="admin-form-group" style="flex:1;"><label>價格 (可留空)</label><input type="text" id="formPrice" class="admin-input" placeholder="例如：單杯 $250 / 瓶 $1500"></div>
+                <div class="admin-form-group" style="flex:1;"><label>容量/ABV% (多個請用 / 分開)</label><input type="text" id="formVolume" class="admin-input" placeholder="例如：180ml / 12%"></div>
+                <div class="admin-form-group" style="flex:1;"><label>價格 (可留空)</label><input type="text" id="formPrice" class="admin-input" placeholder="例如：單杯 $250"></div>
             </div>
 
-            <div class="admin-form-group"><label>甘辛口分類</label>
+            <div class="admin-form-group"><label id="labelFormTaste">甘辛口/風味分類</label>
                 <select id="formTaste" class="admin-input">
-                    <option value="甘口">甘口</option><option value="微甘口">微甘口</option><option value="濃醇甘口">濃醇甘口</option>
-                    <option value="辛口">辛口</option><option value="超辛口">超辛口</option><option value="旨辛口">旨辛口</option>
-                    <option value="旨口">旨口</option>
+                    <!-- Javascript 動態填入選項 -->
                 </select>
             </div>
-            <div class="admin-form-group"><label>搜尋標籤 (Tags) - 空格分開</label><input type="text" id="formTags" class="admin-input" placeholder="例如：獺祭 知名 白酒 冰飲"></div>
-            <div class="admin-form-group"><label>分類 (Category) - 供引導判斷，逗號分開</label><input type="text" id="formCategory" class="admin-input" placeholder="例如：知名酒款, 甘口, 適合溫飲"></div>
+            <div class="admin-form-group"><label>搜尋標籤 (Tags) - 空格分開</label><input type="text" id="formTags" class="admin-input" placeholder="例如：知名 白酒 冰飲"></div>
+            <div class="admin-form-group"><label>分類 (Category) - 供分類按鈕判斷，逗號分開</label><input type="text" id="formCategory" class="admin-input" placeholder="例如：知名酒款, 適合溫飲"></div>
             
             <div class="admin-form-group"><label>溫度建議</label>
                 <select id="formTemp" class="admin-input">
@@ -261,8 +282,8 @@
             <div class="admin-form-group"><label>香氣標籤 (Aroma) - 逗號分開</label><input type="text" id="formAroma" class="admin-input" placeholder="例如：青蘋果, 白花"></div>
             <div class="admin-form-group"><label>口感標籤 (Flavor) - 逗號分開</label><input type="text" id="formFlavor" class="admin-input" placeholder="例如：清爽, 俐落"></div>
             <div class="admin-form-group"><label>詳細介紹</label><textarea id="formDesc" class="admin-textarea"></textarea></div>
-            <div class="admin-form-group"><label>溫度詳細解說</label><textarea id="formTempReason" class="admin-textarea"></textarea></div>
-            <div class="admin-form-group"><label>餐酒搭配建議</label><textarea id="formPairing" class="admin-textarea"></textarea></div>
+            <div class="admin-form-group"><label>溫度詳細解說 (可留空)</label><textarea id="formTempReason" class="admin-textarea"></textarea></div>
+            <div class="admin-form-group"><label>餐酒搭配建議 (可留空)</label><textarea id="formPairing" class="admin-textarea"></textarea></div>
             <button class="admin-save-btn" onclick="app.saveAdminForm()">儲存酒款</button>
         </div>
     </div>
@@ -285,26 +306,45 @@
         const firebaseApp = initializeApp(firebaseConfig);
         const database = getDatabase(firebaseApp);
         const dbRef = ref(database, 'sakeMenuData');
+        const liqueurDbRef = ref(database, 'liqueurMenuData'); // 新增：利口酒資料庫節點
+
+        // 利口酒預設資料建檔
+        const defaultLiqueurData = [
+            { id: 1, name: "天吹 梅酒", volume: "12%", price: "", taste: "清爽微酸", category: "梅酒", tags: "天吹 梅酒 清爽 經典", temp: "❄️ 適合冰飲", aroma: ["花香", "梅香"], flavor: ["清爽", "不死甜", "尾韻酸度"], desc: "經典款，帶點花香清香。入口酸度淡淡的，但尾韻到後面酸度會在被提上去，是比較偏清爽、不死甜的梅酒。", tempReason: "", pairing: "", outOfStock: [] },
+            { id: 2, name: "紅茶梅酒", volume: "8%", price: "", taste: "茶香清爽", category: "梅酒, 茶酒", tags: "紅茶梅酒 茶酒 清爽", temp: "❄️ 適合冰飲", aroma: ["紅茶香"], flavor: ["茶澀感中和甜度", "好入口"], desc: "茶香會比較明顯，有些不常喝梅酒但想試試看的客人會選這款。因為紅茶自帶的清爽澀感會中和掉梅酒的甜度，比傳統梅酒更好入口。", tempReason: "", pairing: "", outOfStock: [] },
+            { id: 3, name: "鳳凰美田 葡萄風味", volume: "9%", price: "", taste: "果香濃郁", category: "果實酒", tags: "鳳凰美田 葡萄 季節限定", temp: "❄️ 適合冰飲", aroma: ["濃郁葡萄香"], flavor: ["果肉口感", "水果甜香"], desc: "這支酒是季節限定，現在盛產葡萄。在釀造的時候，保留了葡萄的果肉，所以果實的香氣很濃郁。如果喜歡水果香可以考慮看看這隻。", tempReason: "", pairing: "", outOfStock: [] },
+            { id: 4, name: "chill on 凋音 (烏龍茶蜂蜜酒)", volume: "6%", price: "", taste: "酸甜平衡", category: "茶酒, 蜂蜜酒", tags: "chill on 凋音 烏龍茶 蜂蜜", temp: "❄️ 適合冰飲", aroma: ["茶葉花香", "草本感", "蜂蜜香"], flavor: ["酸甜平衡", "順口無負擔"], desc: "烏龍茶蜂蜜酒。有一點茶葉的花香跟草本感跟蜂蜜香，讓酒體的甜味跟酸度平衡。低酒精又不失酒香的一隻酒，如果會比較希望負擔輕、順口的會比較推薦這隻。", tempReason: "", pairing: "", outOfStock: [] },
+            { id: 5, name: "鳳凰美田 杏桃酒", volume: "16%", price: "", taste: "果香醇厚", category: "果實酒", tags: "鳳凰美田 杏桃 豐富", temp: "❄️ 適合冰飲", aroma: ["醇厚果香"], flavor: ["杏桃果肉", "酸度柔和"], desc: "酒香層次比較豐富，釀造的時候有保留杏桃天然的果肉纖維。酸度柔和，入口果香醇厚。", tempReason: "", pairing: "", outOfStock: [] },
+            { id: 6, name: "洋梨濁酒", volume: "9%", price: "", taste: "清新不膩", category: "果實酒, 濁酒", tags: "洋梨 濁酒 清新", temp: "❄️ 適合冰飲", aroma: ["洋梨香", "花香", "蜂蜜香"], flavor: ["酸甜中和", "清新尾韻"], desc: "入口會有洋梨香慢慢在嘴中散開，帶有花香、蜂蜜香，酸甜中和。尾韻清新不甜膩。", tempReason: "", pairing: "", outOfStock: [] }
+        ];
 
         let currentSakeData = [];
-        let isFirstLoad = true;
+        let currentLiqueurData = [];
+        let isFirstLoadSake = true;
+        let isFirstLoadLiqueur = true;
 
         const app = {
             currentCategory: '全部',
+            currentLiqueurCategory: '全部',
+            adminCurrentType: 'sake', // 'sake' or 'liqueur'
             targetSize: 'all', 
             historyStack: [], 
             
             init() {},
 
-            isCompletelySoldOut(sake) {
-                if (!sake.volume) return false;
-                const vols = sake.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
-                const outs = sake.outOfStock || [];
+            isCompletelySoldOut(item) {
+                if (!item.volume) return false;
+                const vols = item.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                const outs = item.outOfStock || [];
                 return vols.length > 0 && vols.every(v => outs.includes(v));
             },
 
-            saveData() {
-                set(dbRef, currentSakeData).catch(error => { alert("雲端同步失敗：" + error); });
+            saveData(type) {
+                if (type === 'sake') {
+                    set(dbRef, currentSakeData).catch(error => { alert("雲端同步失敗：" + error); });
+                } else {
+                    set(liqueurDbRef, currentLiqueurData).catch(error => { alert("雲端同步失敗：" + error); });
+                }
             },
 
             adminLogin() {
@@ -327,69 +367,113 @@
                 alert('已成功登出系統！');
             },
 
-            getTasteClass(taste) { if(taste.includes('甘')) return 'taste-sweet'; if(taste.includes('辛')) return 'taste-dry'; return 'taste-rich'; },
+            switchAdminTab(type) {
+                this.adminCurrentType = type;
+                document.getElementById('tabSakeAdmin').classList.remove('active');
+                document.getElementById('tabLiqueurAdmin').classList.remove('active');
+                if(type === 'sake') document.getElementById('tabSakeAdmin').classList.add('active');
+                else document.getElementById('tabLiqueurAdmin').classList.add('active');
+                this.renderAdminList();
+            },
 
-            createCardHTML(sake, index) {
-                const aromaHtml = (sake.aroma || []).map(a => `<span class="tag-pill tag-aroma">${a}</span>`).join('');
-                const flavorHtml = (sake.flavor || []).map(f => `<span class="tag-pill tag-flavor">${f}</span>`).join('');
-                const tempClass = sake.temp.includes('溫') || sake.temp.includes('熱') ? 'tag-temp-hot' : 'tag-temp-cold';
-                const tempHtml = `<span class="tag-pill ${tempClass}">🌡️ ${sake.temp}</span>`;
-                const volumes = sake.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
-                const outOfStock = sake.outOfStock || [];
+            getTasteClass(taste) { 
+                if(taste.includes('甘') || taste.includes('甜')) return 'taste-sweet'; 
+                if(taste.includes('辛') || taste.includes('茶')) return 'taste-dry'; 
+                return 'taste-rich'; 
+            },
+
+            createCardHTML(item, index, type) {
+                const aromaHtml = (item.aroma || []).map(a => `<span class="tag-pill tag-aroma">${a}</span>`).join('');
+                const flavorHtml = (item.flavor || []).map(f => `<span class="tag-pill tag-flavor">${f}</span>`).join('');
+                const tempClass = item.temp.includes('溫') || item.temp.includes('熱') ? 'tag-temp-hot' : 'tag-temp-cold';
+                const tempHtml = `<span class="tag-pill ${tempClass}">🌡️ ${item.temp}</span>`;
+
+                const volumes = item.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                const outOfStock = item.outOfStock || [];
                 const volumeHtml = volumes.map(v => {
                     const isOut = outOfStock.includes(v);
                     return `<span class="sake-volume ${isOut ? 'sold-out' : ''}">${v}${isOut ? ' (售完)' : ''}</span>`;
                 }).join(' ');
-                const priceHtml = sake.price ? `<span class="sake-price">💰 ${sake.price}</span>` : '';
-                const isAllOut = this.isCompletelySoldOut(sake);
+
+                const priceHtml = item.price ? `<span class="sake-price">💰 ${item.price}</span>` : '';
+                const isAllOut = this.isCompletelySoldOut(item);
                 const cardClass = isAllOut ? 'sake-card anim-item sold-out-card' : 'sake-card anim-item';
                 const hintText = isAllOut ? '已全數售完' : '查看詳細介紹 ➔';
 
                 return `
-                    <div class="${cardClass}" style="animation-delay: ${index * 0.05}s" onclick="window.app.openModal(${sake.id})">
+                    <div class="${cardClass}" style="animation-delay: ${index * 0.05}s" onclick="window.app.openModal(${item.id}, '${type}')">
                         <div class="sake-header">
-                            <div class="sake-title-row"><div class="sake-title">${sake.name}</div></div>
-                            <div class="sake-badges">${volumeHtml}${priceHtml}<span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span></div>
+                            <div class="sake-title-row"><div class="sake-title">${item.name}</div></div>
+                            <div class="sake-badges">
+                                ${volumeHtml}${priceHtml}
+                                <span class="sake-taste ${this.getTasteClass(item.taste)}">${item.taste}</span>
+                            </div>
                         </div>
                         <div class="tag-group">${tempHtml}${aromaHtml}${flavorHtml}</div>
                         <div class="card-hint">${hintText}</div>
                     </div>`;
             },
 
-            catConfigs: [
-                { id: '全部', label: '全部酒款' }, { id: '知名酒款', label: '知名/安全牌' },
+            catSakeConfigs: [
+                { id: '全部', label: '全部清酒' }, { id: '知名酒款', label: '知名/安全牌' },
                 { id: '甘口', label: '果香豐富 (甘口)' }, { id: '辛口', label: '乾淨俐落 (辛口)' },
                 { id: '濃郁', label: '旨味濃郁 (配肉)' }, { id: '特殊風味', label: '生原酒/濁酒' },
                 { id: '適合溫飲', label: '適合溫熱' }
             ],
+
+            catLiqueurConfigs: [
+                { id: '全部', label: '全部利口酒' }, { id: '梅酒', label: '梅酒' },
+                { id: '果實酒', label: '果實酒' }, { id: '茶酒', label: '茶酒' },
+                { id: '蜂蜜酒', label: '蜂蜜酒' }, { id: '濁酒', label: '濁酒' }
+            ],
             
             renderCategories() {
-                const container = document.querySelector('.categories');
-                container.innerHTML = this.catConfigs.map(cat => `<button class="cat-btn ${cat.id === '全部' ? 'active' : ''}" onclick="window.app.setCategory('${cat.id}', this)">${cat.label}</button>`).join('');
+                // 清酒分類
+                const containerSake = document.getElementById('sakeCategories');
+                containerSake.innerHTML = this.catSakeConfigs.map(cat => `<button class="cat-btn ${cat.id === this.currentCategory ? 'active' : ''}" onclick="window.app.setCategory('${cat.id}', 'sake')">${cat.label}</button>`).join('');
+                // 利口酒分類
+                const containerLiqueur = document.getElementById('liqueurCategories');
+                containerLiqueur.innerHTML = this.catLiqueurConfigs.map(cat => `<button class="cat-btn ${cat.id === this.currentLiqueurCategory ? 'active' : ''}" onclick="window.app.setCategory('${cat.id}', 'liqueur')">${cat.label}</button>`).join('');
             },
 
-            setCategory(categoryId, element) {
-                this.currentCategory = categoryId;
-                document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-                element.classList.add('active');
-                this.filterSake();
+            setCategory(categoryId, type) {
+                if(type === 'sake') {
+                    this.currentCategory = categoryId;
+                    this.renderCategories();
+                    this.filterSake();
+                } else {
+                    this.currentLiqueurCategory = categoryId;
+                    this.renderCategories();
+                    this.filterLiqueur();
+                }
             },
 
             filterSake() {
                 const searchTxt = document.getElementById('searchInput').value.toLowerCase();
-                let filtered = currentSakeData.filter(sake => {
-                    const matchCat = this.currentCategory === '全部' || sake.category.includes(this.currentCategory);
-                    const matchTxt = sake.name.toLowerCase().includes(searchTxt) || sake.tags.toLowerCase().includes(searchTxt) || sake.taste.toLowerCase().includes(searchTxt) || sake.volume.toLowerCase().includes(searchTxt) || sake.temp.toLowerCase().includes(searchTxt) || (sake.aroma || []).some(a => a.toLowerCase().includes(searchTxt)) || (sake.flavor || []).some(f => f.toLowerCase().includes(searchTxt));
+                let filtered = currentSakeData.filter(item => {
+                    const matchCat = this.currentCategory === '全部' || item.category.includes(this.currentCategory);
+                    const matchTxt = item.name.toLowerCase().includes(searchTxt) || item.tags.toLowerCase().includes(searchTxt) || item.taste.toLowerCase().includes(searchTxt) || item.volume.toLowerCase().includes(searchTxt) || item.temp.toLowerCase().includes(searchTxt) || (item.aroma || []).some(a => a.toLowerCase().includes(searchTxt)) || (item.flavor || []).some(f => f.toLowerCase().includes(searchTxt));
                     return matchCat && matchTxt;
                 });
                 filtered.sort((a, b) => {
-                    const aOut = this.isCompletelySoldOut(a);
-                    const bOut = this.isCompletelySoldOut(b);
-                    if (aOut && !bOut) return 1;
-                    if (!aOut && bOut) return -1;
-                    return 0;
+                    const aOut = this.isCompletelySoldOut(a); const bOut = this.isCompletelySoldOut(b);
+                    if (aOut && !bOut) return 1; if (!aOut && bOut) return -1; return 0;
                 });
-                document.getElementById('sakeList').innerHTML = filtered.length ? filtered.map((s, idx) => this.createCardHTML(s, idx)).join('') : '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">找不到符合的酒款</p>';
+                document.getElementById('sakeList').innerHTML = filtered.length ? filtered.map((s, idx) => this.createCardHTML(s, idx, 'sake')).join('') : '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">找不到符合的清酒</p>';
+            },
+
+            filterLiqueur() {
+                const searchTxt = document.getElementById('liqueurSearchInput').value.toLowerCase();
+                let filtered = currentLiqueurData.filter(item => {
+                    const matchCat = this.currentLiqueurCategory === '全部' || item.category.includes(this.currentLiqueurCategory);
+                    const matchTxt = item.name.toLowerCase().includes(searchTxt) || item.tags.toLowerCase().includes(searchTxt) || item.taste.toLowerCase().includes(searchTxt) || item.volume.toLowerCase().includes(searchTxt) || item.temp.toLowerCase().includes(searchTxt) || (item.aroma || []).some(a => a.toLowerCase().includes(searchTxt)) || (item.flavor || []).some(f => f.toLowerCase().includes(searchTxt));
+                    return matchCat && matchTxt;
+                });
+                filtered.sort((a, b) => {
+                    const aOut = this.isCompletelySoldOut(a); const bOut = this.isCompletelySoldOut(b);
+                    if (aOut && !bOut) return 1; if (!aOut && bOut) return -1; return 0;
+                });
+                document.getElementById('liqueurList').innerHTML = filtered.length ? filtered.map((s, idx) => this.createCardHTML(s, idx, 'liqueur')).join('') : '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">找不到符合的利口酒</p>';
             },
 
             initCompareSelects() {
@@ -487,20 +571,23 @@
             showGuideResults(catFilter, tipText) {
                 document.getElementById('guideBox').style.display = 'none';
                 let matched = currentSakeData.filter(s => s.category.includes(catFilter) && !this.isCompletelySoldOut(s));
+                
                 if (this.targetSize && this.targetSize !== 'all') {
                     if (this.targetSize === 'small') { let sizeMatched = matched.filter(s => s.volume.includes('180') || s.volume.includes('300')); if (sizeMatched.length > 0) matched = sizeMatched; } 
                     else if (this.targetSize === 'large') { let sizeMatched = matched.filter(s => s.volume.includes('720') || s.volume.includes('1.8L')); if (sizeMatched.length > 0) matched = sizeMatched; }
                 }
-                let html = `<div class="guide-tip">${tipText}</div>` + (matched.length ? matched.map((s, idx) => this.createCardHTML(s, idx)).join('') : '<div style="text-align:center; color:var(--text-muted);">目前符合條件的酒款已全數售完。</div>');
+                let html = `<div class="guide-tip">${tipText}</div>` + (matched.length ? matched.map((s, idx) => this.createCardHTML(s, idx, 'sake')).join('') : '<div style="text-align:center; color:var(--text-muted);">目前符合條件的酒款已全數售完。</div>');
                 html += `<div class="nav-buttons" style="margin-top: 24px;"><button class="back-btn" onclick="window.app.goBack()">← 上一頁</button><button class="reset-btn" onclick="window.app.startGuide()">重新選擇</button></div>`;
                 document.getElementById('guideResultList').innerHTML = html;
             },
 
             switchMode(mode) {
                 document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-                ['guideSection', 'listSection', 'compareSection', 'knowledgeSection', 'adminSection'].forEach(id => document.getElementById(id).style.display = 'none');
+                ['guideSection', 'listSection', 'liqueurSection', 'compareSection', 'knowledgeSection', 'adminSection'].forEach(id => document.getElementById(id).style.display = 'none');
+                
                 if (mode === 'guide') { document.getElementById('btnGuide').classList.add('active'); document.getElementById('guideSection').style.display = 'block'; this.startGuide(); } 
                 else if (mode === 'list') { document.getElementById('btnList').classList.add('active'); document.getElementById('listSection').style.display = 'block'; this.filterSake(); } 
+                else if (mode === 'liqueur') { document.getElementById('btnLiqueur').classList.add('active'); document.getElementById('liqueurSection').style.display = 'block'; this.filterLiqueur(); } 
                 else if (mode === 'compare') { document.getElementById('btnCompare').classList.add('active'); document.getElementById('compareSection').style.display = 'block'; } 
                 else if (mode === 'knowledge') { document.getElementById('btnKnowledge').classList.add('active'); document.getElementById('knowledgeSection').style.display = 'block'; }
                 else if (mode === 'admin') { 
@@ -517,28 +604,33 @@
                 }
             },
 
-            openModal(id) {
-                const sake = currentSakeData.find(s => s.id === id);
-                if (!sake) return;
-                const aromaHtml = (sake.aroma||[]).map(a => `<span class="tag-pill tag-aroma">${a}</span>`).join('');
-                const flavorHtml = (sake.flavor||[]).map(f => `<span class="tag-pill tag-flavor">${f}</span>`).join('');
-                const tempClass = sake.temp.includes('溫') || sake.temp.includes('熱') ? 'tag-temp-hot' : 'tag-temp-cold';
-                const volumes = sake.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
-                const outOfStock = sake.outOfStock || [];
+            openModal(id, type) {
+                const dataArray = type === 'sake' ? currentSakeData : currentLiqueurData;
+                const item = dataArray.find(s => s.id === id);
+                if (!item) return;
+                
+                const aromaHtml = (item.aroma||[]).map(a => `<span class="tag-pill tag-aroma">${a}</span>`).join('');
+                const flavorHtml = (item.flavor||[]).map(f => `<span class="tag-pill tag-flavor">${f}</span>`).join('');
+                const tempClass = item.temp.includes('溫') || item.temp.includes('熱') ? 'tag-temp-hot' : 'tag-temp-cold';
+                
+                const volumes = item.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                const outOfStock = item.outOfStock || [];
                 const volumeHtml = volumes.map(v => {
                     const isOut = outOfStock.includes(v);
                     return `<span class="sake-volume ${isOut ? 'sold-out' : ''}">${v}${isOut ? ' (售完)' : ''}</span>`;
                 }).join(' ');
-                const priceHtml = sake.price ? `<span class="sake-price">💰 ${sake.price}</span>` : '';
+
+                const priceHtml = item.price ? `<span class="sake-price">💰 ${item.price}</span>` : '';
+
                 let html = `
-                    <div class="modal-header-visual"><div class="modal-stamp">酒</div><div class="modal-title">${sake.name}</div>
-                        <div class="sake-badges" style="justify-content: center;">${volumeHtml}${priceHtml}<span class="sake-taste ${this.getTasteClass(sake.taste)}">${sake.taste}</span></div>
+                    <div class="modal-header-visual"><div class="modal-stamp">酒</div><div class="modal-title">${item.name}</div>
+                        <div class="sake-badges" style="justify-content: center;">${volumeHtml}${priceHtml}<span class="sake-taste ${this.getTasteClass(item.taste)}">${item.taste}</span></div>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-section"><div class="modal-section-title">建議飲用溫度</div><div style="margin-top: 4px;"><span class="tag-pill ${tempClass}" style="font-size: 0.9rem; padding: 4px 10px;">🌡️ ${sake.temp}</span></div><div class="modal-desc" style="margin-top: 10px; font-size: 0.9rem;">${sake.tempReason}</div></div>
+                        <div class="modal-section"><div class="modal-section-title">建議飲用溫度</div><div style="margin-top: 4px;"><span class="tag-pill ${tempClass}" style="font-size: 0.9rem; padding: 4px 10px;">🌡️ ${item.temp}</span></div>${item.tempReason ? `<div class="modal-desc" style="margin-top: 10px; font-size: 0.9rem;">${item.tempReason}</div>` : ''}</div>
                         <div class="modal-section"><div class="modal-section-title">風味特徵標籤</div><div class="tag-group" style="margin-top: 4px;">${aromaHtml}${flavorHtml}</div></div>
-                        <div class="modal-section"><div class="modal-section-title">詳細品飲介紹</div><div class="modal-desc">${sake.desc}</div></div>
-                        <div class="modal-section"><div class="modal-section-title">建議餐酒搭配</div><div class="modal-desc">${sake.pairing}</div></div>
+                        <div class="modal-section"><div class="modal-section-title">詳細品飲介紹</div><div class="modal-desc">${item.desc}</div></div>
+                        ${item.pairing ? `<div class="modal-section"><div class="modal-section-title">建議餐酒搭配</div><div class="modal-desc">${item.pairing}</div></div>` : ''}
                     </div>`;
                 document.getElementById('modalContentInner').innerHTML = html;
                 document.getElementById('sakeModal').classList.add('active');
@@ -552,24 +644,28 @@
             },
 
             renderAdminList() {
-                const listHtml = currentSakeData.map(s => {
-                    let vols = s.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
-                    let outOfStock = s.outOfStock || [];
+                const dataArray = this.adminCurrentType === 'sake' ? currentSakeData : currentLiqueurData;
+                
+                const listHtml = dataArray.map(item => {
+                    let vols = item.volume.split(/[/,]/).map(v => v.trim()).filter(Boolean);
+                    let outOfStock = item.outOfStock || [];
                     let stockButtons = vols.map(v => {
                         let isOut = outOfStock.includes(v);
-                        return `<button class="btn-stock ${isOut ? 'sold-out' : 'in-stock'}" onclick="window.app.toggleStock(${s.id}, '${v}')">${v} ${isOut ? '停售' : '供應中'}</button>`;
+                        return `<button class="btn-stock ${isOut ? 'sold-out' : 'in-stock'}" onclick="window.app.toggleStock(${item.id}, '${v}', '${this.adminCurrentType}')">${v} ${isOut ? '停售' : '供應中'}</button>`;
                     }).join('');
-                    const priceText = s.price ? ` | 💰 ${s.price}` : '';
+
+                    const priceText = item.price ? ` | 💰 ${item.price}` : '';
+
                     return `
                         <div class="admin-item">
                             <div style="flex:1; margin-right:10px;">
-                                <div class="admin-item-title">${s.name}</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">${s.taste} | ${s.category}${priceText}</div>
+                                <div class="admin-item-title">${item.name}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">${item.taste} | ${item.category}${priceText}</div>
                                 <div class="stock-toggle-group">${stockButtons}</div>
                             </div>
                             <div class="admin-item-actions">
-                                <button class="btn-edit" onclick="window.app.openAdminForm(${s.id})">編輯</button>
-                                <button class="btn-delete" onclick="window.app.deleteSake(${s.id})">刪除</button>
+                                <button class="btn-edit" onclick="window.app.openAdminForm(${item.id}, '${this.adminCurrentType}')">編輯</button>
+                                <button class="btn-delete" onclick="window.app.deleteSake(${item.id}, '${this.adminCurrentType}')">刪除</button>
                             </div>
                         </div>
                     `;
@@ -577,42 +673,67 @@
                 document.getElementById('adminList').innerHTML = listHtml;
             },
 
-            toggleStock(id, vol) {
+            toggleStock(id, vol, type) {
                 if(!confirm(`確認要變更 ${vol} 的庫存狀態嗎？`)) return;
-                const sake = currentSakeData.find(s => s.id === id);
-                if (!sake) return;
-                if (!sake.outOfStock) sake.outOfStock = [];
-                const idx = sake.outOfStock.indexOf(vol);
-                if (idx > -1) { sake.outOfStock.splice(idx, 1); } 
-                else { sake.outOfStock.push(vol); }
-                this.saveData(); 
+                const dataArray = type === 'sake' ? currentSakeData : currentLiqueurData;
+                const item = dataArray.find(s => s.id === id);
+                if (!item) return;
+                if (!item.outOfStock) item.outOfStock = [];
+                const idx = item.outOfStock.indexOf(vol);
+                if (idx > -1) { item.outOfStock.splice(idx, 1); } 
+                else { item.outOfStock.push(vol); }
+                this.saveData(type); 
             },
 
-            openAdminForm(id) {
+            openAdminForm(id, type = null) {
+                // 如果按＋新增，預設為當前選擇的 tab type
+                const targetType = type || this.adminCurrentType; 
                 const formModal = document.getElementById('adminModal');
-                if (id) {
-                    const s = currentSakeData.find(x => x.id === id);
-                    document.getElementById('adminFormTitle').innerText = "編輯酒款";
-                    document.getElementById('formId').value = s.id;
-                    document.getElementById('formName').value = s.name;
-                    document.getElementById('formVolume').value = s.volume;
-                    document.getElementById('formPrice').value = s.price || "";
-                    document.getElementById('formTaste').value = s.taste;
-                    document.getElementById('formTags').value = s.tags;
-                    document.getElementById('formCategory').value = s.category;
-                    document.getElementById('formTemp').value = s.temp;
-                    document.getElementById('formAroma').value = (s.aroma||[]).join(', ');
-                    document.getElementById('formFlavor').value = (s.flavor||[]).join(', ');
-                    document.getElementById('formDesc').value = s.desc;
-                    document.getElementById('formTempReason').value = s.tempReason;
-                    document.getElementById('formPairing').value = s.pairing;
+                const dataArray = targetType === 'sake' ? currentSakeData : currentLiqueurData;
+
+                // 根據類型切換表單選項
+                const tasteSelect = document.getElementById('formTaste');
+                if (targetType === 'sake') {
+                    tasteSelect.innerHTML = `<option value="甘口">甘口</option><option value="微甘口">微甘口</option><option value="濃醇甘口">濃醇甘口</option><option value="辛口">辛口</option><option value="超辛口">超辛口</option><option value="旨辛口">旨辛口</option><option value="旨口">旨口</option>`;
+                    document.getElementById('labelFormTaste').innerText = '甘辛口分類';
                 } else {
-                    document.getElementById('adminFormTitle').innerText = "新增酒款";
+                    tasteSelect.innerHTML = `<option value="清爽微酸">清爽微酸</option><option value="茶香清爽">茶香清爽</option><option value="果香濃郁">果香濃郁</option><option value="果香醇厚">果香醇厚</option><option value="酸甜平衡">酸甜平衡</option><option value="清新不膩">清新不膩</option><option value="香甜滑順">香甜滑順</option>`;
+                    document.getElementById('labelFormTaste').innerText = '風味口感分類';
+                }
+
+                document.getElementById('formType').value = targetType;
+
+                if (id) {
+                    const item = dataArray.find(x => x.id === id);
+                    document.getElementById('adminFormTitle').innerText = targetType === 'sake' ? "編輯清酒" : "編輯利口酒";
+                    document.getElementById('formId').value = item.id;
+                    document.getElementById('formName').value = item.name;
+                    document.getElementById('formVolume').value = item.volume;
+                    document.getElementById('formPrice').value = item.price || "";
+                    document.getElementById('formTaste').value = item.taste;
+                    document.getElementById('formTags').value = item.tags;
+                    document.getElementById('formCategory').value = item.category;
+                    
+                    let tempVal = item.temp;
+                    if (!["❄️ 適合冰飲", "♨️ 適合溫熱", "🌡️ 冷熱皆宜"].includes(tempVal)) {
+                        if (tempVal.includes("皆可") || (tempVal.includes("冷") && tempVal.includes("熱"))) tempVal = "🌡️ 冷熱皆宜";
+                        else if (tempVal.includes("溫") || tempVal.includes("熱") || tempVal.includes("燗")) tempVal = "♨️ 適合溫熱";
+                        else tempVal = "❄️ 適合冰飲";
+                    }
+                    document.getElementById('formTemp').value = tempVal;
+
+                    document.getElementById('formAroma').value = (item.aroma||[]).join(', ');
+                    document.getElementById('formFlavor').value = (item.flavor||[]).join(', ');
+                    document.getElementById('formDesc').value = item.desc;
+                    document.getElementById('formTempReason').value = item.tempReason || "";
+                    document.getElementById('formPairing').value = item.pairing || "";
+                } else {
+                    document.getElementById('adminFormTitle').innerText = targetType === 'sake' ? "新增清酒" : "新增利口酒";
                     document.getElementById('formId').value = "";
                     document.getElementById('formName').value = "";
                     document.getElementById('formVolume').value = "";
                     document.getElementById('formPrice').value = "";
-                    document.getElementById('formTaste').value = "甘口";
+                    document.getElementById('formTaste').value = targetType === 'sake' ? "甘口" : "清爽微酸";
                     document.getElementById('formTags').value = "";
                     document.getElementById('formCategory').value = "";
                     document.getElementById('formTemp').value = "❄️ 適合冰飲";
@@ -628,7 +749,10 @@
 
             saveAdminForm() {
                 const idVal = document.getElementById('formId').value;
-                const newSake = {
+                const type = document.getElementById('formType').value;
+                const dataArray = type === 'sake' ? currentSakeData : currentLiqueurData;
+
+                const newItem = {
                     name: document.getElementById('formName').value,
                     volume: document.getElementById('formVolume').value,
                     price: document.getElementById('formPrice').value,
@@ -641,34 +765,40 @@
                     desc: document.getElementById('formDesc').value,
                     tempReason: document.getElementById('formTempReason').value,
                     pairing: document.getElementById('formPairing').value,
-                    outOfStock: idVal ? (currentSakeData.find(s => s.id == idVal).outOfStock || []) : []
+                    outOfStock: idVal ? (dataArray.find(s => s.id == idVal).outOfStock || []) : []
                 };
 
                 if (idVal) {
-                    newSake.id = parseInt(idVal);
-                    const index = currentSakeData.findIndex(s => s.id === newSake.id);
-                    if(index > -1) currentSakeData[index] = newSake;
+                    newItem.id = parseInt(idVal);
+                    const index = dataArray.findIndex(s => s.id === newItem.id);
+                    if(index > -1) dataArray[index] = newItem;
                 } else {
-                    newSake.id = currentSakeData.length > 0 ? Math.max(...currentSakeData.map(s => s.id)) + 1 : 1;
-                    currentSakeData.push(newSake);
+                    newItem.id = dataArray.length > 0 ? Math.max(...dataArray.map(s => s.id)) + 1 : 1;
+                    dataArray.push(newItem);
                 }
 
-                this.saveData(); 
+                this.saveData(type); 
                 this.closeModal(null, 'adminModal', true);
             },
 
-            deleteSake(id) {
-                if (confirm("確定要刪除這支酒嗎？")) {
-                    currentSakeData = currentSakeData.filter(s => s.id !== id);
-                    this.saveData();
+            deleteSake(id, type) {
+                if (confirm(`確定要刪除這支${type === 'sake' ? '清酒' : '利口酒'}嗎？`)) {
+                    if (type === 'sake') currentSakeData = currentSakeData.filter(s => s.id !== id);
+                    else currentLiqueurData = currentLiqueurData.filter(s => s.id !== id);
+                    this.saveData(type);
                 }
             },
 
             exportData() {
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentSakeData));
+                const dataStrSake = encodeURIComponent(JSON.stringify(currentSakeData));
+                const dataStrLiq = encodeURIComponent(JSON.stringify(currentLiqueurData));
+                
+                const backupObj = { sake: currentSakeData, liqueur: currentLiqueurData };
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj));
+                
                 const dlAnchorElem = document.createElement('a');
                 dlAnchorElem.setAttribute("href", dataStr);
-                dlAnchorElem.setAttribute("download", "sake_menu_backup.json");
+                dlAnchorElem.setAttribute("download", "all_menu_backup.json");
                 dlAnchorElem.click();
             },
 
@@ -679,47 +809,76 @@
                 reader.onload = (e) => {
                     try {
                         const importedData = JSON.parse(e.target.result);
-                        if (Array.isArray(importedData)) {
-                            currentSakeData = importedData.map(s => {
-                                if (!s.outOfStock) s.outOfStock = [];
-                                if (!s.price) s.price = "";
-                                return s;
-                            });
-                            this.saveData();
-                            alert("資料還原成功！");
-                        } else { alert("檔案格式錯誤！"); }
+                        
+                        // 判斷是單獨清酒庫存還是混合雙庫存
+                        if(importedData.sake && importedData.liqueur) {
+                            currentSakeData = importedData.sake.map(s => ({...s, outOfStock: s.outOfStock || [], price: s.price || ""}));
+                            currentLiqueurData = importedData.liqueur.map(s => ({...s, outOfStock: s.outOfStock || [], price: s.price || ""}));
+                            this.saveData('sake');
+                            this.saveData('liqueur');
+                        } else if (Array.isArray(importedData)) {
+                            // 舊版備份匯入（當作純清酒）
+                            currentSakeData = importedData.map(s => ({...s, outOfStock: s.outOfStock || [], price: s.price || ""}));
+                            this.saveData('sake');
+                        }
+                        alert("資料還原成功！");
                     } catch (err) { alert("讀取檔案失敗：" + err); }
                 };
                 reader.readAsText(file);
                 event.target.value = ''; 
+            },
+
+            updateUI() {
+                this.initCompareSelects();
+                this.renderCategories();
+                
+                if (document.getElementById('listSection').style.display === 'block') this.filterSake();
+                if (document.getElementById('liqueurSection').style.display === 'block') this.filterLiqueur();
+                if (document.getElementById('adminSection').style.display === 'block' && document.getElementById('adminContentWrapper').style.display === 'block') this.renderAdminList();
+                if (document.getElementById('compareSection').style.display === 'block') this.updateCompare();
+                
+                if (isFirstLoadSake && isFirstLoadLiqueur) {
+                    const loading = document.getElementById('loadingOverlay');
+                    if (loading) {
+                        loading.style.opacity = '0';
+                        setTimeout(() => { loading.style.display = 'none'; }, 500);
+                    }
+                    this.init();
+                    isFirstLoadSake = false;
+                    isFirstLoadLiqueur = false;
+                }
             }
         };
 
+        // Firebase 即時資料同步 (清酒)
         onValue(dbRef, (snapshot) => {
             const data = snapshot.val();
+            if (data) currentSakeData = data.map(s => ({ ...s, price: s.price || "", aroma: s.aroma || [], flavor: s.flavor || [], outOfStock: s.outOfStock || [] }));
+            else currentSakeData = [];
+            
+            if(isFirstLoadSake && isFirstLoadLiqueur === false) app.updateUI(); // 確保兩個都載入
+            else if(!isFirstLoadSake) app.updateUI();
+            isFirstLoadSake = false;
+        });
+
+        // Firebase 即時資料同步 (利口酒)
+        onValue(liqueurDbRef, (snapshot) => {
+            const data = snapshot.val();
             if (data) {
-                currentSakeData = data.map(s => ({
-                    ...s, price: s.price || "", aroma: s.aroma || [], flavor: s.flavor || [], outOfStock: s.outOfStock || []
-                }));
+                currentLiqueurData = data.map(s => ({ ...s, price: s.price || "", aroma: s.aroma || [], flavor: s.flavor || [], outOfStock: s.outOfStock || [] }));
             } else {
-                currentSakeData = [];
+                currentLiqueurData = defaultLiqueurData;
+                set(liqueurDbRef, currentLiqueurData);
             }
-            app.initCompareSelects();
-            app.renderCategories();
-            if (document.getElementById('listSection').style.display === 'block') { app.filterSake(); }
-            if (document.getElementById('adminSection').style.display === 'block' && document.getElementById('adminContentWrapper').style.display === 'block') { app.renderAdminList(); }
-            if (document.getElementById('compareSection').style.display === 'block') { app.updateCompare(); }
-            if (isFirstLoad) {
-                const loading = document.getElementById('loadingOverlay');
-                loading.style.opacity = '0';
-                setTimeout(() => { loading.style.display = 'none'; }, 500);
-                app.init();
-                isFirstLoad = false;
-            }
+            
+            if(isFirstLoadLiqueur && isFirstLoadSake === false) app.updateUI();
+            else if(!isFirstLoadLiqueur) app.updateUI();
+            isFirstLoadLiqueur = false;
         });
 
         window.app = app;
         document.getElementById('loginPass').addEventListener('keypress', function (e) { if (e.key === 'Enter') { app.adminLogin(); } });
+
     </script>
 </body>
 </html>
