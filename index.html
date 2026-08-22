@@ -24,7 +24,6 @@
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 5vh 4vw 8vh 4vw; line-height: 1.6; letter-spacing: 0.02em; padding-top: env(safe-area-inset-top, 5vh); padding-bottom: env(safe-area-inset-bottom, 8vh); }
         h2 { font-family: 'Noto Serif TC', serif; text-align: center; color: var(--text-main); font-size: 1.6rem; margin-bottom: 1.5rem; font-weight: 500; letter-spacing: 0.2em; }
 
-        /* 導覽列調整，支援 6 個按鈕 */
         .mode-switch { display: flex; flex-wrap: wrap; max-width: 540px; margin: 0 auto 2rem auto; background: var(--border); border-radius: 12px; padding: 4px; gap: 2px; }
         .mode-btn { flex: 1; min-width: 15%; border: none; background: transparent; padding: 8px 0; color: var(--text-muted); font-size: 0.75rem; font-weight: 500; border-radius: 8px; cursor: pointer; transition: 0.3s ease; text-align: center; white-space: nowrap; }
         .mode-btn.active { background: var(--bg-card); color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-weight: 700; }
@@ -105,7 +104,6 @@
         .btn-restore { background: #D9534F; color: #fff; position: relative; }
         .btn-logout { background: var(--danger-bg); color: var(--danger-text); border: 1px solid rgba(184,92,92,0.3); }
 
-        /* 後台清酒/利口酒切換 Tab */
         .admin-tab-group { display: flex; gap: 10px; margin-bottom: 20px; }
         .admin-tab { flex: 1; padding: 12px; background: var(--bg-body); border: 1px solid var(--border); border-radius: 10px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.3s; }
         .admin-tab.active { background: var(--accent); color: #FFF; border-color: var(--accent); }
@@ -176,7 +174,6 @@
         <div class="sake-list" id="sakeList"></div>
     </div>
 
-    <!-- 🍷 新增：利口酒專屬區塊 -->
     <div id="liqueurSection" style="display: none;">
         <div class="search-container"><input type="text" id="liqueurSearchInput" class="search-box" placeholder="搜尋果實酒、梅酒、茶酒..." onkeyup="app.filterLiqueur()"></div>
         <div class="categories" id="liqueurCategories"></div>
@@ -214,7 +211,7 @@
 
     <div id="adminSection" style="display: none;">
         <div id="adminLoginWrapper" class="login-container anim-item">
-            <div class="login-title">後台庫存系統</div>
+            <div class="login-title">後台庫存管理</div>
             <input type="text" id="loginUser" class="login-input" placeholder="請輸入帳號" autocomplete="off">
             <input type="password" id="loginPass" class="login-input" placeholder="請輸入密碼" autocomplete="off">
             <button class="login-btn" onclick="app.adminLogin()">登入管理系統</button>
@@ -252,7 +249,6 @@
             <button class="modal-close" onclick="app.closeModal(event, 'adminModal', true)">✕</button>
             <h3 style="margin-top: 0; color: var(--accent); font-family: 'Noto Serif TC', serif;" id="adminFormTitle">編輯酒款</h3>
             
-            <!-- 隱藏欄位紀錄這是修改清酒還是利口酒 -->
             <input type="hidden" id="formId">
             <input type="hidden" id="formType">
             
@@ -264,9 +260,7 @@
             </div>
 
             <div class="admin-form-group"><label id="labelFormTaste">甘辛口/風味分類</label>
-                <select id="formTaste" class="admin-input">
-                    <!-- Javascript 動態填入選項 -->
-                </select>
+                <select id="formTaste" class="admin-input"></select>
             </div>
             <div class="admin-form-group"><label>搜尋標籤 (Tags) - 空格分開</label><input type="text" id="formTags" class="admin-input" placeholder="例如：知名 白酒 冰飲"></div>
             <div class="admin-form-group"><label>分類 (Category) - 供分類按鈕判斷，逗號分開</label><input type="text" id="formCategory" class="admin-input" placeholder="例如：知名酒款, 適合溫飲"></div>
@@ -306,9 +300,8 @@
         const firebaseApp = initializeApp(firebaseConfig);
         const database = getDatabase(firebaseApp);
         const dbRef = ref(database, 'sakeMenuData');
-        const liqueurDbRef = ref(database, 'liqueurMenuData'); // 新增：利口酒資料庫節點
+        const liqueurDbRef = ref(database, 'liqueurMenuData');
 
-        // 利口酒預設資料建檔
         const defaultLiqueurData = [
             { id: 1, name: "天吹 梅酒", volume: "12%", price: "", taste: "清爽微酸", category: "梅酒", tags: "天吹 梅酒 清爽 經典", temp: "❄️ 適合冰飲", aroma: ["花香", "梅香"], flavor: ["清爽", "不死甜", "尾韻酸度"], desc: "經典款，帶點花香清香。入口酸度淡淡的，但尾韻到後面酸度會在被提上去，是比較偏清爽、不死甜的梅酒。", tempReason: "", pairing: "", outOfStock: [] },
             { id: 2, name: "紅茶梅酒", volume: "8%", price: "", taste: "茶香清爽", category: "梅酒, 茶酒", tags: "紅茶梅酒 茶酒 清爽", temp: "❄️ 適合冰飲", aroma: ["紅茶香"], flavor: ["茶澀感中和甜度", "好入口"], desc: "茶香會比較明顯，有些不常喝梅酒但想試試看的客人會選這款。因為紅茶自帶的清爽澀感會中和掉梅酒的甜度，比傳統梅酒更好入口。", tempReason: "", pairing: "", outOfStock: [] },
@@ -320,13 +313,15 @@
 
         let currentSakeData = [];
         let currentLiqueurData = [];
-        let isFirstLoadSake = true;
-        let isFirstLoadLiqueur = true;
+        
+        // 修正卡頓問題：引入 loaded 狀態變數
+        let sakeLoaded = false;
+        let liqueurLoaded = false;
 
         const app = {
             currentCategory: '全部',
             currentLiqueurCategory: '全部',
-            adminCurrentType: 'sake', // 'sake' or 'liqueur'
+            adminCurrentType: 'sake', 
             targetSize: 'all', 
             historyStack: [], 
             
@@ -340,11 +335,8 @@
             },
 
             saveData(type) {
-                if (type === 'sake') {
-                    set(dbRef, currentSakeData).catch(error => { alert("雲端同步失敗：" + error); });
-                } else {
-                    set(liqueurDbRef, currentLiqueurData).catch(error => { alert("雲端同步失敗：" + error); });
-                }
+                if (type === 'sake') set(dbRef, currentSakeData).catch(error => { alert("雲端同步失敗：" + error); });
+                else set(liqueurDbRef, currentLiqueurData).catch(error => { alert("雲端同步失敗：" + error); });
             },
 
             adminLogin() {
@@ -428,10 +420,9 @@
             ],
             
             renderCategories() {
-                // 清酒分類
                 const containerSake = document.getElementById('sakeCategories');
                 containerSake.innerHTML = this.catSakeConfigs.map(cat => `<button class="cat-btn ${cat.id === this.currentCategory ? 'active' : ''}" onclick="window.app.setCategory('${cat.id}', 'sake')">${cat.label}</button>`).join('');
-                // 利口酒分類
+                
                 const containerLiqueur = document.getElementById('liqueurCategories');
                 containerLiqueur.innerHTML = this.catLiqueurConfigs.map(cat => `<button class="cat-btn ${cat.id === this.currentLiqueurCategory ? 'active' : ''}" onclick="window.app.setCategory('${cat.id}', 'liqueur')">${cat.label}</button>`).join('');
             },
@@ -571,7 +562,6 @@
             showGuideResults(catFilter, tipText) {
                 document.getElementById('guideBox').style.display = 'none';
                 let matched = currentSakeData.filter(s => s.category.includes(catFilter) && !this.isCompletelySoldOut(s));
-                
                 if (this.targetSize && this.targetSize !== 'all') {
                     if (this.targetSize === 'small') { let sizeMatched = matched.filter(s => s.volume.includes('180') || s.volume.includes('300')); if (sizeMatched.length > 0) matched = sizeMatched; } 
                     else if (this.targetSize === 'large') { let sizeMatched = matched.filter(s => s.volume.includes('720') || s.volume.includes('1.8L')); if (sizeMatched.length > 0) matched = sizeMatched; }
@@ -686,12 +676,10 @@
             },
 
             openAdminForm(id, type = null) {
-                // 如果按＋新增，預設為當前選擇的 tab type
                 const targetType = type || this.adminCurrentType; 
                 const formModal = document.getElementById('adminModal');
                 const dataArray = targetType === 'sake' ? currentSakeData : currentLiqueurData;
 
-                // 根據類型切換表單選項
                 const tasteSelect = document.getElementById('formTaste');
                 if (targetType === 'sake') {
                     tasteSelect.innerHTML = `<option value="甘口">甘口</option><option value="微甘口">微甘口</option><option value="濃醇甘口">濃醇甘口</option><option value="辛口">辛口</option><option value="超辛口">超辛口</option><option value="旨辛口">旨辛口</option><option value="旨口">旨口</option>`;
@@ -790,12 +778,8 @@
             },
 
             exportData() {
-                const dataStrSake = encodeURIComponent(JSON.stringify(currentSakeData));
-                const dataStrLiq = encodeURIComponent(JSON.stringify(currentLiqueurData));
-                
                 const backupObj = { sake: currentSakeData, liqueur: currentLiqueurData };
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupObj));
-                
                 const dlAnchorElem = document.createElement('a');
                 dlAnchorElem.setAttribute("href", dataStr);
                 dlAnchorElem.setAttribute("download", "all_menu_backup.json");
@@ -809,15 +793,12 @@
                 reader.onload = (e) => {
                     try {
                         const importedData = JSON.parse(e.target.result);
-                        
-                        // 判斷是單獨清酒庫存還是混合雙庫存
                         if(importedData.sake && importedData.liqueur) {
                             currentSakeData = importedData.sake.map(s => ({...s, outOfStock: s.outOfStock || [], price: s.price || ""}));
                             currentLiqueurData = importedData.liqueur.map(s => ({...s, outOfStock: s.outOfStock || [], price: s.price || ""}));
                             this.saveData('sake');
                             this.saveData('liqueur');
                         } else if (Array.isArray(importedData)) {
-                            // 舊版備份匯入（當作純清酒）
                             currentSakeData = importedData.map(s => ({...s, outOfStock: s.outOfStock || [], price: s.price || ""}));
                             this.saveData('sake');
                         }
@@ -829,6 +810,8 @@
             },
 
             updateUI() {
+                if (!sakeLoaded || !liqueurLoaded) return; // 確保兩個資料庫都讀取完畢
+
                 this.initCompareSelects();
                 this.renderCategories();
                 
@@ -837,31 +820,26 @@
                 if (document.getElementById('adminSection').style.display === 'block' && document.getElementById('adminContentWrapper').style.display === 'block') this.renderAdminList();
                 if (document.getElementById('compareSection').style.display === 'block') this.updateCompare();
                 
-                if (isFirstLoadSake && isFirstLoadLiqueur) {
-                    const loading = document.getElementById('loadingOverlay');
-                    if (loading) {
-                        loading.style.opacity = '0';
-                        setTimeout(() => { loading.style.display = 'none'; }, 500);
-                    }
+                const loading = document.getElementById('loadingOverlay');
+                if (loading && loading.style.display !== 'none') {
+                    loading.style.opacity = '0';
+                    setTimeout(() => { loading.style.display = 'none'; }, 500);
                     this.init();
-                    isFirstLoadSake = false;
-                    isFirstLoadLiqueur = false;
                 }
             }
         };
 
-        // Firebase 即時資料同步 (清酒)
+        // Firebase 即時同步 (清酒)
         onValue(dbRef, (snapshot) => {
             const data = snapshot.val();
             if (data) currentSakeData = data.map(s => ({ ...s, price: s.price || "", aroma: s.aroma || [], flavor: s.flavor || [], outOfStock: s.outOfStock || [] }));
             else currentSakeData = [];
             
-            if(isFirstLoadSake && isFirstLoadLiqueur === false) app.updateUI(); // 確保兩個都載入
-            else if(!isFirstLoadSake) app.updateUI();
-            isFirstLoadSake = false;
+            sakeLoaded = true;
+            app.updateUI();
         });
 
-        // Firebase 即時資料同步 (利口酒)
+        // Firebase 即時同步 (利口酒)
         onValue(liqueurDbRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -871,9 +849,8 @@
                 set(liqueurDbRef, currentLiqueurData);
             }
             
-            if(isFirstLoadLiqueur && isFirstLoadSake === false) app.updateUI();
-            else if(!isFirstLoadLiqueur) app.updateUI();
-            isFirstLoadLiqueur = false;
+            liqueurLoaded = true;
+            app.updateUI();
         });
 
         window.app = app;
